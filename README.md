@@ -55,6 +55,22 @@ A `CNAME` file is included for custom GitHub Pages domains. Replace the placehol
 
 Open `index.html` in your browser for a quick preview. For a local development server, use a simple static host such as VS Code Live Server or any HTTP server.
 
+### Prerequisites for Java backend
+
+Before running the Java backend, install and verify these tools:
+
+- Java 21+ JDK installed and available in `PATH`
+- Apache Maven installed and available in `PATH`
+
+You can verify with:
+
+```powershell
+java -version
+mvn -version
+```
+
+If you do not have `mvn` installed, install Maven or use a Docker build instead.
+
 ### Run the Java backend locally
 
 From the repository root:
