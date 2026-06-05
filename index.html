@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PM Support | Product Management Practice Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="PM Support home">
+      <span class="brand-mark">PM</span>
+      <span>PM Support</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#practice">Practice</a>
+      <a href="#templates">Templates</a>
+      <a href="#agents">Agents</a>
+      <a href="#cadence">Cadence</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">A practical operating guide for product managers</p>
+        <h1>Sharper product habits, reusable workflows, and PM-ready templates.</h1>
+        <p class="hero-text">
+          Build consistent product judgment across discovery, planning, execution, launch, and measurement.
+          Use this scaffold as a living handbook for teams, new PM onboarding, and AI-assisted product work.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#templates">Explore templates</a>
+          <a class="button secondary" href="#agents">See starter agents</a>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="Product practice snapshot">
+        <div class="signal-row">
+          <span>Current focus</span>
+          <strong>Outcome clarity</strong>
+        </div>
+        <div class="score-grid">
+          <div>
+            <span>Discovery</span>
+            <strong>8.4</strong>
+          </div>
+          <div>
+            <span>Execution</span>
+            <strong>7.8</strong>
+          </div>
+          <div>
+            <span>Launch</span>
+            <strong>8.1</strong>
+          </div>
+        </div>
+        <div class="checklist">
+          <label><input type="checkbox" checked /> Problem framed with evidence</label>
+          <label><input type="checkbox" checked /> Success metric has an owner</label>
+          <label><input type="checkbox" /> Risks reviewed before commitment</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro-band">
+      <div>
+        <p class="section-label">How to use this scaffold</p>
+        <h2>Start with a habit, then attach the artifact.</h2>
+      </div>
+      <p>
+        The site is organized around repeatable PM moments: choosing what matters, learning from customers,
+        aligning teams, launching responsibly, and measuring outcomes. Templates and agents are intentionally
+        lightweight so your team can adapt them without fighting the format.
+      </p>
+    </section>
+
+    <section class="section" id="practice">
+      <div class="section-heading">
+        <p class="section-label">Good Practice Guide</p>
+        <h2>Product habits that keep work grounded.</h2>
+      </div>
+      <div class="practice-grid">
+        <article class="practice-card">
+          <span class="card-kicker">01</span>
+          <h3>Frame the problem before the solution</h3>
+          <p>Write the user, pain, context, evidence, business impact, and constraints before discussing features.</p>
+        </article>
+        <article class="practice-card">
+          <span class="card-kicker">02</span>
+          <h3>Define outcomes in measurable terms</h3>
+          <p>Prefer behavior and business metrics over delivery-only milestones. Every bet needs a learning signal.</p>
+        </article>
+        <article class="practice-card">
+          <span class="card-kicker">03</span>
+          <h3>Separate confidence from ambition</h3>
+          <p>High-value ideas can still be low-confidence. Mark assumptions clearly and plan the smallest useful test.</p>
+        </article>
+        <article class="practice-card">
+          <span class="card-kicker">04</span>
+          <h3>Make tradeoffs visible</h3>
+          <p>Show why something is in, out, or delayed. Decision logs reduce churn and improve stakeholder trust.</p>
+        </article>
+        <article class="practice-card">
+          <span class="card-kicker">05</span>
+          <h3>Design launches as learning systems</h3>
+          <p>Launch with audience, rollout, telemetry, support readiness, risks, and rollback paths already named.</p>
+        </article>
+        <article class="practice-card">
+          <span class="card-kicker">06</span>
+          <h3>Review outcomes honestly</h3>
+          <p>Close the loop with adoption, quality, revenue, customer feedback, and what the team will change next.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="templates">
+      <div class="section-heading compact">
+        <p class="section-label">Ready Templates</p>
+        <h2>Reusable artifacts for common PM work.</h2>
+      </div>
+      <div class="template-layout">
+        <div class="template-list" role="tablist" aria-label="Template selector">
+          <button class="template-tab active" data-template="prd" role="tab" aria-selected="true">PRD brief</button>
+          <button class="template-tab" data-template="discovery" role="tab" aria-selected="false">Discovery plan</button>
+          <button class="template-tab" data-template="launch" role="tab" aria-selected="false">Launch checklist</button>
+          <button class="template-tab" data-template="decision" role="tab" aria-selected="false">Decision log</button>
+        </div>
+        <article class="template-preview">
+          <div class="template-preview-header">
+            <span id="template-type">Product Requirements</span>
+            <button class="copy-button" type="button" id="copy-template">Copy</button>
+          </div>
+          <pre id="template-content"></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="agents">
+      <div class="section-heading">
+        <p class="section-label">Starter Agents</p>
+        <h2>AI helpers PMs can adapt into repeatable workflows.</h2>
+      </div>
+      <div class="agent-grid">
+        <article class="agent-card">
+          <h3>Discovery Coach</h3>
+          <p>Turns rough ideas into interview questions, assumption maps, and research plans.</p>
+          <ul>
+            <li>Input: problem statement and target segment</li>
+            <li>Output: research plan, screener, interview guide</li>
+          </ul>
+        </article>
+        <article class="agent-card">
+          <h3>PRD Reviewer</h3>
+          <p>Checks clarity, missing requirements, edge cases, risks, metrics, and launch dependencies.</p>
+          <ul>
+            <li>Input: draft PRD</li>
+            <li>Output: findings, questions, suggested rewrites</li>
+          </ul>
+        </article>
+        <article class="agent-card">
+          <h3>Stakeholder Briefing Assistant</h3>
+          <p>Creates crisp updates for executives, engineering, sales, support, and customer success.</p>
+          <ul>
+            <li>Input: project state and audience</li>
+            <li>Output: tailored update and decision asks</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section cadence-section" id="cadence">
+      <div class="section-heading">
+        <p class="section-label">Operating Cadence</p>
+        <h2>A simple rhythm for PM excellence.</h2>
+      </div>
+      <div class="timeline">
+        <div>
+          <span>Weekly</span>
+          <h3>Outcome review</h3>
+          <p>Check metric movement, risks, blocked decisions, and whether current work still maps to the goal.</p>
+        </div>
+        <div>
+          <span>Biweekly</span>
+          <h3>Customer learning review</h3>
+          <p>Share themes from interviews, tickets, sales calls, analytics, and competitive signals.</p>
+        </div>
+        <div>
+          <span>Monthly</span>
+          <h3>Roadmap confidence review</h3>
+          <p>Re-score opportunities using impact, confidence, effort, strategy fit, and capacity.</p>
+        </div>
+        <div>
+          <span>Quarterly</span>
+          <h3>Strategy narrative refresh</h3>
+          <p>Update market context, customer needs, bets, sequencing, and explicit non-goals.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>PM Support is a starter handbook. Replace, extend, and make it your team's own operating system.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
