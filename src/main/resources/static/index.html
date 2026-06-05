@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PM Central is a publish-ready project management handbook and AI copilot landing page for product teams and PMOs.">
+    <meta property="og:title" content="PM Central — Project Management Handbook & AI Copilot">
+    <meta property="og:description" content="Complete Spring Boot-backed landing page for PM Central, a product management platform with AI-powered workflows, RAID tracking, and knowledge management.">
+    <meta property="og:type" content="website">
+    <title>PM Central — Project Management Handbook & AI Copilot</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-grid">
+        <div>
+          <h1>PM Central</h1>
+          <p class="tagline">Project Management Handbook & AI Copilot — Java-backed PM enablement app</p>
+        </div>
+        <div class="header-actions">
+          <button id="darkToggle" class="btn">Toggle Dark</button>
+          <a class="btn primary" href="README.md">Docs</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="container nav">
+      <a href="#overview">Overview</a>
+      <a href="#modules">Modules</a>
+      <a href="#templates">Templates</a>
+      <a href="#platform">Platform</a>
+      <a href="#deploy">Deploy</a>
+    </nav>
+
+    <main class="container">
+      <section id="overview" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Java backend ready</p>
+          <h2>PM Central is your program management handbook, tracking hub, and AI assistant.</h2>
+          <p>Designed for product managers, PMOs, and delivery leaders, PM Central brings decision logs, RAID, action items, launch readiness and AI insights into one polished experience.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#templates">Explore templates</a>
+            <a class="btn outline" href="#deploy">Deploy app</a>
+          </div>
+        </div>
+        <div class="hero-cards">
+          <div class="card feature">
+            <strong>Modern PM workflows</strong>
+            <p>From planning to launch, keep every decision, risk, and action item visible.</p>
+          </div>
+          <div class="card feature">
+            <strong>AI Copilot ready</strong>
+            <p>Built to evolve into prompt-driven status summaries and meeting action generators.</p>
+          </div>
+          <div class="card feature">
+            <strong>Java-backed</strong>
+            <p>Spring Boot API, markdown content endpoints, and H2-ready persistence for the next phase.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="modules" class="section modules-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Core modules</p>
+            <h3>PM Central module overview</h3>
+            <p>Explore the product capabilities that the full application will deliver.</p>
+          </div>
+          <div class="search-field">
+            <input id="search" placeholder="Search modules, handbook, RAID..." aria-label="Search modules" />
+          </div>
+        </div>
+        <div class="grid modules-grid" id="modulesList">
+          <div class="card module" data-keywords="dashboard risks issues action items milestones health team utilization ai insights">Dashboard — Open Risks, Issues, Action Items, Milestones, Health, AI Insights</div>
+          <div class="card module" data-keywords="handbook knowledge articles search tags versions">PM Handbook — rich articles, categories, search, versioning</div>
+          <div class="card module" data-keywords="raid risks assumptions dependencies export notifications">RAID Tracker — Risks, Assumptions, Issues, Dependencies, exports</div>
+          <div class="card module" data-keywords="action items tasks assign due dates notifications comments">Action Item Tracker — assign, due dates, comments</div>
+          <div class="card module" data-keywords="health schedule budget scope quality resources trend">Project Health Center — schedule, budget, scope, quality, resource health</div>
+          <div class="card module" data-keywords="stakeholders register influence interest matrix">Stakeholder Management — registry and matrix</div>
+          <div class="card module" data-keywords="communication plan calendar frequency channel">Communication Planner — plans and calendar</div>
+          <div class="card module" data-keywords="templates upload download charter status report raid">Template Library — upload, categorize, download</div>
+          <div class="card module" data-keywords="meetings transcripts summary decisions action items ai">Meeting Management — transcripts → summary, decisions, actions</div>
+          <div class="card module" data-keywords="ai copilot status report risk analysis stakeholder emails">AI PM Copilot — status reports, risk analysis, exec summaries</div>
+          <div class="card module" data-keywords="interviews questions mock simulator">PM Interview Hub — question bank & mock interviews</div>
+          <div class="card module" data-keywords="career learning paths progress tracking">PM Career Development — learning paths and progress</div>
+          <div class="card module" data-keywords="search full-text filters suggestions">Global Search — full-text, filters, suggestions</div>
+        </div>
+      </section>
+
+      <section id="templates" class="section templates-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Templates</p>
+            <h3>Starter templates for PRDs, discovery, launch readiness, and decisions</h3>
+          </div>
+        </div>
+        <div class="template-panel">
+          <div class="template-tabs">
+            <button class="template-tab active" data-template="prd">PRD</button>
+            <button class="template-tab" data-template="discovery">Discovery</button>
+            <button class="template-tab" data-template="launch">Launch</button>
+            <button class="template-tab" data-template="decision">Decision</button>
+          </div>
+          <div class="template-body">
+            <div class="template-header">
+              <div>
+                <p id="template-type" class="template-type">Product Requirements</p>
+              </div>
+              <button id="copy-template" class="btn primary">Copy</button>
+            </div>
+            <pre id="template-content" class="template-content"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="platform" class="section platform-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Platform</p>
+            <h3>Secure, extensible, and deployment-ready</h3>
+          </div>
+        </div>
+        <div class="grid platform-grid">
+          <div class="card feature-card">
+            <h4>Security first</h4>
+            <p>JWT authentication, role-based permissions, password reset, and audit logging form the foundation of the finished application.</p>
+          </div>
+          <div class="card feature-card">
+            <h4>Operational readiness</h4>
+            <p>Swagger-based API docs, unit and integration tests, and a service-oriented architecture make the next phase easy to build.</p>
+          </div>
+          <div class="card feature-card">
+            <h4>AI integration</h4>
+            <p>Designed for OpenAI/Gemini API connectors, meeting transcript extraction, and prompt-based product recommendations.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="deploy" class="section publish-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Deploy</p>
+            <h3>Run the Java backend locally</h3>
+            <p>The Spring Boot app serves the same landing page plus markdown-driven API endpoints for templates and agents.</p>
+          </div>
+        </div>
+        <div class="publish-card">
+          <h4>Quick Java backend preview</h4>
+          <ol>
+            <li>Make sure Java 21 is installed.</li>
+            <li>Run `mvn spring-boot:run` from the repository root.</li>
+            <li>Open <code>http://localhost:8080</code> in your browser.</li>
+          </ol>
+          <p class="muted">The app exposes `/api/templates` and `/api/agents` from the existing markdown content.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>PM Central</strong>
+          <p>Java-backed launch-ready product management hub.</p>
+        </div>
+        <small>© 2026 PM Central • Spring Boot app</small>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

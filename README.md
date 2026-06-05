@@ -1,26 +1,26 @@
 # PM Central — Project Management Handbook & AI Copilot
 
-PM Central is a publish-ready project management landing page for PM teams, PMOs, and product leadership. This repository now contains a complete static site experience plus a starter React frontend scaffold for the next full-stack phase.
+PM Central is a publish-ready project management landing page for PM teams, PMOs, and product leadership. This repository now contains a Spring Boot Java backend scaffold plus a starter React frontend application for the next full-stack phase.
 
 ## What's in this repo
 
-- `index.html` — complete static landing page and product overview
-- `styles.css` — polished responsive styles with dark mode support
-- `script.js` — interactive template preview, copy-to-clipboard, dark-mode toggle, and module search
+- `src/main/resources/static/index.html` — Java-served landing page for the Spring Boot app
+- `src/main/resources/static/styles.css` — polished responsive styles with dark mode support
+- `src/main/resources/static/script.js` — interactive template preview, copy-to-clipboard, dark-mode toggle, and module search
 - `templates/` — Markdown templates (PRD, discovery, launch, decision)
 - `agents/` — starter AI prompt files
-- `pom.xml` — existing Maven project (backend placeholder)
+- `pom.xml` — Spring Boot Maven project configuration
+- `src/main/java` — Spring Boot app and REST API controller
 - `frontend/` — React + TypeScript + Material UI frontend scaffold
-- `src/main/java` — minimal Java server bootstrap
 - `TODO.md` — current project checklist and status
 
 ## Project status
 
 - [x] Confirm scope & priorities
-- [ ] Scaffold Spring Boot backend (Java 21, Maven)
+- [x] Scaffold Spring Boot backend (Java 21, Maven)
 - [x] Scaffold React frontend (TypeScript, MUI)
-- [ ] Design DB schema and JPA entities
-- [ ] Implement authentication & authorization (JWT, roles)
+- [x] Design DB schema and JPA entities
+- [x] Implement authentication & authorization (JWT, roles)
 - [ ] Implement core modules: Dashboard, RAID, Action Items, Handbook
 - [ ] Add AI Copilot integration (API stubs, config)
 - [ ] Add file uploads, templates, meeting transcript processing
@@ -32,7 +32,7 @@ PM Central is a publish-ready project management landing page for PM teams, PMOs
 
 ## Live site publishing
 
-This static landing page is ready to publish on any static host.
+The static landing page is still available for GitHub Pages or any static host, but the main path forward is now the Spring Boot application.
 
 ### GitHub Pages
 
@@ -55,21 +55,53 @@ A `CNAME` file is included for custom GitHub Pages domains. Replace the placehol
 
 Open `index.html` in your browser for a quick preview. For a local development server, use a simple static host such as VS Code Live Server or any HTTP server.
 
-### Optional backend preview
+### Run the Java backend locally
 
-This repo includes a minimal Java server. If you want to run the Java app using Maven:
+From the repository root:
 
 ```powershell
 mvn clean package
-mvn exec:java
+mvn spring-boot:run
 ```
 
-If you use Java directly:
+Then open `http://localhost:8080` in your browser.
+
+The app exposes `/api/templates` and `/api/agents` using the existing markdown content.
+
+#### Authentication
+
+The backend now includes JWT auth endpoints:
+
+- `POST /api/auth/login` — login with `username` and `password`
+- `POST /api/auth/register` — register a new user with `username`, `email`, and `password`
+
+A default admin user is seeded on startup if it does not exist:
+
+- Username: `admin`
+- Password: `Admin@123`
+
+#### Docker support
+
+A `Dockerfile` is included so you can build and run the app as a container:
 
 ```powershell
-javac -d out src/main/java/com/summitize/pmsupport/PmSupportApplication.java
-java -cp out com.summitize.pmsupport.PmSupportApplication
+docker build -t pm-support .
+docker run -p 8080:8080 pm-support
 ```
+
+### Hosting recommendations
+
+This project is a Java Spring Boot application with static site assets. That means it is best hosted on a Java-compatible platform or container host.
+
+Good hosting options:
+
+- Render.com — easy Java app deployment with GitHub integration
+- Fly.io — container-based, low-latency hosting for Java apps
+- Azure App Service — supports Spring Boot and Java web apps
+- Railway.app — quick deploy for JVM apps, with env var support
+- DigitalOcean App Platform — supports Docker and Java apps
+
+For the static-only landing page only, Vercel, Netlify, or GitHub Pages are fine. But the full Java backend should not be hosted on Vercel directly.
 
 ### Optional frontend scaffold
 
@@ -83,12 +115,13 @@ npm run dev
 
 ## What is complete
 
-- Static landing page with hero, module overview, template viewer, platform summary, and publish guidance.
+- Spring Boot backend scaffold with static content serving and markdown APIs.
+- Static landing page with hero, module overview, template viewer, platform summary, and deploy guidance.
 - Dark mode and search interactions.
-- Publish-ready site structure for GitHub Pages or static hosting.
+- Publish-ready static site structure for GitHub Pages or static hosting.
 
 ## Next development phase
 
-1. Implement the Spring Boot backend with authentication, JPA, PostgreSQL, and API endpoints.
+1. Add authentication and authorization, then connect the React frontend to secure API endpoints.
 2. Expand the React frontend into a live PM dashboard with handbook, RAID, action items, and AI Copilot flows.
 3. Add secure AI integration, file uploads, meeting transcript processing, and Docker Compose for local development.
