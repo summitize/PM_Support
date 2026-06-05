@@ -1,3 +1,4 @@
+// templates and UI behavior for PM Central
 let templates = {
   prd: {
     type: "Product Requirements",
@@ -128,6 +129,7 @@ Why does this decision matter now?
   }
 };
 
+// template UI
 const tabs = document.querySelectorAll(".template-tab");
 const typeLabel = document.querySelector("#template-type");
 const content = document.querySelector("#template-content");
@@ -135,12 +137,9 @@ const copyButton = document.querySelector("#copy-template");
 
 function renderTemplate(key) {
   const template = templates[key];
-  if (!template) {
-    return;
-  }
+  if (!template) return;
   typeLabel.textContent = template.type;
   content.textContent = template.content;
-
   tabs.forEach((tab) => {
     const selected = tab.dataset.template === key;
     tab.classList.toggle("active", selected);
@@ -148,50 +147,60 @@ function renderTemplate(key) {
   });
 }
 
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => renderTemplate(tab.dataset.template));
-});
+tabs.forEach((tab) => tab.addEventListener("click", () => renderTemplate(tab.dataset.template)));
 
 copyButton.addEventListener("click", async () => {
   await navigator.clipboard.writeText(content.textContent);
   copyButton.textContent = "Copied";
-  setTimeout(() => {
-    copyButton.textContent = "Copy";
-  }, 1200);
+  setTimeout(() => (copyButton.textContent = "Copy"), 1200);
 });
 
 renderTemplate("prd");
 
+// load templates from API if available
 async function loadTemplatesFromApi() {
   try {
     const response = await fetch("/api/templates");
-    if (!response.ok) {
-      return;
-    }
-
+    if (!response.ok) return;
     const apiTemplates = await response.json();
-    const loadedTemplates = {};
-    apiTemplates.forEach((template) => {
-      loadedTemplates[template.slug] = {
-        type: template.title,
-        content: template.content
-      };
-    });
-
-    if (Object.keys(loadedTemplates).length === 0) {
-      return;
-    }
-
+    const loaded = {};
+    apiTemplates.forEach((t) => (loaded[t.slug] = { type: t.title, content: t.content }));
+    if (Object.keys(loaded).length === 0) return;
     templates = {
-      prd: loadedTemplates["prd-brief"] || templates.prd,
-      discovery: loadedTemplates["discovery-plan"] || templates.discovery,
-      launch: loadedTemplates["launch-checklist"] || templates.launch,
-      decision: loadedTemplates["decision-log"] || templates.decision
+      prd: loaded["prd-brief"] || templates.prd,
+      discovery: loaded["discovery-plan"] || templates.discovery,
+      launch: loaded["launch-checklist"] || templates.launch,
+      decision: loaded["decision-log"] || templates.decision
     };
     renderTemplate("prd");
-  } catch {
+  } catch (e) {
+    console.warn("Templates API load failed", e);
     renderTemplate("prd");
   }
 }
-
 loadTemplatesFromApi();
+
+// Dark-mode toggle
+const darkToggle = document.getElementById("darkToggle");
+function setDark(enabled) {
+  if (enabled) document.body.classList.add("dark");
+  else document.body.classList.remove("dark");
+  localStorage.setItem("pmcentral-dark", enabled ? "1" : "0");
+}
+
+const saved = localStorage.getItem("pmcentral-dark");
+if (saved === null) setDark(false);
+else setDark(saved === "1");
+
+darkToggle.addEventListener("click", () => setDark(!document.body.classList.contains("dark")));
+
+// simple modules search (filters the module cards)
+const searchInput = document.getElementById("search");
+const modules = Array.from(document.querySelectorAll(".modules .module"));
+searchInput.addEventListener("input", (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  modules.forEach((m) => {
+    const keys = (m.dataset.keywords || "").toLowerCase();
+    m.style.display = q === "" || keys.includes(q) ? "block" : "none";
+  });
+});
