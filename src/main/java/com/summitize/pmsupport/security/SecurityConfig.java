@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/auth/**", "/api/templates", "/api/agents", "/h2-console/**", "/", "/index.html", "/favicon.ico").permitAll()
+                    .requestMatchers("/api/auth/**", "/api/templates", "/api/agents", "/api/dashboard/**", "/h2-console/**", "/", "/index.html", "/toolkit.html", "/favicon.ico").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .anyRequest().authenticated()
                 )

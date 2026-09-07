@@ -1,11 +1,15 @@
 package com.summitize.pmsupport.controller;
 
 import com.summitize.pmsupport.model.*;
+import com.summitize.pmsupport.repository.ActionItemRepository;
+import com.summitize.pmsupport.repository.HandbookArticleRepository;
+import com.summitize.pmsupport.repository.RaidItemRepository;
 import com.summitize.pmsupport.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -14,6 +18,15 @@ public class DashboardController {
 
     @Autowired
     private DashboardService dashboardService;
+
+    @Autowired
+    private RaidItemRepository raidItemRepository;
+
+    @Autowired
+    private ActionItemRepository actionItemRepository;
+
+    @Autowired
+    private HandbookArticleRepository handbookArticleRepository;
 
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getDashboardStats(@RequestParam(required = false) Long projectId) {

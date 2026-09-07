@@ -14,4 +14,6 @@ public interface ActionItemRepository extends JpaRepository<ActionItem, Long> {
     List<ActionItem> findByStatus(String status);
 
     List<ActionItem> findByProjectIdIn(List<Long> projectIds);
+
+    List<ActionItem> findByProjectIdAndStatus(Long projectId, String status);
 }

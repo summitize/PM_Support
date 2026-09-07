@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PM Central — Toolkit</title>
+<link rel="stylesheet" href="toolkit-styles.css">
+</head>
+<body>
+<div class="app-shell">
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">PM</div>
+      <div class="logo-text"><h2>PM Central</h2><span class="logo-sub">Delivery Toolkit</span></div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#dashboard" class="nav-item active" data-view="dashboard"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#projects" class="nav-item" data-view="projects"><span class="nav-icon">📁</span><span class="nav-label">Projects</span></a>
+    <a href="#raid" class="nav-item" data-view="raid"><span class="nav-icon">⚠️</span><span class="nav-label">RAID Tracker</span></a>
+    <a href="#actions" class="nav-item" data-view="actions"><span class="nav-icon">✅</span><span class="nav-label">Action Items</span></a>
+    <a href="#handbook" class="nav-item" data-view="handbook"><span class="nav-icon">📚</span><span class="nav-label">Handbook</span></a>
+    <a href="#meetings" class="nav-item" data-view="meetings"><span class="nav-icon">🎯</span><span class="nav-label">Meetings</span></a>
+    <a href="#templates" class="nav-item" data-view="templates"><span class="nav-icon">📝</span><span class="nav-label">Templates</span></a>
+    <a href="#ai" class="nav-item" data-view="ai"><span class="nav-icon">🤖</span><span class="nav-label">AI Copilot</span></a>
+    <a href="#settings" class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatar">P</div>
+      <div class="user-details">
+        <div class="user-name" id="userName">PM User</div>
+        <div class="user-role" id="userRole">Project Manager</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<!-- Main Content -->
+<main class="main-content">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-menu" id="mobileMenu">☰</button>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="globalSearch" placeholder="Search projects, RAID, action items..." />
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" id="themeToggle">🌙</button>
+      <button class="btn btn-primary" id="quickAddBtn"><span>+</span> Quick Add</button>
+    </div>
+  </header>
+  <div class="view-container" id="viewContainer">
+    <div class="view active" id="view-dashboard">
+      <div class="view-header"><div><h1>Dashboard</h1><p class="text-muted">Program overview and key metrics</p></div><div class="view-actions"><button class="btn btn-secondary" id="refreshDashboard">🔄 Refresh</button></div></div>
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-primary"><div class="kpi-icon">📁</div><div class="kpi-content"><div class="kpi-value" id="kpiProjects">0</div><div class="kpi-label">Active Projects</div><div class="kpi-trend" id="kpiProjectsTrend">+0 this month</div></div></div>
+        <div class="kpi-card kpi-danger"><div class="kpi-icon">⚠️</div><div class="kpi-content"><div class="kpi-value" id="kpiRisks">0</div><div class="kpi-label">Open Risks</div><div class="kpi-trend" id="kpiRisksTrend">0 high priority</div></div></div>
+        <div class="kpi-card kpi-warning"><div class="kpi-icon">🚧</div><div class="kpi-content"><div class="kpi-value" id="kpiIssues">0</div><div class="kpi-label">Open Issues</div><div class="kpi-trend" id="kpiIssuesTrend">0 critical</div></div></div>
+        <div class="kpi-card kpi-info"><div class="kpi-icon">✅</div><div class="kpi-content"><div class="kpi-value" id="kpiActions">0</div><div class="kpi-label">Action Items</div><div class="kpi-trend" id="kpiActionsTrend">0% complete</div></div></div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card"><div class="card-header"><h3>RAID Distribution</h3></div><div class="card-body"><div class="raid-chart" id="raidChart"><div class="raid-bar" data-type="RISK"><div class="raid-bar-label">Risks</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="ASSUMPTION"><div class="raid-bar-label">Assumptions</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="ISSUE"><div class="raid-bar-label">Issues</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="DEPENDENCY"><div class="raid-bar-label">Dependencies</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div></div></div></div>
+        <div class="card"><div class="card-header"><h3>Recent Activity</h3></div><div class="card-body"><div class="activity-list" id="activityList"></div></div></div>
+      </div>
+      <div class="card"><div class="card-header"><h3>Upcoming Action Items</h3></div><div class="card-body"><div class="table-container"><table class="table" id="dashboardActionsTable"><thead><tr><th>Title</th><th>Project</th><th>Assignee</th><th>Due Date</th><th>Status</th><th>Priority</th></tr></thead><tbody></tbody></table></div></div></div>
+    </div>
+
+    <div class="view" id="view-projects">
+      <div class="view-header"><div><h1>Projects</h1><p class="text-muted">Manage your delivery programs</p></div><div class="view-actions"><button class="btn btn-primary" id="newProjectBtn">+ New Project</button></div></div>
+      <div class="project-grid" id="projectGrid"></div>
+    </div>
+
+    <div class="view" id="view-raid">
+      <div class="view-header"><div><h1>RAID Tracker</h1><p class="text-muted">Risks, Assumptions, Issues, Dependencies</p></div><div class="view-actions"><button class="btn btn-primary" id="newRaidBtn">+ New RAID Item</button></div></div>
+      <div class="filter-bar">
+        <select class="select" id="raidTypeFilter"><option value="">All Types</option><option value="RISK">Risks</option><option value="ASSUMPTION">Assumptions</option><option value="ISSUE">Issues</option><option value="DEPENDENCY">Dependencies</option></select>
+        <select class="select" id="raidStatusFilter"><option value="">All Status</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select>
+        <select class="select" id="raidPriorityFilter"><option value="">All Priority</option><option>High</option><option>Medium</option><option>Low</option></select>
+        <input type="text" class="input" id="raidSearch" placeholder="Search RAID..." />
+      </div>
+      <div class="raid-tabs">
+        <button class="raid-tab active" data-type="">All <span class="raid-tab-count" id="raidCountAll">0</span></button>
+        <button class="raid-tab" data-type="RISK">Risks <span class="raid-tab-count" id="raidCountRisk">0</span></button>
+        <button class="raid-tab" data-type="ASSUMPTION">Assumptions <span class="raid-tab-count" id="raidCountAssumption">0</span></button>
+        <button class="raid-tab" data-type="ISSUE">Issues <span class="raid-tab-count" id="raidCountIssue">0</span></button>
+        <button class="raid-tab" data-type="DEPENDENCY">Dependencies <span class="raid-tab-count" id="raidCountDependency">0</span></button>
+      </div>
+      <div class="card"><div class="table-container"><table class="table" id="raidTable"><thead><tr><th>Type</th><th>Title</th><th>Project</th><th>Status</th><th>Priority</th><th>Owner</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+
+    <div class="view" id="view-actions">
+      <div class="view-header"><div><h1>Action Items</h1><p class="text-muted">Track and manage delivery tasks</p></div><div class="view-actions"><button class="btn btn-primary" id="newActionBtn">+ New Action Item</button></div></div>
+      <div class="kpi-grid kpi-grid-small">
+        <div class="mini-kpi"><div class="mini-kpi-label">Total</div><div class="mini-kpi-value" id="actionKpiTotal">0</div></div>
+        <div class="mini-kpi"><div class="mini-kpi-label">Open</div><div class="mini-kpi-value" id="actionKpiOpen">0</div></div>
+        <div class="mini-kpi"><div class="mini-kpi-label">In Progress</div><div class="mini-kpi-value" id="actionKpiInProgress">0</div></div>
+        <div class="mini-kpi"><div class="mini-kpi-label">Completed</div><div class="mini-kpi-value" id="actionKpiCompleted">0</div></div>
+        <div class="mini-kpi"><div class="mini-kpi-label">Overdue</div><div class="mini-kpi-value" id="actionKpiOverdue">0</div></div>
+      </div>
+      <div class="filter-bar">
+        <select class="select" id="actionStatusFilter"><option value="">All Status</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select>
+        <select class="select" id="actionProjectFilter"><option value="">All Projects</option></select>
+        <input type="text" class="input" id="actionSearch" placeholder="Search actions..." />
+      </div>
+      <div class="card"><div class="table-container"><table class="table" id="actionTable"><thead><tr><th>Status</th><th>Title</th><th>Project</th><th>Assignee</th><th>Due Date</th><th>Priority</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+
+    <div class="view" id="view-handbook">
+      <div class="view-header"><div><h1>Handbook</h1><p class="text-muted">Knowledge base, guides, and best practices</p></div><div class="view-actions"><button class="btn btn-primary" id="newArticleBtn">+ New Article</button></div></div>
+      <div class="handbook-layout">
+        <aside class="handbook-sidebar"><h3>Categories</h3><ul class="handbook-categories" id="handbookCategories"><li class="active" data-category="">All</li><li data-category="process">Processes</li><li data-category="template">Templates</li><li data-category="guide">Guides</li><li data-category="policy">Policies</li><li data-category="reference">Reference</li></ul></aside>
+        <div class="handbook-content"><div class="handbook-search"><input type="text" class="input" id="handbookSearch" placeholder="Search handbook..." /></div><div class="handbook-list" id="handbookList"></div></div>
+      </div>
+    </div>
+
+    <div class="view" id="view-meetings">
+      <div class="view-header"><div><h1>Meetings</h1><p class="text-muted">Meeting notes, decisions, and action items</p></div><div class="view-actions"><button class="btn btn-primary" id="newMeetingBtn">+ New Meeting</button></div></div>
+      <div class="meeting-grid" id="meetingGrid"></div>
+    </div>
+
+    <div class="view" id="view-templates">
+      <div class="view-header"><div><h1>Templates</h1><p class="text-muted">Reusable templates for PM workflows</p></div></div>
+      <div class="template-grid" id="templateGrid"></div>
+    </div>
+
+    <div class="view" id="view-ai">
+      <div class="view-header"><div><h1>AI Copilot</h1><p class="text-muted">Get AI-powered assistance for your PM workflows</p></div></div>
+      <div class="ai-layout">
+        <aside class="ai-sidebar"><h3>AI Assistants</h3><ul class="ai-agents" id="aiAgentsList">
+          <li class="active" data-agent="discovery-coach"><div class="ai-agent-icon">🔍</div><div><div class="ai-agent-name">Discovery Coach</div><div class="ai-agent-desc">Refine your discovery process</div></div></li>
+          <li data-agent="prd-reviewer"><div class="ai-agent-icon">📋</div><div><div class="ai-agent-name">PRD Reviewer</div><div class="ai-agent-desc">Review PRDs for quality</div></div></li>
+          <li data-agent="stakeholder-briefing"><div class="ai-agent-icon">📢</div><div><div class="ai-agent-name">Stakeholder Briefing</div><div class="ai-agent-desc">Create stakeholder updates</div></div></li>
+          <li data-agent="status-summary"><div class="ai-agent-icon">📊</div><div><div class="ai-agent-name">Status Summary</div><div class="ai-agent-desc">Generate status reports</div></div></li>
+        </ul></aside>
+        <div class="ai-chat-container">
+          <div class="ai-chat-header"><h3 id="aiAgentName">Discovery Coach</h3><span class="ai-status">Online</span></div>
+          <div class="ai-chat-messages" id="aiChatMessages"></div>
+          <div class="ai-chat-input"><textarea id="aiInput" placeholder="Ask me anything about your project..." rows="2"></textarea><button class="btn btn-primary" id="aiSendBtn">Send</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-settings">
+      <div class="view-header"><div><h1>Settings</h1><p class="text-muted">Manage your account and preferences</p></div></div>
+      <div class="settings-layout">
+        <div class="card"><div class="card-header"><h3>Profile</h3></div><div class="card-body"><form id="profileForm"><div class="form-group"><label class="form-label">Username</label><input type="text" class="input" id="settingsUsername" /></div><div class="form-group"><label class="form-label">Email</label><input type="email" class="input" id="settingsEmail" /></div><div class="form-group"><label class="form-label">Display Name</label><input type="text" class="input" id="settingsDisplayName" /></div><button type="submit" class="btn btn-primary">Save</button></form></div></div>
+        <div class="card"><div class="card-header"><h3>Preferences</h3></div><div class="card-body"><div class="form-group"><label class="form-label">Default View</label><select class="select" id="settingsDefaultView"><option value="dashboard">Dashboard</option><option value="raid">RAID</option><option value="actions">Actions</option></select></div><div class="form-group"><label class="form-label">Theme</label><select class="select" id="settingsTheme"><option value="dark">Dark</option><option value="light">Light</option></select></div></div></div>
+        <div class="card"><div class="card-header"><h3>Data Management</h3></div><div class="card-body"><p class="text-muted">Export or reset your data</p><div class="settings-actions"><button class="btn btn-secondary" id="exportDataBtn">📥 Export</button><button class="btn btn-secondary" id="importDataBtn">📤 Import</button><button class="btn btn-danger" id="resetDataBtn">🗑️ Reset</button><input type="file" id="importFileInput" accept=".json" style="display:none" /></div></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal"><div class="modal-header"><h2 id="modalTitle">Modal</h2><button class="modal-close" id="modalClose">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-footer"><button class="btn btn-secondary" id="modalCancel">Cancel</button><button class="btn btn-primary" id="modalSave">Save</button></div></div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="toolkit.js"></script>
+</body>
+</html>
