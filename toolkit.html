@@ -3,646 +3,1176 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PM Central Toolkit - Project Management for Delivery Programs</title>
+<meta name="description" content="PM Central - Interactive project management toolkit">
+<title>PM Central - Project Management Toolkit</title>
 <style>
 :root{
-  --bg:#0f172a;--bg2:#1e293b;--bg3:#111827;--bg4:#0b1220;
-  --b1:#1f2937;--b2:#334155;--t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
-  --p:#4f46e5;--ph:#6366f1;--pl:#818cf8;
-  --s:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--pu:#a855f7;
-  --r:10px;--r2:16px;--ts:0.2s;
+  --bg:#0f172a;--bg2:#1e293b;--card:#111827;--input:#0b1220;--border:#1f2937;
+  --text:#e2e8f0;--muted:#94a3b8;--primary:#4f46e5;--primary-h:#6366f1;
+  --primary-l:#818cf8;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;
+  --info:#3b82f6;--purple:#a855f7;--shadow:0 4px 12px rgba(0,0,0,.4);
+  --shadow-lg:0 10px 30px rgba(0,0,0,.5);--r:10px;--r-lg:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--t1);overflow:hidden;font-size:14px;line-height:1.5}
-body.light{--bg:#f8fafc;--bg2:#fff;--bg3:#fff;--bg4:#fff;--b1:#e2e8f0;--b2:#cbd5e1;--t1:#0f172a;--t2:#475569;--t3:#64748b}
-a{color:var(--pl);text-decoration:none}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:14px;overflow:hidden}
 .app{display:flex;height:100vh;width:100vw}
-.sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0}
-.sb-head{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);min-height:64px;display:flex;align-items:center;gap:.75rem}
-.logo-i{width:36px;height:36px;border-radius:var(--r);background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
-.logo-t h2{font-size:1rem;font-weight:700}
-.logo-t small{font-size:.7rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
-.sb-nav{flex:1;padding:1rem .75rem;overflow-y:auto}
-.nav-i{display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;border-radius:var(--r);color:var(--t2);font-weight:500;font-size:.875rem;margin-bottom:.25rem;cursor:pointer;transition:all var(--ts)}
-.nav-i:hover{background:var(--bg3);color:var(--t1)}
-.nav-i.active{background:var(--p);color:#fff}
-.sb-foot{padding:1rem 1.25rem;border-top:1px solid var(--b1);display:flex;align-items:center;gap:.75rem}
-.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff}
-.u-name{font-weight:600;font-size:.875rem}
-.u-role{font-size:.75rem;color:var(--t2)}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.brand{padding:1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.brand-logo{width:36px;height:36px;border-radius:var(--r);background:linear-gradient(135deg,var(--primary),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
+.brand h1{font-size:1.05rem;font-weight:700}
+.brand p{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+nav{padding:1rem .75rem;flex:1;overflow-y:auto}
+.nav{display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;border-radius:var(--r);color:var(--muted);font-weight:500;font-size:.875rem;margin-bottom:.25rem;cursor:pointer;transition:all .2s}
+.nav:hover{background:var(--card);color:var(--text)}
+.nav.active{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+.nav-icon{font-size:1.1rem}
+.user{padding:1rem 1.25rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff}
+.user-name{font-weight:600;font-size:.875rem}
+.user-role{font-size:.75rem;color:var(--muted)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.top{height:64px;background:var(--bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;flex-shrink:0}
-.sb{position:relative;flex:1;max-width:480px}
-.sb input{width:100%;height:38px;padding:0 1rem 0 2.25rem;background:var(--bg4);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-size:.875rem;outline:none}
-.sb input:focus{border-color:var(--p)}
-.sb::before{content:'Search';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t2);font-size:.75rem;display:none}
-.sb i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t2);font-style:normal}
-.top-r{display:flex;align-items:center;gap:.5rem}
-.ib{position:relative;width:38px;height:38px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--b1);color:var(--t1);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.bd{position:absolute;top:-4px;right:-4px;background:var(--d);color:#fff;font-size:.65rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;padding:0 5px;display:flex;align-items:center;justify-content:center}
-.view-c{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.topbar{height:64px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;flex-shrink:0}
+.search{position:relative;flex:1;max-width:480px}
+.search input{width:100%;height:38px;padding:0 1rem 0 2.25rem;background:var(--input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.875rem;outline:none}
+.search input:focus{border-color:var(--primary)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.actions{display:flex;gap:.5rem;align-items:center}
+.icon-btn{width:38px;height:38px;border-radius:var(--r);background:var(--card);border:1px solid var(--border);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.icon-btn:hover{background:var(--border)}
+.content{flex:1;overflow-y:auto;padding:1.5rem 2rem}
 .view{display:none;animation:fi .3s ease}
 .view.active{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.vh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap}
-.vh h1{font-size:1.75rem;font-weight:700;margin-bottom:.25rem}
-.muted{color:var(--t2)}
-.va{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.5rem 1rem;border-radius:var(--r);font-weight:600;font-size:.875rem;border:1px solid transparent;cursor:pointer;transition:all var(--ts);white-space:nowrap;font-family:inherit}
-.bp{background:var(--p);color:#fff;border-color:var(--p)}
-.bp:hover{background:var(--ph)}
-.bs{background:var(--bg3);color:var(--t1);border-color:var(--b1)}
-.bs:hover{background:var(--b1)}
-.bd2{background:var(--d);color:#fff;border-color:var(--d)}
-.bi{width:30px;height:30px;padding:0;background:transparent;border:none;color:var(--t2);cursor:pointer;border-radius:6px;font-size:1rem;display:inline-flex;align-items:center;justify-content:center}
-.bi:hover{background:var(--bg3);color:var(--t1)}
-.bi.danger:hover{color:var(--d)}
-.inp,.sel,textarea{height:38px;padding:0 .85rem;background:var(--bg4);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-size:.875rem;font-family:inherit;outline:none;width:100%}
-textarea{height:auto;padding:.6rem .85rem;resize:vertical;min-height:70px}
-.inp:focus,.sel:focus,textarea:focus{border-color:var(--p)}
-.sel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2394a3b8'><path d='M7 10l5 5 5-5z'/></svg>");background-repeat:no-repeat;background-position:right .6rem center;padding-right:2rem}
-.fg{margin-bottom:1rem}
-.fl{display:block;margin-bottom:.35rem;font-size:.75rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
-.fb{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
-.fb .inp,.fb .sel{width:auto;min-width:150px;flex:1;max-width:240px}
-.card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);margin-bottom:1.5rem;overflow:hidden}
-.card-h{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
-.card-h h3{font-size:1rem;font-weight:600}
-.card-b{padding:1.25rem}
-.kpi-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
-.kpi-g-s{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
-.kpi{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;display:flex;gap:1rem;align-items:center;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
-.kpi.p::before{background:var(--p)}
-.kpi.d::before{background:var(--d)}
-.kpi.w::before{background:var(--w)}
-.kpi.i::before{background:var(--i)}
-.kpi.s::before{background:var(--s)}
-.ki{width:48px;height:48px;border-radius:var(--r);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
-.kv{font-size:2rem;font-weight:700;line-height:1.2}
-.kl{font-size:.85rem;color:var(--t2);margin-top:.15rem}
-.kt{font-size:.7rem;color:var(--t2);margin-top:.15rem}
-.m-kpi{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:.75rem 1rem}
-.m-kpi .l{font-size:.7rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
-.m-kpi .v{font-size:1.5rem;font-weight:700}
-.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem}
-.tc-w{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.875rem}
-th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--b1)}
-th{font-weight:600;color:var(--t2);text-transform:uppercase;font-size:.7rem;letter-spacing:.05em;background:var(--bg)}
-tbody tr{transition:background var(--ts)}
-tbody tr:hover{background:var(--bg)}
-.empty{text-align:center;padding:3rem 1rem;color:var(--t2)}
-.t-act{display:flex;gap:.2rem}
-.bp2{display:inline-flex;align-items:center;padding:.15rem .55rem;border-radius:999px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.bp2.s{background:rgba(16,185,129,.15);color:var(--s)}
-.bp2.w{background:rgba(245,158,11,.15);color:var(--w)}
-.bp2.d{background:rgba(239,68,68,.15);color:var(--d)}
-.bp2.i{background:rgba(59,130,246,.15);color:var(--i)}
-.bp2.m{background:var(--b1);color:var(--t2)}
-.bp2.p{background:rgba(79,70,229,.15);color:var(--pl)}
-.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
-.p-card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:all var(--ts)}
-.p-card:hover{border-color:var(--p);transform:translateY(-2px)}
-.p-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
-.p-name{font-size:1.05rem;font-weight:600;margin-bottom:.15rem}
-.p-desc{font-size:.85rem;color:var(--t2);margin-bottom:.75rem;line-height:1.5;min-height:2.5rem}
-.p-meta{display:flex;justify-content:space-between;font-size:.75rem;color:var(--t2);margin-bottom:.5rem}
-.pb{height:6px;background:var(--b1);border-radius:999px;overflow:hidden}
-.pbf{height:100%;background:linear-gradient(90deg,var(--p),var(--pu));border-radius:999px;transition:width .4s}
-.p-stats{display:flex;gap:1rem;margin-top:.5rem;font-size:.8rem;color:var(--t2)}
-.raid-c{display:flex;flex-direction:column;gap:.75rem;padding:.5rem 0}
+.view-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap}
+.view-h h1{font-size:1.75rem;font-weight:700;margin-bottom:.25rem}
+.muted{color:var(--muted)}
+.b{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.5rem 1rem;border-radius:var(--r);font-weight:600;font-size:.875rem;border:1px solid transparent;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.bp{background:var(--primary);color:#fff;border-color:var(--primary)}
+.bp:hover{background:var(--primary-h)}
+.bs{background:var(--card);color:var(--text);border-color:var(--border)}
+.bs:hover{background:var(--border)}
+.bd{background:var(--danger);color:#fff;border-color:var(--danger)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:1.5rem;box-shadow:var(--shadow)}
+.ch{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ch h3{font-size:1rem;font-weight:600}
+.cb{padding:1.25rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;display:flex;gap:1rem;align-items:center;box-shadow:var(--shadow)}
+.kpi-i{width:48px;height:48px;border-radius:var(--r);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.kpi-v{font-size:2rem;font-weight:700;line-height:1.2}
+.kpi-l{font-size:.85rem;color:var(--muted);margin-top:.25rem}
+.kpi-t{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem;margin-bottom:1.5rem}
+.raid-c{display:flex;flex-direction:column;gap:.85rem;padding:.5rem 0}
 .raid-b{display:flex;align-items:center;gap:.75rem}
-.raid-l{width:110px;font-size:.85rem;color:var(--t2);font-weight:500}
-.raid-f{height:28px;background:linear-gradient(90deg,var(--p),var(--pu));border-radius:6px;display:flex;align-items:center;padding:0 .75rem;min-width:40px;transition:width .5s}
-.raid-b[data-type=RISK] .raid-f{background:linear-gradient(90deg,#ef4444,#f87171)}
-.raid-b[data-type=ASSUMPTION] .raid-f{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.raid-b[data-type=ISSUE] .raid-f{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
-.raid-b[data-type=DEPENDENCY] .raid-f{background:linear-gradient(90deg,#a855f7,#c084fc)}
+.raid-l{width:110px;font-size:.85rem;color:var(--muted)}
+.raid-f{height:28px;background:linear-gradient(90deg,var(--primary),var(--purple));border-radius:6px;display:flex;align-items:center;padding:0 .75rem;min-width:40px;transition:width .5s ease}
+.raid-b[data-t="RISK"] .raid-f{background:linear-gradient(90deg,#ef4444,#f87171)}
+.raid-b[data-t="ASSUMPTION"] .raid-f{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.raid-b[data-t="ISSUE"] .raid-f{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.raid-b[data-t="DEPENDENCY"] .raid-f{background:linear-gradient(90deg,#a855f7,#c084fc)}
 .raid-v{font-size:.85rem;font-weight:600;color:#fff;white-space:nowrap}
-.act-l{display:flex;flex-direction:column;gap:.75rem}
-.act-i{display:flex;gap:.75rem;padding:.5rem;border-radius:var(--r);transition:background var(--ts)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem}
+.tbl th,.tbl td{text-align:left;padding:.75rem 1rem;border-bottom:1px solid var(--border)}
+.tbl th{font-weight:600;color:var(--muted);text-transform:uppercase;font-size:.7rem;letter-spacing:.05em;background:var(--bg);position:sticky;top:0}
+.tbl tbody tr:hover{background:var(--bg)}
+.tbl-c{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+.pill{display:inline-flex;align-items:center;padding:.2rem .6rem;border-radius:999px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.pill.success{background:rgba(16,185,129,.15);color:var(--success)}
+.pill.warning{background:rgba(245,158,11,.15);color:var(--warning)}
+.pill.danger{background:rgba(239,68,68,.15);color:var(--danger)}
+.pill.info{background:rgba(59,130,246,.15);color:var(--info)}
+.pill.muted{background:var(--border);color:var(--muted)}
+.filter-bar{display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.filter-bar select,.filter-bar input{height:38px;padding:0 .85rem;background:var(--input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.875rem;outline:none;font-family:inherit;min-width:160px;flex:1;max-width:280px}
+.filter-bar select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .5rem center;background-size:18px;padding-right:2.25rem;cursor:pointer}
+.proj-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem}
+.proj{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;transition:all .2s}
+.proj:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.proj-n{font-size:1.05rem;font-weight:600;margin-bottom:.25rem}
+.proj-d{font-size:.85rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;min-height:2.5rem}
+.proj-m{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:.75rem}
+.prog{height:6px;background:var(--border);border-radius:999px;overflow:hidden;margin-top:.5rem}
+.prog-f{height:100%;background:linear-gradient(90deg,var(--primary),var(--purple));border-radius:999px}
+.proj-s{display:flex;gap:1rem;margin-top:1rem;font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.tab{background:none;border:none;padding:.65rem 1rem;color:var(--muted);font-weight:500;font-size:.875rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;display:flex;align-items:center;gap:.5rem}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--primary-l);border-bottom-color:var(--primary)}
+.tc{background:var(--border);padding:.1rem .5rem;border-radius:999px;font-size:.7rem;font-weight:600}
+.tab.active .tc{background:var(--primary);color:#fff}
+.form-g{margin-bottom:1rem}
+.form-l{display:block;margin-bottom:.4rem;font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.input,.select{height:38px;padding:0 .85rem;background:var(--input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.875rem;outline:none;font-family:inherit;width:100%}
+.select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .5rem center;background-size:18px;padding-right:2.25rem}
+textarea{height:auto;padding:.65rem .85rem;background:var(--input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.875rem;font-family:inherit;outline:none;width:100%;resize:vertical;min-height:80px}
+textarea:focus,.input:focus,.select:focus{border-color:var(--primary)}
+.modal-o{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.modal-o.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
+.mh{padding:1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.mh h2{font-size:1.1rem;font-weight:600}
+.mc{width:32px;height:32px;border-radius:6px;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer}
+.mc:hover{background:var(--bg);color:var(--text)}
+.mb{padding:1.25rem;overflow-y:auto;flex:1}
+.mf{padding:1rem 1.25rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.5rem}
+.toasts{position:fixed;top:80px;right:20px;z-index:1100;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--info);padding:.85rem 1rem;border-radius:var(--r);box-shadow:var(--shadow-lg);min-width:280px;max-width:400px;display:flex;align-items:center;gap:.75rem;animation:si .3s ease}
+.toast.success{border-left-color:var(--success)}
+.toast.warning{border-left-color:var(--warning)}
+.toast.danger{border-left-color:var(--danger)}
+.toast-t{font-weight:600;font-size:.875rem}
+.toast-m{font-size:.8rem;color:var(--muted)}
+@keyframes si{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.empty{text-align:center;padding:3rem 1.5rem;color:var(--muted)}
+.empty-i{font-size:3rem;margin-bottom:1rem;opacity:.5}
+.mini-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem}
+.mk{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1rem}
+.mk-l{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem}
+.mk-v{font-size:1.5rem;font-weight:700}
+.text-danger{color:var(--danger)}
+.tbl-act{display:flex;gap:.25rem}
+.bi{width:32px;height:32px;padding:0;background:transparent;border:none;color:var(--muted);cursor:pointer;border-radius:6px;font-size:1rem;display:inline-flex;align-items:center;justify-content:center}
+.bi:hover{background:var(--bg-card);color:var(--text)}
+.bi.danger:hover{color:var(--danger)}
+.hb-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.hb{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem;transition:all .2s;cursor:pointer}
+.hb:hover{border-color:var(--primary);transform:translateY(-2px)}
+.hb-t{font-weight:600;font-size:.95rem;margin-bottom:.4rem}
+.hb-s{font-size:.8rem;color:var(--muted);margin-bottom:.5rem;line-height:1.4}
+.hb-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.tpl-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.tpl{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;cursor:pointer;transition:all .2s}
+.tpl:hover{border-color:var(--primary);transform:translateY(-2px)}
+.tpl-i{width:48px;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--primary),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem}
+.tpl-t{font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
+.tpl-d{font-size:.85rem;color:var(--muted);line-height:1.5;margin-bottom:1rem}
+.tpl-pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-family:monospace;font-size:.75rem;color:var(--muted);max-height:120px;overflow:hidden;line-height:1.5;white-space:pre-wrap}
+.ai-l{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;height:calc(100vh - 200px);min-height:500px}
+.ai-s{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;overflow-y:auto}
+.ai-s h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.85rem}
+.ai-a{list-style:none}
+.ai-a li{display:flex;gap:.75rem;padding:.75rem;border-radius:var(--r);cursor:pointer;transition:all .2s;margin-bottom:.25rem}
+.ai-a li:hover{background:var(--bg)}
+.ai-a li.active{background:var(--primary);color:#fff}
+.ai-a li.active .muted{color:rgba(255,255,255,.8)}
+.ai-ic{font-size:1.4rem;flex-shrink:0}
+.ai-n{font-weight:600;font-size:.875rem}
+.ai-d{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+.ai-c{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.ai-h{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ai-h h3{font-size:1rem;font-weight:600}
+.ai-msgs{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.ai-msg{display:flex;gap:.75rem;max-width:80%}
+.ai-msg.bot{align-self:flex-start}
+.ai-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.ai-av{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-msg.user .ai-av{background:var(--primary)}
+.ai-cnt{background:var(--bg);padding:.75rem 1rem;border-radius:var(--r);font-size:.875rem;line-height:1.5;white-space:pre-wrap}
+.ai-msg.user .ai-cnt{background:var(--primary);color:#fff}
+.ai-in{border-top:1px solid var(--border);padding:1rem;display:flex;gap:.75rem;align-items:flex-end}
+.ai-in textarea{flex:1;min-height:60px;max-height:120px}
+.set-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem}
+.set-act{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem}
+.act-list{display:flex;flex-direction:column;gap:.85rem}
+.act-i{display:flex;gap:.75rem;padding:.6rem;border-radius:var(--r);transition:background .2s}
 .act-i:hover{background:var(--bg)}
 .act-ic{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .act-tx{font-size:.875rem;line-height:1.4}
-.act-tm{font-size:.75rem;color:var(--t2);margin-top:.1rem}
-.rt{display:flex;gap:.4rem;margin-bottom:1.25rem;flex-wrap:wrap;border-bottom:1px solid var(--b1)}
-.rt-b{background:none;border:none;padding:.55rem .9rem;color:var(--t2);font-weight:500;font-size:.875rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;display:flex;align-items:center;gap:.4rem}
-.rt-b:hover{color:var(--t1)}
-.rt-b.active{color:var(--pl);border-bottom-color:var(--p)}
-.rt-c{background:var(--b1);padding:.1rem .5rem;border-radius:999px;font-size:.7rem;font-weight:600}
-.rt-b.active .rt-c{background:var(--p);color:#fff}
-.hb-l{display:grid;grid-template-columns:240px 1fr;gap:1.5rem}
-.hb-sb{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;height:fit-content}
-.hb-sb h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);margin-bottom:.75rem}
-.hb-cats{list-style:none}
-.hb-cats li{padding:.4rem .65rem;border-radius:6px;cursor:pointer;font-size:.875rem;color:var(--t2);margin-bottom:.1rem}
-.hb-cats li:hover{background:var(--bg);color:var(--t1)}
-.hb-cats li.active{background:var(--p);color:#fff}
-.hb-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-.hb-item{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all var(--ts)}
-.hb-item:hover{border-color:var(--p);transform:translateY(-2px)}
-.hb-ti{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
-.hb-su{font-size:.8rem;color:var(--t2);margin-bottom:.5rem;line-height:1.4}
-.tg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
-.t-card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.5rem;cursor:pointer;transition:all var(--ts)}
-.t-card:hover{border-color:var(--p);transform:translateY(-2px)}
-.t-icon{width:48px;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem}
-.t-name{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
-.t-desc{font-size:.85rem;color:var(--t2);line-height:1.5;margin-bottom:1rem}
-.t-pre{background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:.75rem;font-family:monospace;font-size:.75rem;color:var(--t2);max-height:120px;overflow:hidden;position:relative;line-height:1.5}
-.t-pre::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,var(--bg))}
-.ai-l{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;height:calc(100vh - 200px);min-height:500px}
-.ai-sb{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;overflow-y:auto}
-.ai-sb h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);margin-bottom:.75rem}
-.ai-ags{list-style:none}
-.ai-ags li{display:flex;gap:.75rem;padding:.65rem;border-radius:var(--r);cursor:pointer;margin-bottom:.15rem}
-.ai-ags li:hover{background:var(--bg)}
-.ai-ags li.act{background:var(--p);color:#fff}
-.ai-ags li.act .ai-d{color:rgba(255,255,255,.8)}
-.ai-i{font-size:1.4rem;flex-shrink:0}
-.ai-n{font-weight:600;font-size:.875rem}
-.ai-d{font-size:.75rem;color:var(--t2);margin-top:.1rem}
-.ai-cc{display:flex;flex-direction:column;background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden}
-.ai-ch{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
-.ai-ch h3{font-size:1rem;font-weight:600}
-.ai-cm{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
-.ai-msg{display:flex;gap:.75rem;max-width:80%}
-.ai-msg.b{align-self:flex-start}
-.ai-msg.u{align-self:flex-end;flex-direction:row-reverse}
-.ai-mav{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ai-msg.u .ai-mav{background:var(--p)}
-.ai-mc{background:var(--bg);padding:.7rem 1rem;border-radius:var(--r);font-size:.875rem;line-height:1.5}
-.ai-msg.u .ai-mc{background:var(--p);color:#fff}
-.ai-ci{border-top:1px solid var(--b1);padding:1rem;display:flex;gap:.75rem;align-items:flex-end}
-.ai-ci textarea{flex:1;min-height:50px;max-height:100px}
-.set-l{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem}
-.mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
-.mo.active{display:flex;animation:fi .2s}
-.md{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column}
-.md-h{padding:1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
-.md-h h2{font-size:1.1rem;font-weight:600}
-.md-c{width:32px;height:32px;border-radius:6px;background:none;border:none;color:var(--t2);font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.md-b{padding:1.25rem;overflow-y:auto;flex:1}
-.md-f{padding:1rem 1.25rem;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:.5rem}
-.tc{position:fixed;top:80px;right:20px;z-index:1100;display:flex;flex-direction:column;gap:.5rem}
-.toast{background:var(--bg2);border:1px solid var(--b1);border-left:4px solid var(--i);padding:.75rem 1rem;border-radius:var(--r);min-width:280px;max-width:400px;display:flex;align-items:center;gap:.75rem;animation:fi .3s}
-.toast.s{border-left-color:var(--s)}
-.toast.w{border-left-color:var(--w)}
-.toast.d{border-left-color:var(--d)}
-.tti{font-size:1.2rem}
-.ttc .ttt{font-weight:600;font-size:.875rem}
-.ttc .ttm{font-size:.8rem;color:var(--t2)}
-.mtg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
-.mtg-c{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:all var(--ts)}
-.mtg-c:hover{border-color:var(--p)}
-.mtg-d{font-size:.75rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
-.mtg-t{font-size:1.05rem;font-weight:600;margin:.2rem 0 .4rem}
-.mtg-s{font-size:.85rem;color:var(--t2);line-height:1.5;margin-bottom:.6rem}
-.mtg-m{display:flex;gap:1rem;font-size:.75rem;color:var(--t2);margin-bottom:.5rem}
-@media(max-width:768px){.sidebar{position:fixed;top:0;left:0;bottom:0;z-index:99;transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.hb-l,.ai-l{grid-template-columns:1fr}.ai-l{height:auto}.view-c{padding:1rem}}
-::-webkit-scrollbar{width:8px;height:8px}
+.act-tm{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--b1);border-radius:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:#475569}
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="sidebar" id="sidebar">
-  <div class="sb-head">
-    <div class="logo-i">PM</div>
-    <div class="logo-t"><h2>PM Central</h2><small>Delivery Toolkit</small></div>
-  </div>
-  <nav class="sb-nav">
-    <a class="nav-i active" data-v="dashboard"><span>??</span><span>Dashboard</span></a>
-    <a class="nav-i" data-v="projects"><span>??</span><span>Projects</span></a>
-    <a class="nav-i" data-v="raid"><span>??</span><span>RAID Tracker</span></a>
-    <a class="nav-i" data-v="actions"><span>?</span><span>Action Items</span></a>
-    <a class="nav-i" data-v="handbook"><span>??</span><span>Handbook</span></a>
-    <a class="nav-i" data-v="meetings"><span>??</span><span>Meetings</span></a>
-    <a class="nav-i" data-v="templates"><span>??</span><span>Templates</span></a>
-    <a class="nav-i" data-v="ai"><span>??</span><span>AI Copilot</span></a>
-    <a class="nav-i" data-v="settings"><span>??</span><span>Settings</span></a>
-  </nav>
-  <div class="sb-foot">
-    <div class="av" id="uav">P</div>
-    <div><div class="u-name" id="uname">PM User</div><div class="u-role" id="urole">Account Manager</div></div>
-  </div>
+<aside class="sidebar">
+<div class="brand">
+<div class="brand-logo">PM</div>
+<div><h1>PM Central</h1><p>Delivery Toolkit</p></div>
+</div>
+<nav>
+<a class="nav active" data-v="dashboard"><span class="nav-icon">??</span><span>Dashboard</span></a>
+<a class="nav" data-v="projects"><span class="nav-icon">??</span><span>Projects</span></a>
+<a class="nav" data-v="raid"><span class="nav-icon">??</span><span>RAID Tracker</span></a>
+<a class="nav" data-v="actions"><span class="nav-icon">?</span><span>Action Items</span></a>
+<a class="nav" data-v="handbook"><span class="nav-icon">??</span><span>Handbook</span></a>
+<a class="nav" data-v="meetings"><span class="nav-icon">??</span><span>Meetings</span></a>
+<a class="nav" data-v="templates"><span class="nav-icon">??</span><span>Templates</span></a>
+<a class="nav" data-v="ai"><span class="nav-icon">??</span><span>AI Copilot</span></a>
+<a class="nav" data-v="settings"><span class="nav-icon">??</span><span>Settings</span></a>
+</nav>
+<div class="user">
+<div class="user-avatar">P</div>
+<div><div class="user-name">PM User</div><div class="user-role">Account Manager</div></div>
+</div>
 </aside>
-<div class="main">
-  <div class="top">
-    <div class="sb"><input type="text" id="gs" placeholder="Search projects, RAID, actions..." /></div>
-    <div class="top-r">
-      <button class="ib" id="bTh">??</button>
-      <button class="ib" id="bNot">??<span class="bd" id="nbd">3</span></button>
-      <button class="btn bp" id="bQa">+ Quick Add</button>
-    </div>
-  </div>
-  <div class="view-c" id="vc"></div>
+<main class="main">
+<div class="topbar">
+<div class="search">
+<span class="search-icon">??</span>
+<input type="text" id="gs" placeholder="Search projects, RAID, action items...">
+</div>
+<div class="actions">
+<button class="b bp" id="qa">+ Quick Add</button>
 </div>
 </div>
-<div class="mo" id="mo"><div class="md"><div class="md-h"><h2 id="mt">Modal</h2><button class="md-c" id="mc">ï¿½</button></div><div class="md-b" id="mb"></div><div class="md-f"><button class="btn bs" id="mcan">Cancel</button><button class="btn bp" id="msv">Save</button></div></div></div>
-<div class="tc" id="tc"></div>
+<div class="content" id="content"></div>
+</main>
+</div>
+<div class="modal-o" id="mo">
+<div class="modal">
+<div class="mh"><h2 id="mt"></h2><button class="mc" id="mc">×</button></div>
+<div class="mb" id="mb"></div>
+<div class="mf">
+<button class="b bs" id="mcan">Cancel</button>
+<button class="b bp" id="msav">Save</button>
+</div>
+</div>
+</div>
+<div class="toasts" id="tc"></div>
 <script>
-const S={projects:[],raidItems:[],actionItems:[],handbookArticles:[],meetings:[],templates:[],activities:[],view:'dashboard',rt:'',light:false};
-const $=id=>document.getElementById(id);
-const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-const fmt=d=>{const x=new Date(d);return x.toISOString().split('T')[0]};
-const addD=(d,n)=>{const r=new Date(d);r.setDate(r.getDate()+n);return r};
-const nid=a=>a.length?Math.max(...a.map(x=>x.id))+1:1;
-const pName=id=>{const p=S.projects.find(x=>x.id===id);return p?p.name:'ï¿½'};
-const sb=s=>{const x=(s||'').toLowerCase();if(['completed','closed','resolved','done'].includes(x))return's';if(['blocked','overdue'].includes(x))return'd';if(['in progress','pending'].includes(x))return'w';if(['open'].includes(x))return'i';return'm'};
-const pb=p=>{const x=(p||'').toLowerCase();if(x==='high')return'd';if(x==='medium')return'w';if(x==='low')return'i';return'm'};
-const od=d=>d&&new Date(d)<new Date(new Date().toDateString());
+/* PM Central Toolkit - single-file vanilla JS app */
+(function(){
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, attrs, ...children) => {
+    const e = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === "className") e.className = attrs[k];
+      else if (k === "onClick") e.addEventListener("click", attrs[k]);
+      else if (k === "onChange") e.addEventListener("change", attrs[k]);
+      else if (k === "onInput") e.addEventListener("input", attrs[k]);
+      else if (k === "html") e.innerHTML = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    children.flat().forEach(c => { if (c != null) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return e;
+  };
+  const fmt = (d) => new Date(d).toISOString().split("T")[0];
+  const addDays = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+  const STATUS_CLS = (s) => {
+    s = (s || "").toLowerCase();
+    if (["completed","closed","resolved","done"].includes(s)) return "success";
+    if (["blocked","overdue","high"].includes(s)) return "danger";
+    if (["in progress","pending","medium"].includes(s)) return "warning";
+    if (["open","low","planned"].includes(s)) return "info";
+    return "muted";
+  };
+  const PRI_CLS = (p) => ({ high: "danger", medium: "warning", low: "info" }[(p || "").toLowerCase()] || "muted");
+  const isOverdue = (d) => d && new Date(d) < new Date();
+  const projectName = (id) => { const p = S.projects.find(x => x.id === id); return p ? p.name : "—"; };
+  const nextId = (arr) => arr.length ? Math.max(...arr.map(x => x.id)) + 1 : 1;
 
-function seed(){
-  const t=new Date();
-  S.projects=[
-    {id:1,name:'Cloud Migration Program',desc:'Migrate legacy on-prem workloads to Azure',status:'In Progress',startDate:fmt(addD(t,-60)),endDate:fmt(addD(t,60)),progress:45,teamSize:8},
-    {id:2,name:'Customer Portal v2',desc:'Re-platform customer-facing portal',status:'Planning',startDate:fmt(addD(t,-10)),endDate:fmt(addD(t,120)),progress:15,teamSize:5},
-    {id:3,name:'Data Lake Initiative',desc:'Build data lake for analytics and ML',status:'In Progress',startDate:fmt(addD(t,-90)),endDate:fmt(addD(t,30)),progress:70,teamSize:6},
-    {id:4,name:'Security Hardening',desc:'Implement zero-trust security',status:'On Hold',startDate:fmt(addD(t,-30)),endDate:fmt(addD(t,90)),progress:25,teamSize:4}
-  ];
-  S.raidItems=[
-    {id:1,type:'RISK',title:'Azure cost overrun risk',desc:'Cloud migration may exceed budget',status:'Open',priority:'High',projectId:1,owner:'Sarah Chen',dueDate:fmt(addD(t,7))},
-    {id:2,type:'RISK',title:'Vendor delivery delay',desc:'Key vendor may miss timeline',status:'Open',priority:'Medium',projectId:1,owner:'Mike Johnson',dueDate:fmt(addD(t,14))},
-    {id:3,type:'ISSUE',title:'Staging env outage',desc:'Staging environment unavailable',status:'In Progress',priority:'High',projectId:2,owner:'Alex Kumar',dueDate:fmt(addD(t,3))},
-    {id:4,type:'ASSUMPTION',title:'Customer adoption rate',desc:'60% adoption within 6 months',status:'Open',priority:'Medium',projectId:2,owner:'Lisa Park',dueDate:fmt(addD(t,30))},
-    {id:5,type:'DEPENDENCY',title:'Security review approval',desc:'Portal v2 launch depends on security',status:'Open',priority:'High',projectId:2,owner:'Tom Brown',dueDate:fmt(addD(t,10))},
-    {id:6,type:'RISK',title:'Data quality issues',desc:'Source data quality concerns',status:'Open',priority:'Medium',projectId:3,owner:'Emma Davis',dueDate:fmt(addD(t,21))},
-    {id:7,type:'ISSUE',title:'SSO integration failing',desc:'Identity provider integration',status:'Open',priority:'High',projectId:4,owner:'David Lee',dueDate:fmt(addD(t,5))}
-  ];
-  S.actionItems=[
-    {id:1,title:'Prepare cost forecast for cloud migration',status:'In Progress',priority:'High',projectId:1,assignee:'Sarah Chen',dueDate:fmt(addD(t,2))},
-    {id:2,title:'Schedule vendor review meeting',status:'Pending',priority:'Medium',projectId:1,assignee:'Mike Johnson',dueDate:fmt(addD(t,5))},
-    {id:3,title:'Investigate staging env failures',status:'In Progress',priority:'High',projectId:2,assignee:'Alex Kumar',dueDate:fmt(addD(t,1))},
-    {id:4,title:'Document new portal architecture',status:'Completed',priority:'Medium',projectId:2,assignee:'Lisa Park',dueDate:fmt(addD(t,-3))},
-    {id:5,title:'Get security review sign-off',status:'Blocked',priority:'High',projectId:2,assignee:'Tom Brown',dueDate:fmt(addD(t,7))},
-    {id:6,title:'Build data quality dashboard',status:'Pending',priority:'Medium',projectId:3,assignee:'Emma Davis',dueDate:fmt(addD(t,14))},
-    {id:7,title:'Fix SSO integration test failures',status:'In Progress',priority:'High',projectId:4,assignee:'David Lee',dueDate:fmt(addD(t,3))},
-    {id:8,title:'Update project plan with new dates',status:'Pending',priority:'Low',projectId:1,assignee:'PM User',dueDate:fmt(addD(t,10))}
-  ];
-  S.handbookArticles=[
-    {id:1,title:'RAID Log Best Practices',summary:'How to maintain an effective RAID log',category:'process',tags:['raid','process']},
-    {id:2,title:'Action Item Tracking',summary:'Effective action item management',category:'process',tags:['actions']},
-    {id:3,title:'Stakeholder Communication Plan',summary:'Template for stakeholder communication',category:'template',tags:['stakeholder']},
-    {id:4,title:'Project Charter Guide',summary:'How to write a project charter',category:'guide',tags:['charter']},
-    {id:5,title:'Risk Assessment Matrix',summary:'5x5 matrix for risk assessment',category:'reference',tags:['risk']},
-    {id:6,title:'Sprint Retrospective Guide',summary:'Run effective sprint retrospectives',category:'guide',tags:['agile']}
-  ];
-  S.meetings=[
-    {id:1,date:fmt(addD(t,-2)),title:'Cloud Migration Weekly Sync',summary:'Discussed migration progress and budget',attendees:8,projectId:1,decisions:3,actionItems:5},
-    {id:2,date:fmt(addD(t,-1)),title:'Portal v2 Design Review',summary:'Reviewed new portal UX designs',attendees:6,projectId:2,decisions:2,actionItems:4},
-    {id:3,date:fmt(addD(t,-5)),title:'Data Lake Architecture Workshop',summary:'Aligned on data lake architecture',attendees:5,projectId:3,decisions:4,actionItems:3},
-    {id:4,date:fmt(addD(t,-7)),title:'Security Steering Committee',summary:'Reviewed security posture',attendees:10,projectId:4,decisions:5,actionItems:6}
-  ];
-  S.templates=[
-    {id:1,name:'PRD Brief',icon:'??',desc:'Product Requirements Document',content:'# PRD Brief\n\n## Overview\n## Problem\n## Goals\n## Requirements'},
-    {id:2,name:'Discovery Plan',icon:'??',desc:'Plan your discovery phase',content:'# Discovery\n## Objectives\n## Activities\n## Timeline'},
-    {id:3,name:'Launch Checklist',icon:'??',desc:'Pre-launch checklist',content:'# Launch\n## Pre-Launch\n## Launch Day'},
-    {id:4,name:'Decision Log',icon:'??',desc:'Track project decisions',content:'# Decision\n## Context\n## Options\n## Rationale'}
-  ];
-  S.activities=[
-    {i:'??',t:'New RAID item "Staging env outage" was created',w:'2 hours ago'},
-    {i:'?',t:'Action item "Document new portal architecture" completed',w:'5 hours ago'},
-    {i:'??',t:'Project "Cloud Migration Program" updated to 45% complete',w:'1 day ago'},
-    {i:'??',t:'Meeting "Portal v2 Design Review" added with 2 decisions',w:'1 day ago'},
-    {i:'??',t:'New project "Security Hardening" created',w:'2 days ago'},
-    {i:'??',t:'Handbook article "RAID Log Best Practices" updated',w:'3 days ago'}
-  ];
-}
+  const DEFAULT = () => {
+    const t = new Date();
+    return {
+      projects: [
+        { id: 1, name: "Cloud Migration Program", description: "Migrate legacy on-prem workloads to Azure", status: "In Progress", startDate: fmt(addDays(t, -60)), endDate: fmt(addDays(t, 60)), progress: 45, teamSize: 8 },
+        { id: 2, name: "Customer Portal v2", description: "Re-platform customer-facing portal", status: "Planning", startDate: fmt(addDays(t, -10)), endDate: fmt(addDays(t, 120)), progress: 15, teamSize: 5 },
+        { id: 3, name: "Data Lake Initiative", description: "Build data lake for analytics and ML", status: "In Progress", startDate: fmt(addDays(t, -90)), endDate: fmt(addDays(t, 30)), progress: 70, teamSize: 6 },
+        { id: 4, name: "Security Hardening", description: "Implement zero-trust security", status: "On Hold", startDate: fmt(addDays(t, -30)), endDate: fmt(addDays(t, 90)), progress: 25, teamSize: 4 }
+      ],
+      raidItems: [
+        { id: 1, type: "RISK", title: "Azure cost overrun risk", description: "Cloud migration may exceed budget", status: "Open", priority: "High", projectId: 1, owner: "Sarah Chen", dueDate: fmt(addDays(t, 7)) },
+        { id: 2, type: "RISK", title: "Vendor delivery delay", description: "Key vendor may miss timeline", status: "Open", priority: "Medium", projectId: 1, owner: "Mike Johnson", dueDate: fmt(addDays(t, 14)) },
+        { id: 3, type: "ISSUE", title: "Staging env outage", description: "Staging environment unavailable", status: "In Progress", priority: "High", projectId: 2, owner: "Alex Kumar", dueDate: fmt(addDays(t, 3)) },
+        { id: 4, type: "ASSUMPTION", title: "Customer adoption of new portal", description: "Assuming 60% adoption within 6 months", status: "Open", priority: "Medium", projectId: 2, owner: "Lisa Park", dueDate: fmt(addDays(t, 30)) },
+        { id: 5, type: "DEPENDENCY", title: "Security review approval", description: "Portal v2 launch depends on security review", status: "Open", priority: "High", projectId: 2, owner: "Tom Brown", dueDate: fmt(addDays(t, 10)) },
+        { id: 6, type: "RISK", title: "Data quality issues", description: "Source data quality may affect analytics", status: "Open", priority: "Medium", projectId: 3, owner: "Emma Davis", dueDate: fmt(addDays(t, 21)) },
+        { id: 7, type: "ISSUE", title: "Identity provider integration", description: "SSO integration failing", status: "Open", priority: "High", projectId: 4, owner: "David Lee", dueDate: fmt(addDays(t, 5)) }
+      ],
+      actionItems: [
+        { id: 1, title: "Prepare cost forecast for cloud migration", status: "In Progress", priority: "High", projectId: 1, assignee: "Sarah Chen", dueDate: fmt(addDays(t, 2)) },
+        { id: 2, title: "Schedule vendor review meeting", status: "Pending", priority: "Medium", projectId: 1, assignee: "Mike Johnson", dueDate: fmt(addDays(t, 5)) },
+        { id: 3, title: "Investigate staging env failures", status: "In Progress", priority: "High", projectId: 2, assignee: "Alex Kumar", dueDate: fmt(addDays(t, 1)) },
+        { id: 4, title: "Document new portal architecture", status: "Completed", priority: "Medium", projectId: 2, assignee: "Lisa Park", dueDate: fmt(addDays(t, -3)) },
+        { id: 5, title: "Get security review sign-off", status: "Blocked", priority: "High", projectId: 2, assignee: "Tom Brown", dueDate: fmt(addDays(t, 7)) },
+        { id: 6, title: "Build data quality dashboard", status: "Pending", priority: "Medium", projectId: 3, assignee: "Emma Davis", dueDate: fmt(addDays(t, 14)) },
+        { id: 7, title: "Fix SSO integration test failures", status: "In Progress", priority: "High", projectId: 4, assignee: "David Lee", dueDate: fmt(addDays(t, 3)) },
+        { id: 8, title: "Update project plan with new dates", status: "Pending", priority: "Low", projectId: 1, assignee: "PM User", dueDate: fmt(addDays(t, 10)) }
+      ],
+      handbookArticles: [
+        { id: 1, title: "RAID Log Best Practices", summary: "How to maintain an effective RAID log", category: "process", tags: ["raid","process"], content: "A RAID log captures Risks, Assumptions, Issues, and Dependencies. Update weekly." },
+        { id: 2, title: "Action Item Tracking", summary: "Effective action item management", category: "process", tags: ["actions","tracking"], content: "Action items should be specific, assigned, and have due dates. Review weekly." },
+        { id: 3, title: "Stakeholder Communication Plan", summary: "Template for stakeholder communication", category: "template", tags: ["stakeholder","communication"], content: "Define audience, frequency, channels, and content for stakeholder updates." },
+        { id: 4, title: "Project Charter Guide", summary: "How to write a compelling project charter", category: "guide", tags: ["charter","initiation"], content: "A project charter defines scope, objectives, stakeholders, and success criteria." },
+        { id: 5, title: "Risk Assessment Matrix", summary: "5x5 matrix for assessing project risks", category: "reference", tags: ["risk","matrix"], content: "Use probability and impact to score risks from 1-25." },
+        { id: 6, title: "Sprint Retrospective Guide", summary: "Run effective sprint retrospectives", category: "guide", tags: ["agile","retrospective"], content: "Cover what went well, what to improve, and action items." }
+      ],
+      meetings: [
+        { id: 1, date: fmt(addDays(t, -2)), title: "Cloud Migration Weekly Sync", summary: "Discussed migration progress and budget", attendees: 8, projectId: 1, decisions: 3, actionItems: 5 },
+        { id: 2, date: fmt(addDays(t, -1)), title: "Portal v2 Design Review", summary: "Reviewed new portal UX designs", attendees: 6, projectId: 2, decisions: 2, actionItems: 4 },
+        { id: 3, date: fmt(addDays(t, -5)), title: "Data Lake Architecture Workshop", summary: "Aligned on data lake architecture", attendees: 5, projectId: 3, decisions: 4, actionItems: 3 },
+        { id: 4, date: fmt(addDays(t, -7)), title: "Security Steering Committee", summary: "Reviewed security posture", attendees: 10, projectId: 4, decisions: 5, actionItems: 6 }
+      ],
+      templates: [
+        { id: 1, name: "PRD Brief", description: "Product Requirements Document", icon: "??", content: "# PRD Brief\n\n## Overview\n\n## Problem Statement\n\n## Goals & Metrics\n\n## Requirements\n\n## Out of Scope" },
+        { id: 2, name: "Discovery Plan", description: "Plan your discovery phase", icon: "??", content: "# Discovery Plan\n\n## Objectives\n\n## Activities\n\n## Timeline\n\n## Deliverables" },
+        { id: 3, name: "Launch Checklist", description: "Pre-launch checklist", icon: "??", content: "# Launch Checklist\n\n## Pre-Launch\n- [ ] Documentation\n- [ ] Training\n- [ ] Support\n\n## Launch Day\n- [ ] Deploy\n- [ ] Monitor" },
+        { id: 4, name: "Decision Log", description: "Track key project decisions", icon: "??", content: "# Decision Log\n\n## Decision\n\n## Date\n\n## Decided By\n\n## Context\n\n## Options\n\n## Rationale" }
+      ],
+      activities: [
+        { icon: "??", text: 'New RAID item "Staging env outage" was created', time: "2 hours ago" },
+        { icon: "?", text: 'Action item completed: "Document new portal architecture"', time: "5 hours ago" },
+        { icon: "??", text: 'Project "Cloud Migration Program" updated to 45% complete', time: "1 day ago" },
+        { icon: "??", text: 'Meeting "Portal v2 Design Review" added with 2 decisions', time: "1 day ago" }
+      ],
+      currentView: "dashboard",
+      currentRaidType: ""
+    };
+  };
 
-function save(){try{localStorage.setItem('pmc_v2',JSON.stringify(S))}catch(e){}}
-function load(){try{const d=localStorage.getItem('pmc_v2');if(d){const p=JSON.parse(d);Object.assign(S,p);return true}}catch(e){}return false}
+  const STORAGE_KEY = "pmcentral_data_v1";
+  let S = null;
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) { S = JSON.parse(raw); return; }
+    } catch (e) {}
+    S = DEFAULT();
+    save();
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); } catch (e) {}
+  }
+  function addActivity(icon, text) {
+    S.activities.unshift({ icon, text, time: "Just now" });
+    if (S.activities.length > 20) S.activities = S.activities.slice(0, 20);
+  }
+  function toast(title, msg, type) {
+    type = type || "info";
+    const t = el("div", { className: "toast " + type },
+      el("div", null, type === "success" ? "?" : type === "warning" ? "??" : type === "danger" ? "?" : "??"),
+      el("div", null,
+        el("div", { className: "toast-t" }, title),
+        msg ? el("div", { className: "toast-m" }, msg) : null
+      )
+    );
+    $("tc").appendChild(t);
+    setTimeout(() => { t.style.opacity = "0"; setTimeout(() => t.remove(), 300); }, 3500);
+  }
+  function showModal(title, bodyHtml, onSave) {
+    $("mt").textContent = title;
+    $("mb").innerHTML = bodyHtml;
+    $("mo").classList.add("active");
+    $("msav").onclick = () => {
+      const r = onSave ? onSave() : null;
+      if (r !== false) $("mo").classList.remove("active");
+    };
+  }
+  function hideModal() { $("mo").classList.remove("active"); }
 
-function toast(t,m,k){k=k||'i';const ic={s:'?',w:'??',d:'?',i:'??'};const el=document.createElement('div');el.className='toast '+k;el.innerHTML='<div class="tti">'+ic[k]+'</div><div class="ttc"><div class="ttt">'+esc(t)+'</div>'+(m?'<div class="ttm">'+esc(m)+'</div>':'')+'</div>';$('tc').appendChild(el);setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),300)},3500)}
+  function nav(v) {
+    S.currentView = v;
+    document.querySelectorAll(".nav").forEach(n => n.classList.remove("active"));
+    const n = document.querySelector('.nav[data-v="' + v + '"]');
+    if (n) n.classList.add("active");
+    render();
+  }
 
-function nav(v){S.view=v;document.querySelectorAll('.nav-i').forEach(n=>n.classList.toggle('active',n.dataset.v===v));render()}
-function addAct(i,t){S.activities.unshift({i,t,w:'just now'});if(S.activities.length>30)S.activities.length=30;save()}
+  function render() {
+    const c = $("content");
+    c.innerHTML = "";
+    const v = S.currentView;
+    if (v === "dashboard") c.appendChild(viewDashboard());
+    else if (v === "projects") c.appendChild(viewProjects());
+    else if (v === "raid") c.appendChild(viewRaid());
+    else if (v === "actions") c.appendChild(viewActions());
+    else if (v === "handbook") c.appendChild(viewHandbook());
+    else if (v === "meetings") c.appendChild(viewMeetings());
+    else if (v === "templates") c.appendChild(viewTemplates());
+    else if (v === "ai") c.appendChild(viewAi());
+    else if (v === "settings") c.appendChild(viewSettings());
+  }
 
-function renderDashboard(){
-  const oR=S.raidItems.filter(r=>r.type==='RISK'&&r.status!=='Closed').length;
-  const oI=S.raidItems.filter(r=>r.type==='ISSUE'&&r.status!=='Closed').length;
-  const hP=S.raidItems.filter(r=>r.priority==='High'&&r.status!=='Closed').length;
-  const oA=S.actionItems.filter(a=>a.status!=='Completed'&&od(a.dueDate)).length;
-  const cA=S.actionItems.filter(a=>a.status==='Completed').length;
-  const tA=S.actionItems.length;
-  const cP=tA?Math.round(cA/tA*100):0;
-  let html='<div class="vh"><div><h1>Dashboard</h1><p class="muted">Program overview and key metrics</p></div><div class="va"><select class="sel" id="pf" style="width:auto;min-width:180px"><option value="">All Projects</option>'+S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('')+'</select><button class="btn bs" onclick="render()">?? Refresh</button></div></div>';
-  html+='<div class="kpi-g">';
-  html+='<div class="kpi p"><div class="ki">??</div><div><div class="kv">'+S.projects.filter(p=>p.status==='In Progress').length+'</div><div class="kl">Active Projects</div><div class="kt">'+S.projects.length+' total</div></div></div>';
-  html+='<div class="kpi d"><div class="ki">??</div><div><div class="kv">'+oR+'</div><div class="kl">Open Risks</div><div class="kt">'+hP+' high priority</div></div></div>';
-  html+='<div class="kpi w"><div class="ki">??</div><div><div class="kv">'+oI+'</div><div class="kl">Open Issues</div><div class="kt">'+S.raidItems.filter(r=>r.type==='ISSUE'&&r.priority==='High'&&r.status!=='Closed').length+' critical</div></div></div>';
-  html+='<div class="kpi i"><div class="ki">?</div><div><div class="kv">'+tA+'</div><div class="kl">Action Items</div><div class="kt">'+cP+'% complete ï¿½ '+oA+' overdue</div></div></div>';
-  html+='</div>';
-  html+='<div class="g2">';
-  html+='<div class="card"><div class="card-h"><h3>RAID Distribution</h3></div><div class="card-b"><div class="raid-c">';
-  const mx=Math.max(1,...['RISK','ASSUMPTION','ISSUE','DEPENDENCY'].map(t=>S.raidItems.filter(r=>r.type===t&&r.status!=='Closed').length));
-  ['RISK','ASSUMPTION','ISSUE','DEPENDENCY'].forEach(t=>{
-    const c=S.raidItems.filter(r=>r.type===t&&r.status!=='Closed').length;
-    const w=Math.max(8,Math.round(c/mx*100));
-    html+='<div class="raid-b" data-type="'+t+'"><div class="raid-l">'+t.charAt(0)+t.slice(1).toLowerCase()+'s</div><div class="raid-f" style="width:'+w+'%"><span class="raid-v">'+c+'</span></div></div>';
-  });
-  html+='</div></div></div>';
-  html+='<div class="card"><div class="card-h"><h3>Recent Activity</h3></div><div class="card-b"><div class="act-l">';
-  S.activities.slice(0,6).forEach(a=>{html+='<div class="act-i"><div class="act-ic">'+a.i+'</div><div><div class="act-tx">'+esc(a.t)+'</div><div class="act-tm">'+esc(a.w)+'</div></div></div>'});
-  html+='</div></div></div></div>';
-  html+='<div class="card"><div class="card-h"><h3>Upcoming Action Items & Deadlines</h3><a href="#" onclick="nav(\'actions\');return false">View All</a></div><div class="card-b"><div class="tc-w"><table><thead><tr><th>Title</th><th>Project</th><th>Assignee</th><th>Due</th><th>Status</th><th>Priority</th></tr></thead><tbody>';
-  const up=S.actionItems.filter(a=>a.status!=='Completed').sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)).slice(0,5);
-  if(!up.length) html+='<tr><td colspan="6" class="empty">No upcoming items</td></tr>';
-  up.forEach(a=>{html+='<tr><td>'+esc(a.title)+'</td><td>'+esc(pName(a.projectId))+'</td><td>'+esc(a.assignee)+'</td><td>'+esc(a.dueDate)+(od(a.dueDate)?' ??':'')+'</td><td><span class="bp2 '+sb(a.status)+'">'+esc(a.status)+'</span></td><td><span class="bp2 '+pb(a.priority)+'">'+esc(a.priority)+'</span></td></tr>'});
-  html+='</tbody></table></div></div></div>';
-  return html;
-}
+  // ===================== VIEWS =====================
+  function viewDashboard() {
+    const wrap = el("div", { className: "view active" });
+    const openRisks = S.raidItems.filter(r => r.type === "RISK" && r.status !== "Closed").length;
+    const openIssues = S.raidItems.filter(r => r.type === "ISSUE" && r.status !== "Closed").length;
+    const completed = S.actionItems.filter(a => a.status === "Completed").length;
+    const total = S.actionItems.length;
+    const overdue = S.actionItems.filter(a => a.status !== "Completed" && isOverdue(a.dueDate)).length;
+    const highP = S.raidItems.filter(r => r.priority === "High" && r.status !== "Closed").length;
+    const pct = total ? Math.round((completed / total) * 100) : 0;
 
-function renderProjects(){
-  let html='<div class="vh"><div><h1>Projects</h1><p class="muted">Manage your delivery programs</p></div><div class="va"><button class="btn bp" onclick="newProj()">+ New Project</button></div></div>';
-  if(!S.projects.length){html+='<div class="empty"><h2>No projects yet</h2><p>Create your first project to get started</p><button class="btn bp" onclick="newProj()">+ New Project</button></div>';return html}
-  html+='<div class="pg">';
-  S.projects.forEach(p=>{
-    const rc=S.raidItems.filter(r=>r.projectId===p.id&&r.status!=='Closed').length;
-    const ac=S.actionItems.filter(a=>a.projectId===p.id&&a.status!=='Completed').length;
-    html+='<div class="p-card" onclick="editProj('+p.id+')"><div class="p-h"><div><div class="p-name">'+esc(p.name)+'</div><span class="bp2 '+sb(p.status)+'">'+esc(p.status)+'</span></div><div class="p-stats"><span>?? '+p.teamSize+'</span></div></div><div class="p-desc">'+esc(p.desc||'')+'</div><div class="p-meta"><span>Start: '+esc(p.startDate)+'</span><span>End: '+esc(p.endDate)+'</span></div><div class="pb"><div class="pbf" style="width:'+p.progress+'%"></div></div><div class="p-stats"><span>'+p.progress+'% complete</span><span>?? '+rc+' RAID</span><span>? '+ac+' actions</span></div></div>';
-  });
-  html+='</div>';
-  return html;
-}
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Dashboard"), el("p", { className: "muted" }, "Program overview and key metrics"))
+    ));
+    const kpis = el("div", { className: "kpis" });
+    kpis.appendChild(kpiCard("??", S.projects.filter(p => p.status === "In Progress").length, "Active Projects", S.projects.length + " total"));
+    kpis.appendChild(kpiCard("??", openRisks, "Open Risks", highP + " high priority"));
+    kpis.appendChild(kpiCard("??", openIssues, "Open Issues", highP + " critical"));
+    kpis.appendChild(kpiCard("?", total, "Action Items", pct + "% complete · " + overdue + " overdue"));
+    wrap.appendChild(kpis);
 
-function renderRaid(){
-  const tf=$('rtf')?$('rtf').value:'';
-  const sf=$('rsf')?$('rsf').value:'';
-  const pf=$('rpf')?$('rpf').value:'';
-  const sc=$('rsc')?$('rsc').value.toLowerCase():'';
-  let html='<div class="vh"><div><h1>RAID Tracker</h1><p class="muted">Risks, Assumptions, Issues, Dependencies</p></div><div class="va"><button class="btn bp" onclick="newRaid()">+ New RAID Item</button></div></div>';
-  html+='<div class="fb"><select class="sel" id="rtf"><option value="">All Types</option><option value="RISK">Risks</option><option value="ASSUMPTION">Assumptions</option><option value="ISSUE">Issues</option><option value="DEPENDENCY">Dependencies</option></select><select class="sel" id="rsf"><option value="">All Status</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select><select class="sel" id="rpf"><option value="">All Priority</option><option>High</option><option>Medium</option><option>Low</option></select><input class="inp" id="rsc" placeholder="Search..." /></div>';
-  html+='<div class="rt">';
-  ['All','Risk','Assumption','Issue','Dependency'].forEach((t,i)=>{
-    const k=i===0?'':t.toUpperCase();
-    const c=i===0?S.raidItems.length:S.raidItems.filter(r=>r.type===k).length;
-    html+='<button class="rt-b'+(S.rt===k?' active':S.rt===''&&i===0?' active':'')+(S.rt===''&&i!==0?'':'')+'" onclick="setRt(\''+k+'\')">'+t+' <span class="rt-c">'+c+'</span></button>';
-  });
-  html+='</div>';
-  const items=S.raidItems.filter(r=>{
-    if(S.rt&&r.type!==S.rt)return false;
-    if(tf&&r.type!==tf)return false;
-    if(sf&&r.status!==sf)return false;
-    if(pf&&r.priority!==pf)return false;
-    if(sc&&!r.title.toLowerCase().includes(sc)&&!(r.desc||'').toLowerCase().includes(sc))return false;
-    return true;
-  });
-  html+='<div class="card"><div class="tc-w"><table><thead><tr><th>Type</th><th>Title</th><th>Project</th><th>Status</th><th>Priority</th><th>Owner</th><th>Actions</th></tr></thead><tbody>';
-  if(!items.length)html+='<tr><td colspan="7" class="empty">No RAID items match your filters</td></tr>';
-  else{
-    const ic={RISK:'??',ASSUMPTION:'??',ISSUE:'??',DEPENDENCY:'??'};
-    items.forEach(r=>{
-      html+='<tr><td>'+(ic[r.type]||'?')+' '+r.type.charAt(0)+r.type.slice(1).toLowerCase()+'</td><td>'+esc(r.title)+'</td><td>'+esc(pName(r.projectId))+'</td><td><span class="bp2 '+sb(r.status)+'">'+esc(r.status)+'</span></td><td><span class="bp2 '+pb(r.priority)+'">'+esc(r.priority)+'</span></td><td>'+esc(r.owner||'ï¿½')+'</td><td class="t-act"><button class="bi" onclick="editRaid('+r.id+')">??</button><button class="bi danger" onclick="delRaid('+r.id+')">???</button></td></tr>';
+    const g = el("div", { className: "g2" });
+    g.appendChild(raidChartCard());
+    g.appendChild(activityCard());
+    wrap.appendChild(g);
+
+    wrap.appendChild(upcomingActionsCard());
+    return wrap;
+  }
+  function kpiCard(icon, value, label, trend) {
+    return el("div", { className: "kpi" },
+      el("div", { className: "kpi-i" }, icon),
+      el("div", null,
+        el("div", { className: "kpi-v" }, String(value)),
+        el("div", { className: "kpi-l" }, label),
+        trend ? el("div", { className: "kpi-t" }, trend) : null
+      )
+    );
+  }
+  function raidChartCard() {
+    const c = el("div", { className: "card" });
+    c.appendChild(el("div", { className: "ch" }, el("h3", null, "RAID Distribution"), el("span", { className: "muted", style: "font-size:.8rem" }, "Open items")));
+    const body = el("div", { className: "cb" });
+    const max = Math.max(1, ...["RISK","ASSUMPTION","ISSUE","DEPENDENCY"].map(t => S.raidItems.filter(r => r.type === t && r.status !== "Closed").length));
+    ["RISK","ASSUMPTION","ISSUE","DEPENDENCY"].forEach(t => {
+      const count = S.raidItems.filter(r => r.type === t && r.status !== "Closed").length;
+      body.appendChild(el("div", { className: "raid-b", "data-t": t },
+        el("div", { className: "raid-l" }, t.charAt(0) + t.slice(1).toLowerCase() + "s"),
+        el("div", { className: "raid-f", style: "width:" + Math.max(8, (count / max) * 100) + "%" },
+          el("div", { className: "raid-v" }, String(count))
+        )
+      ));
+    });
+    c.appendChild(body);
+    return c;
+  }
+  function activityCard() {
+    const c = el("div", { className: "card" });
+    c.appendChild(el("div", { className: "ch" }, el("h3", null, "Recent Activity")));
+    const body = el("div", { className: "cb" });
+    const list = el("div", { className: "act-list" });
+    S.activities.slice(0, 8).forEach(a => {
+      list.appendChild(el("div", { className: "act-i" },
+        el("div", { className: "act-ic" }, a.icon),
+        el("div", null,
+          el("div", { className: "act-tx" }, a.text),
+          el("div", { className: "act-tm" }, a.time)
+        )
+      ));
+    });
+    body.appendChild(list);
+    c.appendChild(body);
+    return c;
+  }
+  function upcomingActionsCard() {
+    const c = el("div", { className: "card" });
+    c.appendChild(el("div", { className: "ch" }, el("h3", null, "Upcoming Action Items & Deadlines"), el("span", { className: "muted", style: "font-size:.8rem" }, "Next 5")));
+    const body = el("div", { className: "cb" });
+    const wrap = el("div", { className: "tbl-wrap" });
+    const tbl = el("table", { className: "tbl" });
+    tbl.appendChild(el("thead", null, el("tr", null,
+      el("th", null, "Title"), el("th", null, "Project"), el("th", null, "Assignee"),
+      el("th", null, "Due Date"), el("th", null, "Status"), el("th", null, "Priority")
+    )));
+    const tb = el("tbody");
+    const items = S.actionItems.filter(a => a.status !== "Completed").sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)).slice(0, 5);
+    if (!items.length) {
+      tb.appendChild(el("tr", null, el("td", { colspan: 6, className: "tbl-c" }, "No upcoming action items")));
+    } else {
+      items.forEach(a => {
+        tb.appendChild(el("tr", null,
+          el("td", null, a.title),
+          el("td", null, projectName(a.projectId)),
+          el("td", null, a.assignee),
+          el("td", null, a.dueDate + (isOverdue(a.dueDate) ? " ??" : "")),
+          el("td", null, el("span", { className: "pill " + STATUS_CLS(a.status) }, a.status)),
+          el("td", null, el("span", { className: "pill " + PRI_CLS(a.priority) }, a.priority))
+        ));
+      });
+    }
+    tbl.appendChild(tb);
+    wrap.appendChild(tbl);
+    body.appendChild(wrap);
+    c.appendChild(body);
+    return c;
+  }
+
+  function viewProjects() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Projects"), el("p", { className: "muted" }, "Manage your delivery programs")),
+      el("div", null, el("button", { className: "b bp", onClick: openNewProjectModal }, "+ New Project"))
+    ));
+    const grid = el("div", { className: "proj-g" });
+    if (!S.projects.length) {
+      grid.appendChild(el("div", { className: "empty" },
+        el("div", { className: "empty-i" }, "??"),
+        el("div", { style: "font-size:1.1rem;font-weight:600" }, "No projects yet"),
+        el("div", null, "Create your first project to get started")
+      ));
+    } else {
+      S.projects.forEach(p => {
+        const rc = S.raidItems.filter(r => r.projectId === p.id && r.status !== "Closed").length;
+        const ac = S.actionItems.filter(a => a.projectId === p.id && a.status !== "Completed").length;
+        grid.appendChild(el("div", { className: "proj" },
+          el("div", { style: "display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem" },
+            el("div", null,
+              el("div", { className: "proj-n" }, p.name),
+              el("span", { className: "pill " + STATUS_CLS(p.status) }, p.status)
+            ),
+            el("div", { className: "muted", style: "font-size:.75rem" }, "?? " + p.teamSize)
+          ),
+          el("div", { className: "proj-d" }, p.description),
+          el("div", { className: "proj-m" },
+            el("span", null, "Start: " + p.startDate),
+            el("span", null, "End: " + p.endDate)
+          ),
+          el("div", { className: "prog" }, el("div", { className: "prog-f", style: "width:" + p.progress + "%" })),
+          el("div", { className: "proj-s" },
+            el("span", null, p.progress + "% complete"),
+            el("span", null, "?? " + rc + " RAID"),
+            el("span", null, "? " + ac + " actions")
+          )
+        ));
+      });
+    }
+    wrap.appendChild(grid);
+    return wrap;
+  }
+  function openNewProjectModal() {
+    showModal("New Project", `
+      <div class="form-g"><label class="form-l">Project Name</label><input type="text" class="input" id="np_n" /></div>
+      <div class="form-g"><label class="form-l">Description</label><textarea id="np_d"></textarea></div>
+      <div class="form-g"><label class="form-l">Status</label><select class="select" id="np_s">
+        <option>Planning</option><option>In Progress</option><option>On Hold</option><option>Completed</option>
+      </select></div>
+      <div class="form-g"><label class="form-l">Team Size</label><input type="number" class="input" id="np_t" value="3" min="1" /></div>
+    `, () => {
+      const name = $("np_n").value.trim();
+      if (!name) { toast("Name required", "", "warning"); return false; }
+      S.projects.push({
+        id: nextId(S.projects), name, description: $("np_d").value,
+        status: $("np_s").value, startDate: fmt(new Date()),
+        endDate: fmt(addDays(new Date(), 90)), progress: 0,
+        teamSize: parseInt($("np_t").value) || 3
+      });
+      addActivity("??", 'New project "' + name + '" created');
+      save(); render(); toast("Project created", name, "success");
     });
   }
-  html+='</tbody></table></div></div>';
-  return html;
-}
 
-function setRt(t){S.rt=t;render()}
+  function viewRaid() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "RAID Tracker"), el("p", { className: "muted" }, "Risks, Assumptions, Issues, Dependencies")),
+      el("div", null, el("button", { className: "b bp", onClick: openNewRaidModal }, "+ New RAID Item"))
+    ));
+    const fb = el("div", { className: "filter-bar" });
+    const tf = el("select", { className: "select", onChange: () => { S.currentRaidType = ""; render(); } });
+    tf.appendChild(el("option", { value: "" }, "All Types"));
+    ["RISK","ASSUMPTION","ISSUE","DEPENDENCY"].forEach(t => tf.appendChild(el("option", { value: t }, t.charAt(0) + t.slice(1).toLowerCase() + "s")));
+    fb.appendChild(tf);
+    const sf = el("select", { className: "select", onChange: render });
+    sf.appendChild(el("option", { value: "" }, "All Status"));
+    ["Open","In Progress","Resolved","Closed"].forEach(s => sf.appendChild(el("option", { value: s }, s)));
+    sf.value = S._raidStatus || "";
+    fb.appendChild(sf);
+    const pf = el("select", { className: "select", onChange: render });
+    pf.appendChild(el("option", { value: "" }, "All Priority"));
+    ["High","Medium","Low"].forEach(p => pf.appendChild(el("option", { value: p }, p)));
+    fb.appendChild(pf);
+    const srch = el("input", { type: "text", className: "input", placeholder: "Search RAID items...", onInput: render });
+    fb.appendChild(srch);
+    wrap.appendChild(fb);
 
-function renderActions(){
-  const sf=$('asf')?$('asf').value:'';
-  const pf=$('apf')?$('apf').value:'';
-  const sc=$('asc')?$('asc').value.toLowerCase():'';
-  const tA=S.actionItems.length;
-  const oA=S.actionItems.filter(a=>a.status==='Pending').length;
-  const iA=S.actionItems.filter(a=>a.status==='In Progress').length;
-  const cA=S.actionItems.filter(a=>a.status==='Completed').length;
-  const odA=S.actionItems.filter(a=>a.status!=='Completed'&&od(a.dueDate)).length;
-  let html='<div class="vh"><div><h1>Action Items</h1><p class="muted">Track and manage delivery tasks</p></div><div class="va"><button class="btn bp" onclick="newAct()">+ New Action Item</button></div></div>';
-  html+='<div class="kpi-g kpi-g-s"><div class="m-kpi"><div class="l">Total</div><div class="v">'+tA+'</div></div><div class="m-kpi"><div class="l">Open</div><div class="v">'+oA+'</div></div><div class="m-kpi"><div class="l">In Progress</div><div class="v">'+iA+'</div></div><div class="m-kpi"><div class="l">Completed</div><div class="v">'+cA+'</div></div><div class="m-kpi"><div class="l">Overdue</div><div class="v" style="color:var(--d)">'+odA+'</div></div></div>';
-  html+='<div class="fb"><select class="sel" id="asf"><option value="">All Status</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select><select class="sel" id="apf"><option value="">All Projects</option>'+S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('')+'</select><input class="inp" id="asc" placeholder="Search..." /></div>';
-  const items=S.actionItems.filter(a=>{if(sf&&a.status!==sf)return false;if(pf&&a.projectId!=pf)return false;if(sc&&!a.title.toLowerCase().includes(sc))return false;return true});
-  html+='<div class="card"><div class="tc-w"><table><thead><tr><th>Status</th><th>Title</th><th>Project</th><th>Assignee</th><th>Due</th><th>Priority</th><th>Actions</th></tr></thead><tbody>';
-  if(!items.length)html+='<tr><td colspan="7" class="empty">No action items</td></tr>';
-  else items.forEach(a=>{html+='<tr><td><span class="bp2 '+sb(a.status)+'">'+esc(a.status)+'</span></td><td>'+esc(a.title)+'</td><td>'+esc(pName(a.projectId))+'</td><td>'+esc(a.assignee)+'</td><td>'+esc(a.dueDate)+(od(a.dueDate)?' ??':'')+'</td><td><span class="bp2 '+pb(a.priority)+'">'+esc(a.priority)+'</span></td><td class="t-act"><button class="bi" onclick="editAct('+a.id+')">??</button><button class="bi danger" onclick="delAct('+a.id+')">???</button></td></tr>'});
-  html+='</tbody></table></div></div>';
-  return html;
-}
-
-function renderHandbook(){
-  const cat=S.hbCat||'';
-  const sc=$('hsc')?$('hsc').value.toLowerCase():'';
-  let html='<div class="vh"><div><h1>Handbook</h1><p class="muted">Knowledge base and best practices</p></div><div class="va"><button class="btn bp" onclick="newHb()">+ New Article</button></div></div>';
-  html+='<div class="hb-l"><aside class="hb-sb"><h3>Categories</h3><ul class="hb-cats">';
-  [{k:'',l:'All Articles'},{k:'process',l:'Processes'},{k:'template',l:'Templates'},{k:'guide',l:'Guides'},{k:'policy',l:'Policies'},{k:'reference',l:'Reference'}].forEach(c=>{html+='<li'+(cat===c.k?' class="active"':'')+' onclick="setHbCat(\''+c.k+'\')">'+c.l+'</li>'});
-  html+='</ul></aside><div><div class="fg"><input class="inp" id="hsc" placeholder="Search handbook..." /></div><div class="hb-list">';
-  const items=S.handbookArticles.filter(a=>{if(cat&&a.category!==cat)return false;if(sc&&!a.title.toLowerCase().includes(sc)&&!a.summary.toLowerCase().includes(sc))return false;return true});
-  if(!items.length)html+='<div class="empty" style="grid-column:1/-1">No articles</div>';
-  else items.forEach(a=>{html+='<div class="hb-item" onclick="viewHb('+a.id+')"><div class="hb-ti">'+esc(a.title)+'</div><div class="hb-su">'+esc(a.summary)+'</div><div style="display:flex;gap:.3rem;flex-wrap:wrap">'+(a.tags||[]).map(t=>'<span class="bp2 m">'+esc(t)+'</span>').join('')+'</div></div>'});
-  html+='</div></div></div>';
-  return html;
-}
-function setHbCat(c){S.hbCat=c;render()}
-
-function renderMeetings(){
-  let html='<div class="vh"><div><h1>Meetings</h1><p class="muted">Meeting notes, decisions, and action items</p></div><div class="va"><button class="btn bp" onclick="newMtg()">+ New Meeting</button></div></div>';
-  html+='<div class="mtg-g">';
-  if(!S.meetings.length)html+='<div class="empty" style="grid-column:1/-1">No meetings</div>';
-  else S.meetings.forEach(m=>{html+='<div class="mtg-c"><div class="mtg-d">'+esc(m.date)+'</div><div class="mtg-t">'+esc(m.title)+'</div><div class="mtg-s">'+esc(m.summary)+'</div><div class="mtg-m"><span>?? '+m.attendees+' attendees</span><span>?? '+m.projectId+'</span></div><div style="display:flex;gap:.5rem;font-size:.75rem;color:var(--t2)"><span>? '+m.decisions+' decisions</span><span>?? '+m.actionItems+' actions</span></div></div>'});
-  html+='</div>';
-  return html;
-}
-
-function renderTemplates(){
-  let html='<div class="vh"><div><h1>Templates</h1><p class="muted">Reusable templates for PM workflows</p></div></div>';
-  html+='<div class="tg-g">';
-  S.templates.forEach(t=>{html+='<div class="t-card" onclick="useTpl('+t.id+')"><div class="t-icon">'+t.icon+'</div><div class="t-name">'+esc(t.name)+'</div><div class="t-desc">'+esc(t.desc)+'</div><pre class="t-pre">'+esc(t.content)+'</pre></div>'});
-  html+='</div>';
-  return html;
-}
-
-function renderAi(){
-  const ag=S.aiAgent||'discovery-coach';
-  const ags={discovery:{n:'Discovery Coach',d:'Refine your discovery process',i:'??'},prd:{n:'PRD Reviewer',d:'Review PRDs for quality',i:'??'},brief:{n:'Stakeholder Briefing',d:'Create stakeholder updates',i:'??'},status:{n:'Status Summary',d:'Generate status reports',i:'??'}};
-  let html='<div class="vh"><div><h1>AI Copilot</h1><p class="muted">AI-powered assistance for PM workflows</p></div></div>';
-  html+='<div class="ai-l"><aside class="ai-sb"><h3>AI Assistants</h3><ul class="ai-ags">';
-  Object.entries(ags).forEach(([k,v])=>{html+='<li'+(ag===k?' class="act"':'')+' onclick="setAi(\''+k+'\')"><div class="ai-i">'+v.i+'</div><div><div class="ai-n">'+v.n+'</div><div class="ai-d">'+v.d+'</div></div></li>'});
-  html+='</ul></aside><div class="ai-cc"><div class="ai-ch"><h3 id="ain">'+ags[ag.split('-')[0]].n+'</h3><span class="muted" style="color:var(--s);font-size:.8rem">? Online</span></div><div class="ai-cm" id="aimsgs"><div class="ai-msg b"><div class="ai-mav">??</div><div class="ai-mc"><p>Hi! I\'m your PM Copilot. I can help with discovery, PRD reviews, stakeholder briefings, and status summaries. What would you like to work on?</p></div></div></div><div class="ai-ci"><textarea id="aiInp" placeholder="Ask me anything..."></textarea><button class="btn bp" onclick="sendAi()">Send</button></div></div></div>';
-  return html;
-}
-function setAi(a){S.aiAgent=a;render()}
-
-function renderSettings(){
-  return '<div class="vh"><div><h1>Settings</h1><p class="muted">Manage your account and preferences</p></div></div><div class="set-l"><div class="card"><div class="card-h"><h3>Profile</h3></div><div class="card-b"><div class="fg"><label class="fl">Display Name</label><input class="inp" id="sd" value="'+esc(S.profile&&S.profile.name||'PM User')+'" /></div><div class="fg"><label class="fl">Email</label><input class="inp" type="email" id="se" value="'+esc(S.profile&&S.profile.email||'pm@example.com')+'" /></div><button class="btn bp" onclick="saveProfile()">Save</button></div></div><div class="card"><div class="card-h"><h3>Preferences</h3></div><div class="card-b"><div class="fg"><label class="fl">Theme</label><select class="sel" id="sth"><option value="dark"'+(S.light?'':' selected')+'>Dark</option><option value="light"'+(S.light?' selected':'')+'>Light</option></select></div></div></div><div class="card"><div class="card-h"><h3>Data</h3></div><div class="card-b"><p class="muted">Export or reset your data</p><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem"><button class="btn bs" onclick="exportData()">?? Export</button><button class="btn bs" onclick="importData()">?? Import</button><input type="file" id="ifile" accept=".json" style="display:none" /><button class="btn bd2" onclick="resetData()">??? Reset</button></div></div></div></div>';
-}
-
-function render(){
-  const v=$('vc');
-  if(!v)return;
-  const fns={dashboard:renderDashboard,projects:renderProjects,raid:renderRaid,actions:renderActions,handbook:renderHandbook,meetings:renderMeetings,templates:renderTemplates,ai:renderAi,settings:renderSettings};
-  v.innerHTML=(fns[S.view]||fns.dashboard)();
-  bindFilters();
-}
-
-function bindFilters(){
-  ['rtf','rsf','rpf','rsc','asf','apf','asc','hsc'].forEach(id=>{
-    const e=$(id);
-    if(e)e.addEventListener('input',render);
-    if(e)e.addEventListener('change',render);
-  });
-  const pf=$('pf');
-  if(pf)pf.addEventListener('change',render);
-}
-
-function modal(t,b,sv){
-  $('mt').textContent=t;
-  $('mb').innerHTML=b;
-  $('mo').classList.add('active');
-  $('msv').onclick=()=>{if(sv()!==false)$('mo').classList.remove('active')};
-}
-function closeM(){$('mo').classList.remove('active')}
-
-function newProj(){
-  modal('New Project','<div class="fg"><label class="fl">Name</label><input class="inp" id="np_n" /></div><div class="fg"><label class="fl">Description</label><textarea id="np_d"></textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="np_s"><option>Planning</option><option>In Progress</option><option>On Hold</option><option>Completed</option></select></div><div class="fg"><label class="fl">Team Size</label><input class="inp" type="number" id="np_t" value="3" min="1" /></div>',()=>{
-    const n=$('np_n').value.trim();if(!n){toast('Name required','','w');return false}
-    S.projects.push({id:nid(S.projects),name:n,desc:$('np_d').value,status:$('np_s').value,startDate:fmt(new Date()),endDate:fmt(addD(new Date(),90)),progress:0,teamSize:parseInt($('np_t').value)||3});
-    addAct('??','New project "'+n+'" created');save();render();toast('Project created',n,'s');
-  });
-}
-function editProj(id){
-  const p=S.projects.find(x=>x.id===id);if(!p)return;
-  modal('Edit Project','<div class="fg"><label class="fl">Name</label><input class="inp" id="ep_n" value="'+esc(p.name)+'" /></div><div class="fg"><label class="fl">Description</label><textarea id="ep_d">'+esc(p.desc||'')+'</textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="ep_s"><option'+(p.status==='Planning'?' selected':'')+'>Planning</option><option'+(p.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(p.status==='On Hold'?' selected':'')+'>On Hold</option><option'+(p.status==='Completed'?' selected':'')+'>Completed</option></select></div><div class="fg"><label class="fl">Progress %</label><input class="inp" type="number" id="ep_p" value="'+p.progress+'" min="0" max="100" /></div>',()=>{
-    p.name=$('ep_n').value.trim();p.desc=$('ep_d').value;p.status=$('ep_s').value;p.progress=parseInt($('ep_p').value)||0;
-    save();render();toast('Project updated',p.name,'s');
-  });
-}
-
-function newRaid(){
-  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
-  modal('New RAID Item','<div class="fg"><label class="fl">Type</label><select class="sel" id="nr_t"><option value="RISK">Risk</option><option value="ASSUMPTION">Assumption</option><option value="ISSUE">Issue</option><option value="DEPENDENCY">Dependency</option></select></div><div class="fg"><label class="fl">Title</label><input class="inp" id="nr_n" /></div><div class="fg"><label class="fl">Description</label><textarea id="nr_d"></textarea></div><div class="fg"><label class="fl">Project</label><select class="sel" id="nr_p">'+opts+'</select></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="nr_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div><div class="fg"><label class="fl">Owner</label><input class="inp" id="nr_o" value="PM User" /></div>',()=>{
-    const n=$('nr_n').value.trim();if(!n){toast('Title required','','w');return false}
-    S.raidItems.push({id:nid(S.raidItems),type:$('nr_t').value,title:n,desc:$('nr_d').value,projectId:parseInt($('nr_p').value),status:'Open',priority:$('nr_pr').value,owner:$('nr_o').value,dueDate:fmt(addD(new Date(),7))});
-    addAct('??','New RAID item "'+n+'"');save();render();toast('RAID created',n,'s');
-  });
-}
-function editRaid(id){
-  const r=S.raidItems.find(x=>x.id===id);if(!r)return;
-  modal('Edit RAID','<div class="fg"><label class="fl">Title</label><input class="inp" id="er_n" value="'+esc(r.title)+'" /></div><div class="fg"><label class="fl">Description</label><textarea id="er_d">'+esc(r.desc||'')+'</textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="er_s"><option'+(r.status==='Open'?' selected':'')+'>Open</option><option'+(r.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(r.status==='Resolved'?' selected':'')+'>Resolved</option><option'+(r.status==='Closed'?' selected':'')+'>Closed</option></select></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="er_pr"><option'+(r.priority==='High'?' selected':'')+'>High</option><option'+(r.priority==='Medium'?' selected':'')+'>Medium</option><option'+(r.priority==='Low'?' selected':'')+'>Low</option></select></div><div class="fg"><label class="fl">Owner</label><input class="inp" id="er_o" value="'+esc(r.owner||'')+'" /></div>',()=>{
-    r.title=$('er_n').value.trim();r.desc=$('er_d').value;r.status=$('er_s').value;r.priority=$('er_pr').value;r.owner=$('er_o').value;
-    save();render();toast('RAID updated',r.title,'s');
-  });
-}
-function delRaid(id){const r=S.raidItems.find(x=>x.id===id);if(!r||!confirm('Delete "'+r.title+'"?'))return;S.raidItems=S.raidItems.filter(x=>x.id!==id);addAct('???','RAID item "'+r.title+'" deleted');save();render();toast('Deleted',r.title,'s')}
-
-function newAct(){
-  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
-  modal('New Action Item','<div class="fg"><label class="fl">Title</label><input class="inp" id="na_n" /></div><div class="fg"><label class="fl">Project</label><select class="sel" id="na_p">'+opts+'</select></div><div class="fg"><label class="fl">Assignee</label><input class="inp" id="na_a" value="PM User" /></div><div class="fg"><label class="fl">Due Date</label><input class="inp" type="date" id="na_d" value="'+fmt(addD(new Date(),7))+'" /></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="na_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div><div class="fg"><label class="fl">Status</label><select class="sel" id="na_s"><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></div>',()=>{
-    const n=$('na_n').value.trim();if(!n){toast('Title required','','w');return false}
-    S.actionItems.push({id:nid(S.actionItems),title:n,status:$('na_s').value,priority:$('na_pr').value,projectId:parseInt($('na_p').value),assignee:$('na_a').value,dueDate:$('na_d').value});
-    addAct('?','New action item "'+n+'"');save();render();toast('Action created',n,'s');
-  });
-}
-function editAct(id){
-  const a=S.actionItems.find(x=>x.id===id);if(!a)return;
-  modal('Edit Action Item','<div class="fg"><label class="fl">Title</label><input class="inp" id="ea_n" value="'+esc(a.title)+'" /></div><div class="fg"><label class="fl">Status</label><select class="sel" id="ea_s"><option'+(a.status==='Pending'?' selected':'')+'>Pending</option><option'+(a.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(a.status==='Completed'?' selected':'')+'>Completed</option><option'+(a.status==='Blocked'?' selected':'')+'>Blocked</option></select></div><div class="fg"><label class="fl">Assignee</label><input class="inp" id="ea_a" value="'+esc(a.assignee)+'" /></div><div class="fg"><label class="fl">Due Date</label><input class="inp" type="date" id="ea_d" value="'+esc(a.dueDate)+'" /></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="ea_pr"><option'+(a.priority==='High'?' selected':'')+'>High</option><option'+(a.priority==='Medium'?' selected':'')+'>Medium</option><option'+(a.priority==='Low'?' selected':'')+'>Low</option></select></div>',()=>{
-    a.title=$('ea_n').value.trim();a.status=$('ea_s').value;a.assignee=$('ea_a').value;a.dueDate=$('ea_d').value;a.priority=$('ea_pr').value;
-    save();render();toast('Action updated',a.title,'s');
-  });
-}
-function delAct(id){const a=S.actionItems.find(x=>x.id===id);if(!a||!confirm('Delete "'+a.title+'"?'))return;S.actionItems=S.actionItems.filter(x=>x.id!==id);addAct('???','Action item deleted');save();render();toast('Deleted',a.title,'s')}
-
-function newHb(){
-  modal('New Article','<div class="fg"><label class="fl">Title</label><input class="inp" id="nh_t" /></div><div class="fg"><label class="fl">Summary</label><input class="inp" id="nh_s" /></div><div class="fg"><label class="fl">Category</label><select class="sel" id="nh_c"><option>process</option><option>template</option><option>guide</option><option>policy</option><option>reference</option></select></div><div class="fg"><label class="fl">Tags (comma separated)</label><input class="inp" id="nh_g" /></div>',()=>{
-    const t=$('nh_t').value.trim();if(!t){toast('Title required','','w');return false}
-    S.handbookArticles.push({id:nid(S.handbookArticles),title:t,summary:$('nh_s').value,category:$('nh_c').value,tags:$('nh_g').value.split(',').map(x=>x.trim()).filter(Boolean)});
-    addAct('??','New handbook article "'+t+'"');save();render();toast('Article created',t,'s');
-  });
-}
-function viewHb(id){
-  const a=S.handbookArticles.find(x=>x.id===id);if(!a)return;
-  modal(a.title,'<p class="muted">'+esc(a.summary)+'</p><div style="margin-top:1rem"><strong>Category:</strong> '+esc(a.category)+'</div>'+(a.tags&&a.tags.length?'<div style="margin-top:.5rem"><strong>Tags:</strong> '+(a.tags||[]).map(t=>'<span class="bp2 m" style="margin-right:.3rem">'+esc(t)+'</span>').join('')+'</div>':''),null);
-}
-function newMtg(){
-  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
-  modal('New Meeting','<div class="fg"><label class="fl">Title</label><input class="inp" id="nm_t" /></div><div class="fg"><label class="fl">Date</label><input class="inp" type="date" id="nm_d" value="'+fmt(new Date())+'" /></div><div class="fg"><label class="fl">Project</label><select class="sel" id="nm_p">'+opts+'</select></div><div class="fg"><label class="fl">Summary</label><textarea id="nm_s"></textarea></div><div class="fg"><label class="fl">Attendees</label><input class="inp" type="number" id="nm_a" value="5" /></div>',()=>{
-    const t=$('nm_t').value.trim();if(!t){toast('Title required','','w');return false}
-    S.meetings.unshift({id:nid(S.meetings),date:$('nm_d').value,title:t,summary:$('nm_s').value,attendees:parseInt($('nm_a').value)||1,projectId:parseInt($('nm_p').value),decisions:0,actionItems:0});
-    addAct('??','New meeting "'+t+'"');save();render();toast('Meeting created',t,'s');
-  });
-}
-function useTpl(id){const t=S.templates.find(x=>x.id===id);if(!t)return;modal(t.name,'<p class="muted">'+esc(t.desc)+'</p><pre class="t-pre" style="max-height:400px;margin-top:1rem">'+esc(t.content)+'</pre><div style="margin-top:1rem;display:flex;gap:.5rem"><button class="btn bp" onclick="cpTpl('+id+')">?? Copy to Clipboard</button></div>',null)}
-function cpTpl(id){const t=S.templates.find(x=>x.id===id);if(!t)return;navigator.clipboard.writeText(t.content).then(()=>toast('Copied',t.name,'s')).catch(()=>toast('Copy failed','','d'))}
-
-function sendAi(){
-  const inp=$('aiInp');if(!inp||!inp.value.trim())return;
-  const msg=inp.value.trim();inp.value='';
-  const m=$('aimsgs');
-  m.innerHTML+='<div class="ai-msg u"><div class="ai-mav">U</div><div class="ai-mc">'+esc(msg)+'</div></div>';
-  setTimeout(()=>{
-    const r=aiResp(msg);
-    m.innerHTML+='<div class="ai-msg b"><div class="ai-mav">??</div><div class="ai-mc">'+r+'</div></div>';
-    m.scrollTop=m.scrollHeight;
-  },600);
-  m.scrollTop=m.scrollHeight;
-}
-function aiResp(q){
-  const l=q.toLowerCase();
-  if(l.includes('risk'))return '<p>Here are key risk analysis steps:</p><ul><li><strong>Identify</strong> potential risks across scope, schedule, cost, quality</li><li><strong>Assess</strong> using probability ï¿½ impact (1-5 scale)</li><li><strong>Plan</strong> mitigation: avoid, transfer, mitigate, or accept</li><li><strong>Monitor</strong> weekly and update the RAID log</li></ul><p>Want me to suggest mitigations for any specific risk?</p>';
-  if(l.includes('status')||l.includes('report'))return '<p>Here\'s a status report template:</p><p><strong>Overall:</strong> ?? On Track / ?? At Risk / ?? Off Track</p><p><strong>Highlights:</strong> Key accomplishments this period</p><p><strong>Risks:</strong> Top 2-3 active risks and mitigations</p><p><strong>Actions:</strong> Completed and upcoming</p><p><strong>Decisions Needed:</strong> Items requiring stakeholder input</p>';
-  if(l.includes('prd')||l.includes('requirement'))return '<p>For a strong PRD, ensure you cover:</p><ul><li><strong>Problem:</strong> Clear problem statement with data</li><li><strong>Goals:</strong> Measurable success metrics</li><li><strong>Users:</strong> Primary personas and use cases</li><li><strong>Scope:</strong> What\'s in and out of scope</li><li><strong>Requirements:</strong> Functional and non-functional</li><li><strong>Dependencies:</strong> Technical and business</li></ul>';
-  if(l.includes('stakeholder')||l.includes('briefing'))return '<p>Effective stakeholder briefings include:</p><ul><li><strong>Audience:</strong> Who needs to know what</li><li><strong>Key Message:</strong> One sentence summary</li><li><strong>Status:</strong> RAG status with rationale</li><li><strong>Asks:</strong> What you need from them</li><li><strong>Next Steps:</strong> Clear actions and dates</li></ul>';
-  return '<p>Great question! Here are some things to consider:</p><ul><li>Review your project context and constraints</li><li>Check the RAID log for related items</li><li>Look at the action item list for dependencies</li><li>Consult the handbook for relevant guides</li></ul><p>Can you provide more details about what you\'re working on?</p>';
-}
-
-function saveProfile(){
-  S.profile={name:$('sd').value,email:$('se').value};
-  $('uname').textContent=S.profile.name;
-  $('uav').textContent=(S.profile.name||'P').charAt(0).toUpperCase();
-  save();toast('Profile saved','','s');
-}
-function exportData(){
-  const data=JSON.stringify(S,null,2);
-  const b=new Blob([data],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(b);
-  a.download='pmc-data-'+fmt(new Date())+'.json';
-  a.click();
-  toast('Data exported','','s');
-}
-function importData(){
-  $('ifile').click();
-  $('ifile').onchange=e=>{
-    const f=e.target.files[0];if(!f)return;
-    const r=new FileReader();
-    r.onload=ev=>{
-      try{const d=JSON.parse(ev.target.result);Object.assign(S,d);save();render();toast('Data imported','','s')}
-      catch(err){toast('Import failed','','d')}
+    const tabs = el("div", { className: "tabs" });
+    const mkTab = (t, lbl) => {
+      const cnt = t ? S.raidItems.filter(r => r.type === t).length : S.raidItems.length;
+      const btn = el("button", { className: "tab" + (S.currentRaidType === t ? " active" : ""), onClick: () => { S.currentRaidType = t; render(); } },
+        lbl + " ", el("span", { className: "tc" }, String(cnt))
+      );
+      return btn;
     };
-    r.readAsText(f);
-  };
-}
-function resetData(){
-  if(!confirm('Reset ALL data? This cannot be undone.'))return;
-  localStorage.removeItem('pmc_v2');
-  seed();save();render();toast('Data reset','','s');
-}
+    tabs.appendChild(mkTab("", "All"));
+    ["RISK","ASSUMPTION","ISSUE","DEPENDENCY"].forEach(t => tabs.appendChild(mkTab(t, t.charAt(0) + t.slice(1).toLowerCase() + "s")));
+    wrap.appendChild(tabs);
 
-function init(){
-  if(!load()){seed();save()}
-  document.querySelectorAll('.nav-i').forEach(n=>n.onclick=()=>nav(n.dataset.v));
-  $('mc').onclick=closeM;
-  $('mcan').onclick=closeM;
-  $('mo').onclick=e=>{if(e.target===$('mo'))closeM()};
-  $('bTh').onclick=()=>{S.light=!S.light;document.body.classList.toggle('light',S.light);$('bTh').textContent=S.light?'??':'??';save()};
-  $('bNot').onclick=()=>toast('Notifications','3 new updates','i');
-  $('bQa').onclick=()=>{const m={dashboard:newProj,projects:newProj,raid:newRaid,actions:newAct,handbook:newHb,meetings:newMtg,templates:()=>useTpl(1),ai:()=>$('aiInp')&&$('aiInp').focus(),settings:()=>{}}(S.view)||newProj;if(S.view==='raid')newRaid();else if(S.view==='actions')newAct();else if(S.view==='handbook')newHb();else if(S.view==='meetings')newMtg();else newProj()};
-  $('gs').oninput=e=>{
-    const q=e.target.value.toLowerCase();
-    if(!q)return;
-    const matched=S.raidItems.filter(r=>r.title.toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q)).length+
-    S.actionItems.filter(a=>a.title.toLowerCase().includes(q)).length+
-    S.projects.filter(p=>p.name.toLowerCase().includes(q)).length;
-    if(matched>0)toast('Search',matched+' items match','i');
-  };
-  render();
-}
-document.addEventListener('DOMContentLoaded',init);
+    const card = el("div", { className: "card" });
+    const tbl = el("table", { className: "tbl" });
+    tbl.appendChild(el("thead", null, el("tr", null,
+      el("th", null, "Type"), el("th", null, "Title"), el("th", null, "Project"),
+      el("th", null, "Status"), el("th", null, "Priority"), el("th", null, "Owner"), el("th", null, "Actions")
+    )));
+    const tb = el("tbody");
+    const filtered = S.raidItems.filter(r => {
+      if (S.currentRaidType && r.type !== S.currentRaidType) return false;
+      if (sf.value && r.status !== sf.value) return false;
+      if (pf.value && r.priority !== pf.value) return false;
+      if (srch.value && !r.title.toLowerCase().includes(srch.value.toLowerCase()) && !(r.description||"").toLowerCase().includes(srch.value.toLowerCase())) return false;
+      return true;
+    });
+    if (!filtered.length) {
+      tb.appendChild(el("tr", null, el("td", { colspan: 7, className: "tbl-c" }, "No RAID items match your filters")));
+    } else {
+      const icons = { RISK: "??", ASSUMPTION: "??", ISSUE: "??", DEPENDENCY: "??" };
+      filtered.forEach(r => {
+        tb.appendChild(el("tr", null,
+          el("td", null, (icons[r.type] || "?") + " " + r.type.charAt(0) + r.type.slice(1).toLowerCase()),
+          el("td", null, r.title),
+          el("td", null, projectName(r.projectId)),
+          el("td", null, el("span", { className: "pill " + STATUS_CLS(r.status) }, r.status)),
+          el("td", null, el("span", { className: "pill " + PRI_CLS(r.priority) }, r.priority)),
+          el("td", null, r.owner || "—"),
+          el("td", { className: "tbl-act" },
+            el("button", { className: "bi", title: "Edit", onClick: () => editRaid(r.id) }, "??"),
+            el("button", { className: "bi danger", title: "Delete", onClick: () => deleteRaid(r.id) }, "???")
+          )
+        ));
+      });
+    }
+    tbl.appendChild(tb);
+    const tw = el("div", { className: "tbl-wrap" }, tbl);
+    card.appendChild(tw);
+    wrap.appendChild(card);
+    return wrap;
+  }
+  function openNewRaidModal() {
+    const po = S.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
+    showModal("New RAID Item", `
+      <div class="form-g"><label class="form-l">Type</label><select class="select" id="nr_t"><option value="RISK">Risk</option><option value="ASSUMPTION">Assumption</option><option value="ISSUE">Issue</option><option value="DEPENDENCY">Dependency</option></select></div>
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="nr_ti" /></div>
+      <div class="form-g"><label class="form-l">Description</label><textarea id="nr_d"></textarea></div>
+      <div class="form-g"><label class="form-l">Project</label><select class="select" id="nr_p">${po}</select></div>
+      <div class="form-g"><label class="form-l">Priority</label><select class="select" id="nr_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+      <div class="form-g"><label class="form-l">Owner</label><input type="text" class="input" id="nr_o" value="PM User" /></div>
+    `, () => {
+      const title = $("nr_ti").value.trim();
+      if (!title) { toast("Title required", "", "warning"); return false; }
+      S.raidItems.push({
+        id: nextId(S.raidItems), type: $("nr_t").value, title,
+        description: $("nr_d").value, projectId: parseInt($("nr_p").value),
+        status: "Open", priority: $("nr_pr").value, owner: $("nr_o").value,
+        dueDate: fmt(addDays(new Date(), 7))
+      });
+      addActivity("??", 'New RAID item "' + title + '" created');
+      save(); render(); toast("RAID item created", title, "success");
+    });
+  }
+  function editRaid(id) {
+    const r = S.raidItems.find(x => x.id === id);
+    if (!r) return;
+    showModal("Edit RAID Item", `
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="er_ti" value="${r.title.replace(/"/g, "&quot;")}" /></div>
+      <div class="form-g"><label class="form-l">Description</label><textarea id="er_d">${r.description || ""}</textarea></div>
+      <div class="form-g"><label class="form-l">Status</label><select class="select" id="er_s">
+        <option ${r.status==="Open"?"selected":""}>Open</option>
+        <option ${r.status==="In Progress"?"selected":""}>In Progress</option>
+        <option ${r.status==="Resolved"?"selected":""}>Resolved</option>
+        <option ${r.status==="Closed"?"selected":""}>Closed</option>
+      </select></div>
+      <div class="form-g"><label class="form-l">Priority</label><select class="select" id="er_pr">
+        <option ${r.priority==="High"?"selected":""}>High</option>
+        <option ${r.priority==="Medium"?"selected":""}>Medium</option>
+        <option ${r.priority==="Low"?"selected":""}>Low</option>
+      </select></div>
+      <div class="form-g"><label class="form-l">Owner</label><input type="text" class="input" id="er_o" value="${(r.owner||"").replace(/"/g, "&quot;")}" /></div>
+    `, () => {
+      r.title = $("er_ti").value.trim();
+      r.description = $("er_d").value;
+      r.status = $("er_s").value;
+      r.priority = $("er_pr").value;
+      r.owner = $("er_o").value;
+      save(); render(); toast("RAID item updated", r.title, "success");
+    });
+  }
+  function deleteRaid(id) {
+    const r = S.raidItems.find(x => x.id === id);
+    if (!r || !confirm('Delete "' + r.title + '"?')) return;
+    S.raidItems = S.raidItems.filter(x => x.id !== id);
+    save(); render(); toast("RAID item deleted", r.title, "success");
+  }
+
+  function viewActions() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Action Items"), el("p", { className: "muted" }, "Track and manage delivery tasks")),
+      el("div", null, el("button", { className: "b bp", onClick: openNewActionModal }, "+ New Action Item"))
+    ));
+    const total = S.actionItems.length;
+    const open = S.actionItems.filter(a => a.status === "Pending").length;
+    const inprog = S.actionItems.filter(a => a.status === "In Progress").length;
+    const completed = S.actionItems.filter(a => a.status === "Completed").length;
+    const overdue = S.actionItems.filter(a => a.status !== "Completed" && isOverdue(a.dueDate)).length;
+    const mini = el("div", { className: "mini-kpis" });
+    mini.appendChild(mkpi("Total", total));
+    mini.appendChild(mkpi("Open", open));
+    mini.appendChild(mkpi("In Progress", inprog));
+    mini.appendChild(mkpi("Completed", completed));
+    mini.appendChild(mkpi("Overdue", overdue, true));
+    wrap.appendChild(mini);
+
+    const fb = el("div", { className: "filter-bar" });
+    const sf = el("select", { className: "select", onChange: render });
+    sf.appendChild(el("option", { value: "" }, "All Status"));
+    ["Pending","In Progress","Completed","Blocked"].forEach(s => sf.appendChild(el("option", { value: s }, s)));
+    fb.appendChild(sf);
+    const pf = el("select", { className: "select", onChange: render });
+    pf.appendChild(el("option", { value: "" }, "All Projects"));
+    S.projects.forEach(p => pf.appendChild(el("option", { value: String(p.id) }, p.name)));
+    fb.appendChild(pf);
+    const srch = el("input", { type: "text", className: "input", placeholder: "Search action items...", onInput: render });
+    fb.appendChild(srch);
+    wrap.appendChild(fb);
+
+    const card = el("div", { className: "card" });
+    const tbl = el("table", { className: "tbl" });
+    tbl.appendChild(el("thead", null, el("tr", null,
+      el("th", null, "Status"), el("th", null, "Title"), el("th", null, "Project"),
+      el("th", null, "Assignee"), el("th", null, "Due Date"), el("th", null, "Priority"), el("th", null, "Actions")
+    )));
+    const tb = el("tbody");
+    const filtered = S.actionItems.filter(a => {
+      if (sf.value && a.status !== sf.value) return false;
+      if (pf.value && String(a.projectId) !== pf.value) return false;
+      if (srch.value && !a.title.toLowerCase().includes(srch.value.toLowerCase())) return false;
+      return true;
+    });
+    if (!filtered.length) {
+      tb.appendChild(el("tr", null, el("td", { colspan: 7, className: "tbl-c" }, "No action items match your filters")));
+    } else {
+      filtered.forEach(a => {
+        tb.appendChild(el("tr", null,
+          el("td", null, el("span", { className: "pill " + STATUS_CLS(a.status) }, a.status)),
+          el("td", null, a.title),
+          el("td", null, projectName(a.projectId)),
+          el("td", null, a.assignee),
+          el("td", null, a.dueDate + (isOverdue(a.dueDate) && a.status !== "Completed" ? " ??" : "")),
+          el("td", null, el("span", { className: "pill " + PRI_CLS(a.priority) }, a.priority)),
+          el("td", { className: "tbl-act" },
+            el("button", { className: "bi", title: "Edit", onClick: () => editAction(a.id) }, "??"),
+            el("button", { className: "bi danger", title: "Delete", onClick: () => deleteAction(a.id) }, "???")
+          )
+        ));
+      });
+    }
+    tbl.appendChild(tb);
+    card.appendChild(el("div", { className: "tbl-wrap" }, tbl));
+    wrap.appendChild(card);
+    return wrap;
+  }
+  function mkpi(l, v, danger) {
+    return el("div", { className: "mk" }, el("div", { className: "mk-l" }, l), el("div", { className: "mk-v" + (danger ? " text-danger" : "") }, String(v)));
+  }
+  function openNewActionModal() {
+    const po = S.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
+    showModal("New Action Item", `
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="na_ti" /></div>
+      <div class="form-g"><label class="form-l">Project</label><select class="select" id="na_p">${po}</select></div>
+      <div class="form-g"><label class="form-l">Assignee</label><input type="text" class="input" id="na_a" value="PM User" /></div>
+      <div class="form-g"><label class="form-l">Due Date</label><input type="date" class="input" id="na_d" value="${fmt(addDays(new Date(), 7))}" /></div>
+      <div class="form-g"><label class="form-l">Priority</label><select class="select" id="na_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+      <div class="form-g"><label class="form-l">Status</label><select class="select" id="na_s"><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></div>
+    `, () => {
+      const title = $("na_ti").value.trim();
+      if (!title) { toast("Title required", "", "warning"); return false; }
+      S.actionItems.push({
+        id: nextId(S.actionItems), title, projectId: parseInt($("na_p").value),
+        assignee: $("na_a").value, dueDate: $("na_d").value || fmt(new Date()),
+        priority: $("na_pr").value, status: $("na_s").value
+      });
+      addActivity("?", 'New action item "' + title + '" created');
+      save(); render(); toast("Action item created", title, "success");
+    });
+  }
+  function editAction(id) {
+    const a = S.actionItems.find(x => x.id === id);
+    if (!a) return;
+    const po = S.projects.map(p => `<option value="${p.id}" ${p.id===a.projectId?"selected":""}>${p.name}</option>`).join("");
+    showModal("Edit Action Item", `
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="ea_ti" value="${a.title.replace(/"/g, "&quot;")}" /></div>
+      <div class="form-g"><label class="form-l">Project</label><select class="select" id="ea_p">${po}</select></div>
+      <div class="form-g"><label class="form-l">Assignee</label><input type="text" class="input" id="ea_a" value="${(a.assignee||"").replace(/"/g, "&quot;")}" /></div>
+      <div class="form-g"><label class="form-l">Due Date</label><input type="date" class="input" id="ea_d" value="${a.dueDate}" /></div>
+      <div class="form-g"><label class="form-l">Priority</label><select class="select" id="ea_pr">
+        <option ${a.priority==="High"?"selected":""}>High</option>
+        <option ${a.priority==="Medium"?"selected":""}>Medium</option>
+        <option ${a.priority==="Low"?"selected":""}>Low</option>
+      </select></div>
+      <div class="form-g"><label class="form-l">Status</label><select class="select" id="ea_s">
+        <option ${a.status==="Pending"?"selected":""}>Pending</option>
+        <option ${a.status==="In Progress"?"selected":""}>In Progress</option>
+        <option ${a.status==="Completed"?"selected":""}>Completed</option>
+        <option ${a.status==="Blocked"?"selected":""}>Blocked</option>
+      </select></div>
+    `, () => {
+      a.title = $("ea_ti").value.trim();
+      a.projectId = parseInt($("ea_p").value);
+      a.assignee = $("ea_a").value;
+      a.dueDate = $("ea_d").value;
+      a.priority = $("ea_pr").value;
+      a.status = $("ea_s").value;
+      save(); render(); toast("Action item updated", a.title, "success");
+    });
+  }
+  function deleteAction(id) {
+    const a = S.actionItems.find(x => x.id === id);
+    if (!a || !confirm('Delete "' + a.title + '"?')) return;
+    S.actionItems = S.actionItems.filter(x => x.id !== id);
+    save(); render(); toast("Action item deleted", a.title, "success");
+  }
+
+  function viewHandbook() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Handbook"), el("p", { className: "muted" }, "Knowledge base, guides, and best practices")),
+      el("div", null, el("button", { className: "b bp", onClick: openNewArticleModal }, "+ New Article"))
+    ));
+    const layout = el("div", { style: "display:grid;grid-template-columns:240px 1fr;gap:1.5rem" });
+    const sb = el("div", { className: "card" });
+    sb.appendChild(el("div", { className: "ch" }, el("h3", null, "Categories")));
+    const sbBody = el("div", { className: "cb" });
+    const ul = el("ul", { style: "list-style:none" });
+    const cats = [{ k: "", l: "All Articles" }, { k: "process", l: "Processes" }, { k: "template", l: "Templates" }, { k: "guide", l: "Guides" }, { k: "policy", l: "Policies" }, { k: "reference", l: "Reference" }];
+    cats.forEach(c => {
+      const li = el("li", { style: "padding:.5rem .75rem;border-radius:6px;cursor:pointer;font-size:.875rem;color:var(--muted);margin-bottom:.15rem", onClick: () => { S._hbCat = c.k; render(); } }, c.l);
+      if ((S._hbCat || "") === c.k) { li.style.background = "var(--primary)"; li.style.color = "#fff"; }
+      ul.appendChild(li);
+    });
+    sbBody.appendChild(ul);
+    sb.appendChild(sbBody);
+    layout.appendChild(sb);
+
+    const main = el("div");
+    const srch = el("input", { type: "text", className: "input", placeholder: "Search handbook...", onInput: render, style: "margin-bottom:1rem" });
+    main.appendChild(srch);
+    const grid = el("div", { className: "hb-g" });
+    const filtered = S.handbookArticles.filter(a => {
+      if (S._hbCat && a.category !== S._hbCat) return false;
+      if (srch.value && !a.title.toLowerCase().includes(srch.value.toLowerCase()) && !a.summary.toLowerCase().includes(srch.value.toLowerCase())) return false;
+      return true;
+    });
+    if (!filtered.length) {
+      grid.appendChild(el("div", { className: "empty" }, el("div", { className: "empty-i" }, "??"), el("div", { style: "font-size:1.1rem;font-weight:600" }, "No articles found")));
+    } else {
+      filtered.forEach(a => {
+        const tags = (a.tags || []).map(t => el("span", { className: "pill info" }, t));
+        grid.appendChild(el("div", { className: "hb", onClick: () => openArticleModal(a) },
+          el("div", { className: "hb-t" }, a.title),
+          el("div", { className: "hb-s" }, a.summary),
+          el("div", { className: "hb-tags" }, ...tags)
+        ));
+      });
+    }
+    main.appendChild(grid);
+    layout.appendChild(main);
+    wrap.appendChild(layout);
+    return wrap;
+  }
+  function openNewArticleModal() {
+    showModal("New Article", `
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="na_at" /></div>
+      <div class="form-g"><label class="form-l">Summary</label><input type="text" class="input" id="na_as" /></div>
+      <div class="form-g"><label class="form-l">Category</label><select class="select" id="na_ac">
+        <option value="process">Process</option><option value="template">Template</option>
+        <option value="guide">Guide</option><option value="policy">Policy</option>
+        <option value="reference">Reference</option>
+      </select></div>
+      <div class="form-g"><label class="form-l">Content</label><textarea id="na_aco" rows="6"></textarea></div>
+    `, () => {
+      const title = $("na_at").value.trim();
+      if (!title) { toast("Title required", "", "warning"); return false; }
+      S.handbookArticles.push({
+        id: nextId(S.handbookArticles), title, summary: $("na_as").value,
+        category: $("na_ac").value, tags: [], content: $("na_aco").value
+      });
+      addActivity("??", 'New article "' + title + '" created');
+      save(); render(); toast("Article created", title, "success");
+    });
+  }
+  function openArticleModal(a) {
+    showModal(a.title, `
+      <p class="muted" style="margin-bottom:1rem">${a.summary}</p>
+      <div style="white-space:pre-wrap;line-height:1.6">${a.content}</div>
+      <div class="hb-tags" style="margin-top:1rem">${(a.tags||[]).map(t=>`<span class="pill info">${t}</span>`).join("")}</div>
+    `, null);
+    $("msav").style.display = "none";
+    $("mcan").textContent = "Close";
+    $("mo").addEventListener("click", function handler(e) {
+      if (e.target === $("mo")) { $("msav").style.display = ""; $("mcan").textContent = "Cancel"; $("mo").removeEventListener("click", handler); }
+    });
+  }
+
+  function viewMeetings() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Meetings"), el("p", { className: "muted" }, "Meeting notes, decisions, and action items")),
+      el("div", null, el("button", { className: "b bp", onClick: openNewMeetingModal }, "+ New Meeting"))
+    ));
+    const grid = el("div", { className: "proj-g" });
+    if (!S.meetings.length) {
+      grid.appendChild(el("div", { className: "empty" }, el("div", { className: "empty-i" }, "??"), el("div", { style: "font-size:1.1rem;font-weight:600" }, "No meetings logged")));
+    } else {
+      S.meetings.forEach(m => {
+        grid.appendChild(el("div", { className: "proj" },
+          el("div", { className: "muted", style: "font-size:.75rem;text-transform:uppercase" }, m.date),
+          el("div", { className: "proj-n" }, m.title),
+          el("div", { className: "proj-d" }, m.summary),
+          el("div", { className: "proj-s" },
+            el("span", null, "?? " + m.attendees),
+            el("span", null, "? " + m.decisions + " decisions"),
+            el("span", null, "?? " + m.actionItems + " actions")
+          )
+        ));
+      });
+    }
+    wrap.appendChild(grid);
+    return wrap;
+  }
+  function openNewMeetingModal() {
+    const po = S.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
+    showModal("New Meeting", `
+      <div class="form-g"><label class="form-l">Title</label><input type="text" class="input" id="nm_t" /></div>
+      <div class="form-g"><label class="form-l">Date</label><input type="date" class="input" id="nm_d" value="${fmt(new Date())}" /></div>
+      <div class="form-g"><label class="form-l">Project</label><select class="select" id="nm_p">${po}</select></div>
+      <div class="form-g"><label class="form-l">Summary</label><textarea id="nm_s"></textarea></div>
+      <div class="form-g"><label class="form-l">Attendees</label><input type="number" class="input" id="nm_a" value="5" min="1" /></div>
+    `, () => {
+      const title = $("nm_t").value.trim();
+      if (!title) { toast("Title required", "", "warning"); return false; }
+      S.meetings.push({
+        id: nextId(S.meetings), date: $("nm_d").value, title, summary: $("nm_s").value,
+        projectId: parseInt($("nm_p").value), attendees: parseInt($("nm_a").value) || 1,
+        decisions: 0, actionItems: 0
+      });
+      addActivity("??", 'New meeting "' + title + '" logged');
+      save(); render(); toast("Meeting created", title, "success");
+    });
+  }
+
+  function viewTemplates() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Templates"), el("p", { className: "muted" }, "Reusable templates for PM workflows"))
+    ));
+    const grid = el("div", { className: "tpl-g" });
+    S.templates.forEach(t => {
+      grid.appendChild(el("div", { className: "tpl", onClick: () => openTemplateModal(t) },
+        el("div", { className: "tpl-i" }, t.icon),
+        el("div", { className: "tpl-t" }, t.name),
+        el("div", { className: "tpl-d" }, t.description),
+        el("div", { className: "tpl-pre" }, t.content)
+      ));
+    });
+    wrap.appendChild(grid);
+    return wrap;
+  }
+  function openTemplateModal(t) {
+    showModal(t.name, `
+      <p class="muted" style="margin-bottom:1rem">${t.description}</p>
+      <pre style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;white-space:pre-wrap;font-family:monospace;font-size:.8rem;max-height:400px;overflow-y:auto">${t.content}</pre>
+    `, null);
+    $("msav").textContent = "Copy";
+    $("msav").onclick = () => {
+      navigator.clipboard.writeText(t.content).then(() => {
+        toast("Copied to clipboard", t.name, "success");
+        hideModal();
+        $("msav").textContent = "Save";
+      });
+    };
+  }
+
+  function viewAi() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "AI Copilot"), el("p", { className: "muted" }, "Get AI-powered assistance for your PM workflows"))
+    ));
+    const layout = el("div", { className: "ai-l" });
+    const sb = el("div", { className: "ai-s" });
+    sb.appendChild(el("h3", null, "AI Assistants"));
+    const ul = el("ul", { className: "ai-a" });
+    const agents = [
+      { k: "discovery-coach", i: "??", n: "Discovery Coach", d: "Refine your discovery process" },
+      { k: "prd-reviewer", i: "??", n: "PRD Reviewer", d: "Review PRDs for quality" },
+      { k: "stakeholder-briefing", i: "??", n: "Stakeholder Briefing", d: "Create stakeholder updates" },
+      { k: "status-summary", i: "??", n: "Status Summary", d: "Generate status reports" }
+    ];
+    agents.forEach(a => {
+      const li = el("li", { onClick: () => { S._aiAgent = a.k; render(); } },
+        el("div", { className: "ai-ic" }, a.i),
+        el("div", null, el("div", { className: "ai-n" }, a.n), el("div", { className: "ai-d" }, a.d))
+      );
+      if (S._aiAgent === a.k) li.classList.add("active");
+      ul.appendChild(li);
+    });
+    sb.appendChild(ul);
+    layout.appendChild(sb);
+    const cur = agents.find(a => a.k === S._aiAgent) || agents[0];
+    const chat = el("div", { className: "ai-c" });
+    chat.appendChild(el("div", { className: "ai-h" },
+      el("h3", null, cur.n),
+      el("span", { className: "muted", style: "font-size:.8rem" }, "? Online")
+    ));
+    const msgs = el("div", { className: "ai-msgs", id: "aiMsgs" });
+    msgs.appendChild(el("div", { className: "ai-msg bot" },
+      el("div", { className: "ai-av" }, "??"),
+      el("div", { className: "ai-cnt" }, "Hi! I'm " + cur.n + ". " + cur.d + ". What would you like to work on?")
+    ));
+    chat.appendChild(msgs);
+    const inp = el("div", { className: "ai-in" });
+    const ta = el("textarea", { id: "aiIn", placeholder: "Ask me anything..." });
+    ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendAi(); } });
+    inp.appendChild(ta);
+    inp.appendChild(el("button", { className: "b bp", onClick: sendAi }, "Send"));
+    chat.appendChild(inp);
+    layout.appendChild(chat);
+    wrap.appendChild(layout);
+    return wrap;
+  }
+  function sendAi() {
+    const ta = $("aiIn");
+    if (!ta) return;
+    const text = ta.value.trim();
+    if (!text) return;
+    const msgs = $("aiMsgs");
+    msgs.appendChild(el("div", { className: "ai-msg user" },
+      el("div", { className: "ai-av" }, "P"),
+      el("div", { className: "ai-cnt" }, text)
+    ));
+    ta.value = "";
+    setTimeout(() => {
+      const cur = S._aiAgent || "discovery-coach";
+      const responses = {
+        "discovery-coach": "Great question! For effective discovery, I recommend: 1) Define clear objectives, 2) Identify key stakeholders, 3) Conduct user interviews, 4) Map current vs. future state, 5) Validate assumptions with data. Want me to help with any specific step?",
+        "prd-reviewer": "I'll review your PRD against best practices. Key areas: 1) Problem statement clarity, 2) User stories completeness, 3) Acceptance criteria specificity, 4) Technical feasibility, 5) Success metrics. Paste your PRD or describe your product and I'll provide feedback.",
+        "stakeholder-briefing": "For an effective stakeholder briefing, structure it as: 1) Executive summary (3-4 lines), 2) Key updates by project, 3) Decisions needed, 4) Risks and mitigation, 5) Next steps. Tell me the audience and I'll draft a tailored version.",
+        "status-summary": "I'll generate a project status report. For each project, I'll cover: 1) Health (RAG status), 2) Progress vs. plan, 3) Key achievements, 4) Issues and risks, 5) Upcoming milestones. What projects should I include?"
+      };
+      const resp = responses[cur] || "I'm here to help with your PM workflows!";
+      msgs.appendChild(el("div", { className: "ai-msg bot" },
+        el("div", { className: "ai-av" }, "??"),
+        el("div", { className: "ai-cnt" }, resp)
+      ));
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 500);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function viewSettings() {
+    const wrap = el("div", { className: "view active" });
+    wrap.appendChild(el("div", { className: "view-h" },
+      el("div", null, el("h1", null, "Settings"), el("p", { className: "muted" }, "Manage your account and preferences"))
+    ));
+    const g = el("div", { className: "set-g" });
+    const c1 = el("div", { className: "card" });
+    c1.appendChild(el("div", { className: "ch" }, el("h3", null, "Profile")));
+    c1.appendChild(el("div", { className: "cb" },
+      el("div", { className: "form-g" }, el("label", { className: "form-l" }, "Display Name"), el("input", { type: "text", className: "input", value: "PM User" })),
+      el("div", { className: "form-g" }, el("label", { className: "form-l" }, "Email"), el("input", { type: "email", className: "input", value: "pm@company.com" })),
+      el("div", { className: "form-g" }, el("label", { className: "form-l" }, "Role"), el("input", { type: "text", className: "input", value: "Account Manager" })),
+      el("button", { className: "b bp" }, "Save Changes")
+    ));
+    g.appendChild(c1);
+
+    const c2 = el("div", { className: "card" });
+    c2.appendChild(el("div", { className: "ch" }, el("h3", null, "Preferences")));
+    c2.appendChild(el("div", { className: "cb" },
+      el("div", { className: "form-g" }, el("label", { className: "form-l" }, "Default View"),
+        el("select", { className: "select" },
+          el("option", { value: "dashboard", selected: "" }, "Dashboard"),
+          el("option", { value: "raid" }, "RAID Tracker"),
+          el("option", { value: "actions" }, "Action Items")
+        )
+      ),
+      el("div", { className: "form-g" }, el("label", { className: "form-l" }, "Email Notifications"),
+        el("select", { className: "select" },
+          el("option", { value: "all" }, "All Updates"),
+          el("option", { value: "important", selected: "" }, "Important Only"),
+          el("option", { value: "none" }, "None")
+        )
+      )
+    ));
+    g.appendChild(c2);
+
+    const c3 = el("div", { className: "card" });
+    c3.appendChild(el("div", { className: "ch" }, el("h3", null, "Data Management")));
+    c3.appendChild(el("div", { className: "cb" },
+      el("p", { className: "muted" }, "Export or reset your data"),
+      el("div", { className: "set-act" },
+        el("button", { className: "b bs", onClick: exportData }, "?? Export Data (JSON)"),
+        el("button", { className: "b bs", onClick: () => $("imp").click() }, "?? Import Data"),
+        el("button", { className: "b bd", onClick: resetData }, "??? Reset All Data")
+      ),
+      el("input", { type: "file", id: "imp", accept: ".json", style: "display:none", onChange: importData })
+    ));
+    g.appendChild(c3);
+    wrap.appendChild(g);
+    return wrap;
+  }
+  function exportData() {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "pmcentral-export-" + fmt(new Date()) + ".json";
+    a.click();
+    toast("Exported", "pmcentral-export.json", "success");
+  }
+  function importData(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        S = JSON.parse(ev.target.result);
+        save(); render();
+        toast("Imported", file.name, "success");
+      } catch (e) {
+        toast("Import failed", "Invalid JSON", "danger");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+  function resetData() {
+    if (!confirm("Reset all data? This cannot be undone.")) return;
+    S = DEFAULT();
+    save(); render();
+    toast("Reset complete", "All data restored to defaults", "success");
+  }
+
+  // ===================== INIT =====================
+  function init() {
+    load();
+    document.querySelectorAll(".nav").forEach(n => n.addEventListener("click", () => nav(n.dataset.v)));
+    $("mc").addEventListener("click", hideModal);
+    $("mcan").addEventListener("click", hideModal);
+    $("mo").addEventListener("click", (e) => { if (e.target === $("mo")) hideModal(); });
+    $("qa").addEventListener("click", () => {
+      const opts = [
+        { l: "New Project", f: openNewProjectModal },
+        { l: "New RAID Item", f: openNewRaidModal },
+        { l: "New Action Item", f: openNewActionModal },
+        { l: "New Meeting", f: openNewMeetingModal },
+        { l: "New Article", f: openNewArticleModal }
+      ];
+      const list = el("div");
+      opts.forEach(o => list.appendChild(el("button", { className: "b bs", style: "width:100%;margin-bottom:.5rem", onClick: () => { hideModal(); o.f(); } }, o.l)));
+      showModal("Quick Add", "");
+      $("mb").appendChild(list);
+      $("msav").style.display = "none";
+    });
+    $("gs").addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
+      if (!q) return;
+      if (S.projects.some(p => p.name.toLowerCase().includes(q) || (p.description||"").toLowerCase().includes(q))) nav("projects");
+      else if (S.raidItems.some(r => r.title.toLowerCase().includes(q) || (r.description||"").toLowerCase().includes(q))) nav("raid");
+      else if (S.actionItems.some(a => (a.title||"").toLowerCase().includes(q))) nav("actions");
+      else if (S.handbookArticles.some(h => (h.title||"").toLowerCase().includes(q) || (h.summary||"").toLowerCase().includes(q))) nav("handbook");
+      else if (S.meetings.some(m => (m.title||"").toLowerCase().includes(q) || (m.summary||"").toLowerCase().includes(q))) nav("meetings");
+    });
+    nav(S.currentView || "dashboard");
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
 </script>
 </body>
 </html>
