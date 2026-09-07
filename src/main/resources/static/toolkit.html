@@ -3,163 +3,646 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PM Central — Toolkit</title>
-<link rel="stylesheet" href="toolkit-styles.css">
+<title>PM Central Toolkit - Project Management for Delivery Programs</title>
+<style>
+:root{
+  --bg:#0f172a;--bg2:#1e293b;--bg3:#111827;--bg4:#0b1220;
+  --b1:#1f2937;--b2:#334155;--t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
+  --p:#4f46e5;--ph:#6366f1;--pl:#818cf8;
+  --s:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--pu:#a855f7;
+  --r:10px;--r2:16px;--ts:0.2s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--t1);overflow:hidden;font-size:14px;line-height:1.5}
+body.light{--bg:#f8fafc;--bg2:#fff;--bg3:#fff;--bg4:#fff;--b1:#e2e8f0;--b2:#cbd5e1;--t1:#0f172a;--t2:#475569;--t3:#64748b}
+a{color:var(--pl);text-decoration:none}
+.app{display:flex;height:100vh;width:100vw}
+.sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0}
+.sb-head{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);min-height:64px;display:flex;align-items:center;gap:.75rem}
+.logo-i{width:36px;height:36px;border-radius:var(--r);background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.logo-t h2{font-size:1rem;font-weight:700}
+.logo-t small{font-size:.7rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.sb-nav{flex:1;padding:1rem .75rem;overflow-y:auto}
+.nav-i{display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;border-radius:var(--r);color:var(--t2);font-weight:500;font-size:.875rem;margin-bottom:.25rem;cursor:pointer;transition:all var(--ts)}
+.nav-i:hover{background:var(--bg3);color:var(--t1)}
+.nav-i.active{background:var(--p);color:#fff}
+.sb-foot{padding:1rem 1.25rem;border-top:1px solid var(--b1);display:flex;align-items:center;gap:.75rem}
+.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff}
+.u-name{font-weight:600;font-size:.875rem}
+.u-role{font-size:.75rem;color:var(--t2)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.top{height:64px;background:var(--bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;flex-shrink:0}
+.sb{position:relative;flex:1;max-width:480px}
+.sb input{width:100%;height:38px;padding:0 1rem 0 2.25rem;background:var(--bg4);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-size:.875rem;outline:none}
+.sb input:focus{border-color:var(--p)}
+.sb::before{content:'Search';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t2);font-size:.75rem;display:none}
+.sb i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t2);font-style:normal}
+.top-r{display:flex;align-items:center;gap:.5rem}
+.ib{position:relative;width:38px;height:38px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--b1);color:var(--t1);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.bd{position:absolute;top:-4px;right:-4px;background:var(--d);color:#fff;font-size:.65rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;padding:0 5px;display:flex;align-items:center;justify-content:center}
+.view-c{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.view{display:none;animation:fi .3s ease}
+.view.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.vh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap}
+.vh h1{font-size:1.75rem;font-weight:700;margin-bottom:.25rem}
+.muted{color:var(--t2)}
+.va{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.5rem 1rem;border-radius:var(--r);font-weight:600;font-size:.875rem;border:1px solid transparent;cursor:pointer;transition:all var(--ts);white-space:nowrap;font-family:inherit}
+.bp{background:var(--p);color:#fff;border-color:var(--p)}
+.bp:hover{background:var(--ph)}
+.bs{background:var(--bg3);color:var(--t1);border-color:var(--b1)}
+.bs:hover{background:var(--b1)}
+.bd2{background:var(--d);color:#fff;border-color:var(--d)}
+.bi{width:30px;height:30px;padding:0;background:transparent;border:none;color:var(--t2);cursor:pointer;border-radius:6px;font-size:1rem;display:inline-flex;align-items:center;justify-content:center}
+.bi:hover{background:var(--bg3);color:var(--t1)}
+.bi.danger:hover{color:var(--d)}
+.inp,.sel,textarea{height:38px;padding:0 .85rem;background:var(--bg4);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-size:.875rem;font-family:inherit;outline:none;width:100%}
+textarea{height:auto;padding:.6rem .85rem;resize:vertical;min-height:70px}
+.inp:focus,.sel:focus,textarea:focus{border-color:var(--p)}
+.sel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2394a3b8'><path d='M7 10l5 5 5-5z'/></svg>");background-repeat:no-repeat;background-position:right .6rem center;padding-right:2rem}
+.fg{margin-bottom:1rem}
+.fl{display:block;margin-bottom:.35rem;font-size:.75rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.fb{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.fb .inp,.fb .sel{width:auto;min-width:150px;flex:1;max-width:240px}
+.card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);margin-bottom:1.5rem;overflow:hidden}
+.card-h{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.card-h h3{font-size:1rem;font-weight:600}
+.card-b{padding:1.25rem}
+.kpi-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
+.kpi-g-s{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.kpi{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;display:flex;gap:1rem;align-items:center;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.kpi.p::before{background:var(--p)}
+.kpi.d::before{background:var(--d)}
+.kpi.w::before{background:var(--w)}
+.kpi.i::before{background:var(--i)}
+.kpi.s::before{background:var(--s)}
+.ki{width:48px;height:48px;border-radius:var(--r);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.kv{font-size:2rem;font-weight:700;line-height:1.2}
+.kl{font-size:.85rem;color:var(--t2);margin-top:.15rem}
+.kt{font-size:.7rem;color:var(--t2);margin-top:.15rem}
+.m-kpi{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:.75rem 1rem}
+.m-kpi .l{font-size:.7rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.m-kpi .v{font-size:1.5rem;font-weight:700}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem}
+.tc-w{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.875rem}
+th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--b1)}
+th{font-weight:600;color:var(--t2);text-transform:uppercase;font-size:.7rem;letter-spacing:.05em;background:var(--bg)}
+tbody tr{transition:background var(--ts)}
+tbody tr:hover{background:var(--bg)}
+.empty{text-align:center;padding:3rem 1rem;color:var(--t2)}
+.t-act{display:flex;gap:.2rem}
+.bp2{display:inline-flex;align-items:center;padding:.15rem .55rem;border-radius:999px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.bp2.s{background:rgba(16,185,129,.15);color:var(--s)}
+.bp2.w{background:rgba(245,158,11,.15);color:var(--w)}
+.bp2.d{background:rgba(239,68,68,.15);color:var(--d)}
+.bp2.i{background:rgba(59,130,246,.15);color:var(--i)}
+.bp2.m{background:var(--b1);color:var(--t2)}
+.bp2.p{background:rgba(79,70,229,.15);color:var(--pl)}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.p-card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:all var(--ts)}
+.p-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.p-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
+.p-name{font-size:1.05rem;font-weight:600;margin-bottom:.15rem}
+.p-desc{font-size:.85rem;color:var(--t2);margin-bottom:.75rem;line-height:1.5;min-height:2.5rem}
+.p-meta{display:flex;justify-content:space-between;font-size:.75rem;color:var(--t2);margin-bottom:.5rem}
+.pb{height:6px;background:var(--b1);border-radius:999px;overflow:hidden}
+.pbf{height:100%;background:linear-gradient(90deg,var(--p),var(--pu));border-radius:999px;transition:width .4s}
+.p-stats{display:flex;gap:1rem;margin-top:.5rem;font-size:.8rem;color:var(--t2)}
+.raid-c{display:flex;flex-direction:column;gap:.75rem;padding:.5rem 0}
+.raid-b{display:flex;align-items:center;gap:.75rem}
+.raid-l{width:110px;font-size:.85rem;color:var(--t2);font-weight:500}
+.raid-f{height:28px;background:linear-gradient(90deg,var(--p),var(--pu));border-radius:6px;display:flex;align-items:center;padding:0 .75rem;min-width:40px;transition:width .5s}
+.raid-b[data-type=RISK] .raid-f{background:linear-gradient(90deg,#ef4444,#f87171)}
+.raid-b[data-type=ASSUMPTION] .raid-f{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.raid-b[data-type=ISSUE] .raid-f{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.raid-b[data-type=DEPENDENCY] .raid-f{background:linear-gradient(90deg,#a855f7,#c084fc)}
+.raid-v{font-size:.85rem;font-weight:600;color:#fff;white-space:nowrap}
+.act-l{display:flex;flex-direction:column;gap:.75rem}
+.act-i{display:flex;gap:.75rem;padding:.5rem;border-radius:var(--r);transition:background var(--ts)}
+.act-i:hover{background:var(--bg)}
+.act-ic{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-tx{font-size:.875rem;line-height:1.4}
+.act-tm{font-size:.75rem;color:var(--t2);margin-top:.1rem}
+.rt{display:flex;gap:.4rem;margin-bottom:1.25rem;flex-wrap:wrap;border-bottom:1px solid var(--b1)}
+.rt-b{background:none;border:none;padding:.55rem .9rem;color:var(--t2);font-weight:500;font-size:.875rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;display:flex;align-items:center;gap:.4rem}
+.rt-b:hover{color:var(--t1)}
+.rt-b.active{color:var(--pl);border-bottom-color:var(--p)}
+.rt-c{background:var(--b1);padding:.1rem .5rem;border-radius:999px;font-size:.7rem;font-weight:600}
+.rt-b.active .rt-c{background:var(--p);color:#fff}
+.hb-l{display:grid;grid-template-columns:240px 1fr;gap:1.5rem}
+.hb-sb{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;height:fit-content}
+.hb-sb h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);margin-bottom:.75rem}
+.hb-cats{list-style:none}
+.hb-cats li{padding:.4rem .65rem;border-radius:6px;cursor:pointer;font-size:.875rem;color:var(--t2);margin-bottom:.1rem}
+.hb-cats li:hover{background:var(--bg);color:var(--t1)}
+.hb-cats li.active{background:var(--p);color:#fff}
+.hb-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.hb-item{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all var(--ts)}
+.hb-item:hover{border-color:var(--p);transform:translateY(-2px)}
+.hb-ti{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+.hb-su{font-size:.8rem;color:var(--t2);margin-bottom:.5rem;line-height:1.4}
+.tg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.t-card{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.5rem;cursor:pointer;transition:all var(--ts)}
+.t-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.t-icon{width:48px;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--p),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem}
+.t-name{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
+.t-desc{font-size:.85rem;color:var(--t2);line-height:1.5;margin-bottom:1rem}
+.t-pre{background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:.75rem;font-family:monospace;font-size:.75rem;color:var(--t2);max-height:120px;overflow:hidden;position:relative;line-height:1.5}
+.t-pre::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,var(--bg))}
+.ai-l{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;height:calc(100vh - 200px);min-height:500px}
+.ai-sb{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;overflow-y:auto}
+.ai-sb h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);margin-bottom:.75rem}
+.ai-ags{list-style:none}
+.ai-ags li{display:flex;gap:.75rem;padding:.65rem;border-radius:var(--r);cursor:pointer;margin-bottom:.15rem}
+.ai-ags li:hover{background:var(--bg)}
+.ai-ags li.act{background:var(--p);color:#fff}
+.ai-ags li.act .ai-d{color:rgba(255,255,255,.8)}
+.ai-i{font-size:1.4rem;flex-shrink:0}
+.ai-n{font-weight:600;font-size:.875rem}
+.ai-d{font-size:.75rem;color:var(--t2);margin-top:.1rem}
+.ai-cc{display:flex;flex-direction:column;background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden}
+.ai-ch{padding:1rem 1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.ai-ch h3{font-size:1rem;font-weight:600}
+.ai-cm{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.ai-msg{display:flex;gap:.75rem;max-width:80%}
+.ai-msg.b{align-self:flex-start}
+.ai-msg.u{align-self:flex-end;flex-direction:row-reverse}
+.ai-mav{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-msg.u .ai-mav{background:var(--p)}
+.ai-mc{background:var(--bg);padding:.7rem 1rem;border-radius:var(--r);font-size:.875rem;line-height:1.5}
+.ai-msg.u .ai-mc{background:var(--p);color:#fff}
+.ai-ci{border-top:1px solid var(--b1);padding:1rem;display:flex;gap:.75rem;align-items:flex-end}
+.ai-ci textarea{flex:1;min-height:50px;max-height:100px}
+.set-l{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem}
+.mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.mo.active{display:flex;animation:fi .2s}
+.md{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column}
+.md-h{padding:1.25rem;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.md-h h2{font-size:1.1rem;font-weight:600}
+.md-c{width:32px;height:32px;border-radius:6px;background:none;border:none;color:var(--t2);font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.md-b{padding:1.25rem;overflow-y:auto;flex:1}
+.md-f{padding:1rem 1.25rem;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:.5rem}
+.tc{position:fixed;top:80px;right:20px;z-index:1100;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--bg2);border:1px solid var(--b1);border-left:4px solid var(--i);padding:.75rem 1rem;border-radius:var(--r);min-width:280px;max-width:400px;display:flex;align-items:center;gap:.75rem;animation:fi .3s}
+.toast.s{border-left-color:var(--s)}
+.toast.w{border-left-color:var(--w)}
+.toast.d{border-left-color:var(--d)}
+.tti{font-size:1.2rem}
+.ttc .ttt{font-weight:600;font-size:.875rem}
+.ttc .ttm{font-size:.8rem;color:var(--t2)}
+.mtg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.mtg-c{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:all var(--ts)}
+.mtg-c:hover{border-color:var(--p)}
+.mtg-d{font-size:.75rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.mtg-t{font-size:1.05rem;font-weight:600;margin:.2rem 0 .4rem}
+.mtg-s{font-size:.85rem;color:var(--t2);line-height:1.5;margin-bottom:.6rem}
+.mtg-m{display:flex;gap:1rem;font-size:.75rem;color:var(--t2);margin-bottom:.5rem}
+@media(max-width:768px){.sidebar{position:fixed;top:0;left:0;bottom:0;z-index:99;transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.hb-l,.ai-l{grid-template-columns:1fr}.ai-l{height:auto}.view-c{padding:1rem}}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--b1);border-radius:4px}
+</style>
 </head>
 <body>
-<div class="app-shell">
-<!-- Sidebar -->
+<div class="app">
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">
-      <div class="logo-icon">PM</div>
-      <div class="logo-text"><h2>PM Central</h2><span class="logo-sub">Delivery Toolkit</span></div>
-    </div>
+  <div class="sb-head">
+    <div class="logo-i">PM</div>
+    <div class="logo-t"><h2>PM Central</h2><small>Delivery Toolkit</small></div>
   </div>
-  <nav class="sidebar-nav">
-    <a href="#dashboard" class="nav-item active" data-view="dashboard"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
-    <a href="#projects" class="nav-item" data-view="projects"><span class="nav-icon">📁</span><span class="nav-label">Projects</span></a>
-    <a href="#raid" class="nav-item" data-view="raid"><span class="nav-icon">⚠️</span><span class="nav-label">RAID Tracker</span></a>
-    <a href="#actions" class="nav-item" data-view="actions"><span class="nav-icon">✅</span><span class="nav-label">Action Items</span></a>
-    <a href="#handbook" class="nav-item" data-view="handbook"><span class="nav-icon">📚</span><span class="nav-label">Handbook</span></a>
-    <a href="#meetings" class="nav-item" data-view="meetings"><span class="nav-icon">🎯</span><span class="nav-label">Meetings</span></a>
-    <a href="#templates" class="nav-item" data-view="templates"><span class="nav-icon">📝</span><span class="nav-label">Templates</span></a>
-    <a href="#ai" class="nav-item" data-view="ai"><span class="nav-icon">🤖</span><span class="nav-label">AI Copilot</span></a>
-    <a href="#settings" class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></a>
+  <nav class="sb-nav">
+    <a class="nav-i active" data-v="dashboard"><span>??</span><span>Dashboard</span></a>
+    <a class="nav-i" data-v="projects"><span>??</span><span>Projects</span></a>
+    <a class="nav-i" data-v="raid"><span>??</span><span>RAID Tracker</span></a>
+    <a class="nav-i" data-v="actions"><span>?</span><span>Action Items</span></a>
+    <a class="nav-i" data-v="handbook"><span>??</span><span>Handbook</span></a>
+    <a class="nav-i" data-v="meetings"><span>??</span><span>Meetings</span></a>
+    <a class="nav-i" data-v="templates"><span>??</span><span>Templates</span></a>
+    <a class="nav-i" data-v="ai"><span>??</span><span>AI Copilot</span></a>
+    <a class="nav-i" data-v="settings"><span>??</span><span>Settings</span></a>
   </nav>
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <div class="user-avatar" id="userAvatar">P</div>
-      <div class="user-details">
-        <div class="user-name" id="userName">PM User</div>
-        <div class="user-role" id="userRole">Project Manager</div>
-      </div>
-    </div>
+  <div class="sb-foot">
+    <div class="av" id="uav">P</div>
+    <div><div class="u-name" id="uname">PM User</div><div class="u-role" id="urole">Account Manager</div></div>
   </div>
 </aside>
-<!-- Main Content -->
-<main class="main-content">
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="mobile-menu" id="mobileMenu">☰</button>
-      <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="globalSearch" placeholder="Search projects, RAID, action items..." />
-      </div>
-    </div>
-    <div class="topbar-right">
-      <button class="icon-btn" id="themeToggle">🌙</button>
-      <button class="btn btn-primary" id="quickAddBtn"><span>+</span> Quick Add</button>
-    </div>
-  </header>
-  <div class="view-container" id="viewContainer">
-    <div class="view active" id="view-dashboard">
-      <div class="view-header"><div><h1>Dashboard</h1><p class="text-muted">Program overview and key metrics</p></div><div class="view-actions"><button class="btn btn-secondary" id="refreshDashboard">🔄 Refresh</button></div></div>
-      <div class="kpi-grid">
-        <div class="kpi-card kpi-primary"><div class="kpi-icon">📁</div><div class="kpi-content"><div class="kpi-value" id="kpiProjects">0</div><div class="kpi-label">Active Projects</div><div class="kpi-trend" id="kpiProjectsTrend">+0 this month</div></div></div>
-        <div class="kpi-card kpi-danger"><div class="kpi-icon">⚠️</div><div class="kpi-content"><div class="kpi-value" id="kpiRisks">0</div><div class="kpi-label">Open Risks</div><div class="kpi-trend" id="kpiRisksTrend">0 high priority</div></div></div>
-        <div class="kpi-card kpi-warning"><div class="kpi-icon">🚧</div><div class="kpi-content"><div class="kpi-value" id="kpiIssues">0</div><div class="kpi-label">Open Issues</div><div class="kpi-trend" id="kpiIssuesTrend">0 critical</div></div></div>
-        <div class="kpi-card kpi-info"><div class="kpi-icon">✅</div><div class="kpi-content"><div class="kpi-value" id="kpiActions">0</div><div class="kpi-label">Action Items</div><div class="kpi-trend" id="kpiActionsTrend">0% complete</div></div></div>
-      </div>
-      <div class="grid grid-2">
-        <div class="card"><div class="card-header"><h3>RAID Distribution</h3></div><div class="card-body"><div class="raid-chart" id="raidChart"><div class="raid-bar" data-type="RISK"><div class="raid-bar-label">Risks</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="ASSUMPTION"><div class="raid-bar-label">Assumptions</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="ISSUE"><div class="raid-bar-label">Issues</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div><div class="raid-bar" data-type="DEPENDENCY"><div class="raid-bar-label">Dependencies</div><div class="raid-bar-fill" style="width:0%"><span class="raid-bar-value">0</span></div></div></div></div></div>
-        <div class="card"><div class="card-header"><h3>Recent Activity</h3></div><div class="card-body"><div class="activity-list" id="activityList"></div></div></div>
-      </div>
-      <div class="card"><div class="card-header"><h3>Upcoming Action Items</h3></div><div class="card-body"><div class="table-container"><table class="table" id="dashboardActionsTable"><thead><tr><th>Title</th><th>Project</th><th>Assignee</th><th>Due Date</th><th>Status</th><th>Priority</th></tr></thead><tbody></tbody></table></div></div></div>
-    </div>
-
-    <div class="view" id="view-projects">
-      <div class="view-header"><div><h1>Projects</h1><p class="text-muted">Manage your delivery programs</p></div><div class="view-actions"><button class="btn btn-primary" id="newProjectBtn">+ New Project</button></div></div>
-      <div class="project-grid" id="projectGrid"></div>
-    </div>
-
-    <div class="view" id="view-raid">
-      <div class="view-header"><div><h1>RAID Tracker</h1><p class="text-muted">Risks, Assumptions, Issues, Dependencies</p></div><div class="view-actions"><button class="btn btn-primary" id="newRaidBtn">+ New RAID Item</button></div></div>
-      <div class="filter-bar">
-        <select class="select" id="raidTypeFilter"><option value="">All Types</option><option value="RISK">Risks</option><option value="ASSUMPTION">Assumptions</option><option value="ISSUE">Issues</option><option value="DEPENDENCY">Dependencies</option></select>
-        <select class="select" id="raidStatusFilter"><option value="">All Status</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select>
-        <select class="select" id="raidPriorityFilter"><option value="">All Priority</option><option>High</option><option>Medium</option><option>Low</option></select>
-        <input type="text" class="input" id="raidSearch" placeholder="Search RAID..." />
-      </div>
-      <div class="raid-tabs">
-        <button class="raid-tab active" data-type="">All <span class="raid-tab-count" id="raidCountAll">0</span></button>
-        <button class="raid-tab" data-type="RISK">Risks <span class="raid-tab-count" id="raidCountRisk">0</span></button>
-        <button class="raid-tab" data-type="ASSUMPTION">Assumptions <span class="raid-tab-count" id="raidCountAssumption">0</span></button>
-        <button class="raid-tab" data-type="ISSUE">Issues <span class="raid-tab-count" id="raidCountIssue">0</span></button>
-        <button class="raid-tab" data-type="DEPENDENCY">Dependencies <span class="raid-tab-count" id="raidCountDependency">0</span></button>
-      </div>
-      <div class="card"><div class="table-container"><table class="table" id="raidTable"><thead><tr><th>Type</th><th>Title</th><th>Project</th><th>Status</th><th>Priority</th><th>Owner</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
-    </div>
-
-    <div class="view" id="view-actions">
-      <div class="view-header"><div><h1>Action Items</h1><p class="text-muted">Track and manage delivery tasks</p></div><div class="view-actions"><button class="btn btn-primary" id="newActionBtn">+ New Action Item</button></div></div>
-      <div class="kpi-grid kpi-grid-small">
-        <div class="mini-kpi"><div class="mini-kpi-label">Total</div><div class="mini-kpi-value" id="actionKpiTotal">0</div></div>
-        <div class="mini-kpi"><div class="mini-kpi-label">Open</div><div class="mini-kpi-value" id="actionKpiOpen">0</div></div>
-        <div class="mini-kpi"><div class="mini-kpi-label">In Progress</div><div class="mini-kpi-value" id="actionKpiInProgress">0</div></div>
-        <div class="mini-kpi"><div class="mini-kpi-label">Completed</div><div class="mini-kpi-value" id="actionKpiCompleted">0</div></div>
-        <div class="mini-kpi"><div class="mini-kpi-label">Overdue</div><div class="mini-kpi-value" id="actionKpiOverdue">0</div></div>
-      </div>
-      <div class="filter-bar">
-        <select class="select" id="actionStatusFilter"><option value="">All Status</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select>
-        <select class="select" id="actionProjectFilter"><option value="">All Projects</option></select>
-        <input type="text" class="input" id="actionSearch" placeholder="Search actions..." />
-      </div>
-      <div class="card"><div class="table-container"><table class="table" id="actionTable"><thead><tr><th>Status</th><th>Title</th><th>Project</th><th>Assignee</th><th>Due Date</th><th>Priority</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
-    </div>
-
-    <div class="view" id="view-handbook">
-      <div class="view-header"><div><h1>Handbook</h1><p class="text-muted">Knowledge base, guides, and best practices</p></div><div class="view-actions"><button class="btn btn-primary" id="newArticleBtn">+ New Article</button></div></div>
-      <div class="handbook-layout">
-        <aside class="handbook-sidebar"><h3>Categories</h3><ul class="handbook-categories" id="handbookCategories"><li class="active" data-category="">All</li><li data-category="process">Processes</li><li data-category="template">Templates</li><li data-category="guide">Guides</li><li data-category="policy">Policies</li><li data-category="reference">Reference</li></ul></aside>
-        <div class="handbook-content"><div class="handbook-search"><input type="text" class="input" id="handbookSearch" placeholder="Search handbook..." /></div><div class="handbook-list" id="handbookList"></div></div>
-      </div>
-    </div>
-
-    <div class="view" id="view-meetings">
-      <div class="view-header"><div><h1>Meetings</h1><p class="text-muted">Meeting notes, decisions, and action items</p></div><div class="view-actions"><button class="btn btn-primary" id="newMeetingBtn">+ New Meeting</button></div></div>
-      <div class="meeting-grid" id="meetingGrid"></div>
-    </div>
-
-    <div class="view" id="view-templates">
-      <div class="view-header"><div><h1>Templates</h1><p class="text-muted">Reusable templates for PM workflows</p></div></div>
-      <div class="template-grid" id="templateGrid"></div>
-    </div>
-
-    <div class="view" id="view-ai">
-      <div class="view-header"><div><h1>AI Copilot</h1><p class="text-muted">Get AI-powered assistance for your PM workflows</p></div></div>
-      <div class="ai-layout">
-        <aside class="ai-sidebar"><h3>AI Assistants</h3><ul class="ai-agents" id="aiAgentsList">
-          <li class="active" data-agent="discovery-coach"><div class="ai-agent-icon">🔍</div><div><div class="ai-agent-name">Discovery Coach</div><div class="ai-agent-desc">Refine your discovery process</div></div></li>
-          <li data-agent="prd-reviewer"><div class="ai-agent-icon">📋</div><div><div class="ai-agent-name">PRD Reviewer</div><div class="ai-agent-desc">Review PRDs for quality</div></div></li>
-          <li data-agent="stakeholder-briefing"><div class="ai-agent-icon">📢</div><div><div class="ai-agent-name">Stakeholder Briefing</div><div class="ai-agent-desc">Create stakeholder updates</div></div></li>
-          <li data-agent="status-summary"><div class="ai-agent-icon">📊</div><div><div class="ai-agent-name">Status Summary</div><div class="ai-agent-desc">Generate status reports</div></div></li>
-        </ul></aside>
-        <div class="ai-chat-container">
-          <div class="ai-chat-header"><h3 id="aiAgentName">Discovery Coach</h3><span class="ai-status">Online</span></div>
-          <div class="ai-chat-messages" id="aiChatMessages"></div>
-          <div class="ai-chat-input"><textarea id="aiInput" placeholder="Ask me anything about your project..." rows="2"></textarea><button class="btn btn-primary" id="aiSendBtn">Send</button></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="view" id="view-settings">
-      <div class="view-header"><div><h1>Settings</h1><p class="text-muted">Manage your account and preferences</p></div></div>
-      <div class="settings-layout">
-        <div class="card"><div class="card-header"><h3>Profile</h3></div><div class="card-body"><form id="profileForm"><div class="form-group"><label class="form-label">Username</label><input type="text" class="input" id="settingsUsername" /></div><div class="form-group"><label class="form-label">Email</label><input type="email" class="input" id="settingsEmail" /></div><div class="form-group"><label class="form-label">Display Name</label><input type="text" class="input" id="settingsDisplayName" /></div><button type="submit" class="btn btn-primary">Save</button></form></div></div>
-        <div class="card"><div class="card-header"><h3>Preferences</h3></div><div class="card-body"><div class="form-group"><label class="form-label">Default View</label><select class="select" id="settingsDefaultView"><option value="dashboard">Dashboard</option><option value="raid">RAID</option><option value="actions">Actions</option></select></div><div class="form-group"><label class="form-label">Theme</label><select class="select" id="settingsTheme"><option value="dark">Dark</option><option value="light">Light</option></select></div></div></div>
-        <div class="card"><div class="card-header"><h3>Data Management</h3></div><div class="card-body"><p class="text-muted">Export or reset your data</p><div class="settings-actions"><button class="btn btn-secondary" id="exportDataBtn">📥 Export</button><button class="btn btn-secondary" id="importDataBtn">📤 Import</button><button class="btn btn-danger" id="resetDataBtn">🗑️ Reset</button><input type="file" id="importFileInput" accept=".json" style="display:none" /></div></div></div>
-      </div>
+<div class="main">
+  <div class="top">
+    <div class="sb"><input type="text" id="gs" placeholder="Search projects, RAID, actions..." /></div>
+    <div class="top-r">
+      <button class="ib" id="bTh">??</button>
+      <button class="ib" id="bNot">??<span class="bd" id="nbd">3</span></button>
+      <button class="btn bp" id="bQa">+ Quick Add</button>
     </div>
   </div>
-</main>
+  <div class="view-c" id="vc"></div>
 </div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal"><div class="modal-header"><h2 id="modalTitle">Modal</h2><button class="modal-close" id="modalClose">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-footer"><button class="btn btn-secondary" id="modalCancel">Cancel</button><button class="btn btn-primary" id="modalSave">Save</button></div></div>
 </div>
-<div class="toast-container" id="toastContainer"></div>
+<div class="mo" id="mo"><div class="md"><div class="md-h"><h2 id="mt">Modal</h2><button class="md-c" id="mc">�</button></div><div class="md-b" id="mb"></div><div class="md-f"><button class="btn bs" id="mcan">Cancel</button><button class="btn bp" id="msv">Save</button></div></div></div>
+<div class="tc" id="tc"></div>
+<script>
+const S={projects:[],raidItems:[],actionItems:[],handbookArticles:[],meetings:[],templates:[],activities:[],view:'dashboard',rt:'',light:false};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+const fmt=d=>{const x=new Date(d);return x.toISOString().split('T')[0]};
+const addD=(d,n)=>{const r=new Date(d);r.setDate(r.getDate()+n);return r};
+const nid=a=>a.length?Math.max(...a.map(x=>x.id))+1:1;
+const pName=id=>{const p=S.projects.find(x=>x.id===id);return p?p.name:'�'};
+const sb=s=>{const x=(s||'').toLowerCase();if(['completed','closed','resolved','done'].includes(x))return's';if(['blocked','overdue'].includes(x))return'd';if(['in progress','pending'].includes(x))return'w';if(['open'].includes(x))return'i';return'm'};
+const pb=p=>{const x=(p||'').toLowerCase();if(x==='high')return'd';if(x==='medium')return'w';if(x==='low')return'i';return'm'};
+const od=d=>d&&new Date(d)<new Date(new Date().toDateString());
 
-<script src="toolkit.js"></script>
+function seed(){
+  const t=new Date();
+  S.projects=[
+    {id:1,name:'Cloud Migration Program',desc:'Migrate legacy on-prem workloads to Azure',status:'In Progress',startDate:fmt(addD(t,-60)),endDate:fmt(addD(t,60)),progress:45,teamSize:8},
+    {id:2,name:'Customer Portal v2',desc:'Re-platform customer-facing portal',status:'Planning',startDate:fmt(addD(t,-10)),endDate:fmt(addD(t,120)),progress:15,teamSize:5},
+    {id:3,name:'Data Lake Initiative',desc:'Build data lake for analytics and ML',status:'In Progress',startDate:fmt(addD(t,-90)),endDate:fmt(addD(t,30)),progress:70,teamSize:6},
+    {id:4,name:'Security Hardening',desc:'Implement zero-trust security',status:'On Hold',startDate:fmt(addD(t,-30)),endDate:fmt(addD(t,90)),progress:25,teamSize:4}
+  ];
+  S.raidItems=[
+    {id:1,type:'RISK',title:'Azure cost overrun risk',desc:'Cloud migration may exceed budget',status:'Open',priority:'High',projectId:1,owner:'Sarah Chen',dueDate:fmt(addD(t,7))},
+    {id:2,type:'RISK',title:'Vendor delivery delay',desc:'Key vendor may miss timeline',status:'Open',priority:'Medium',projectId:1,owner:'Mike Johnson',dueDate:fmt(addD(t,14))},
+    {id:3,type:'ISSUE',title:'Staging env outage',desc:'Staging environment unavailable',status:'In Progress',priority:'High',projectId:2,owner:'Alex Kumar',dueDate:fmt(addD(t,3))},
+    {id:4,type:'ASSUMPTION',title:'Customer adoption rate',desc:'60% adoption within 6 months',status:'Open',priority:'Medium',projectId:2,owner:'Lisa Park',dueDate:fmt(addD(t,30))},
+    {id:5,type:'DEPENDENCY',title:'Security review approval',desc:'Portal v2 launch depends on security',status:'Open',priority:'High',projectId:2,owner:'Tom Brown',dueDate:fmt(addD(t,10))},
+    {id:6,type:'RISK',title:'Data quality issues',desc:'Source data quality concerns',status:'Open',priority:'Medium',projectId:3,owner:'Emma Davis',dueDate:fmt(addD(t,21))},
+    {id:7,type:'ISSUE',title:'SSO integration failing',desc:'Identity provider integration',status:'Open',priority:'High',projectId:4,owner:'David Lee',dueDate:fmt(addD(t,5))}
+  ];
+  S.actionItems=[
+    {id:1,title:'Prepare cost forecast for cloud migration',status:'In Progress',priority:'High',projectId:1,assignee:'Sarah Chen',dueDate:fmt(addD(t,2))},
+    {id:2,title:'Schedule vendor review meeting',status:'Pending',priority:'Medium',projectId:1,assignee:'Mike Johnson',dueDate:fmt(addD(t,5))},
+    {id:3,title:'Investigate staging env failures',status:'In Progress',priority:'High',projectId:2,assignee:'Alex Kumar',dueDate:fmt(addD(t,1))},
+    {id:4,title:'Document new portal architecture',status:'Completed',priority:'Medium',projectId:2,assignee:'Lisa Park',dueDate:fmt(addD(t,-3))},
+    {id:5,title:'Get security review sign-off',status:'Blocked',priority:'High',projectId:2,assignee:'Tom Brown',dueDate:fmt(addD(t,7))},
+    {id:6,title:'Build data quality dashboard',status:'Pending',priority:'Medium',projectId:3,assignee:'Emma Davis',dueDate:fmt(addD(t,14))},
+    {id:7,title:'Fix SSO integration test failures',status:'In Progress',priority:'High',projectId:4,assignee:'David Lee',dueDate:fmt(addD(t,3))},
+    {id:8,title:'Update project plan with new dates',status:'Pending',priority:'Low',projectId:1,assignee:'PM User',dueDate:fmt(addD(t,10))}
+  ];
+  S.handbookArticles=[
+    {id:1,title:'RAID Log Best Practices',summary:'How to maintain an effective RAID log',category:'process',tags:['raid','process']},
+    {id:2,title:'Action Item Tracking',summary:'Effective action item management',category:'process',tags:['actions']},
+    {id:3,title:'Stakeholder Communication Plan',summary:'Template for stakeholder communication',category:'template',tags:['stakeholder']},
+    {id:4,title:'Project Charter Guide',summary:'How to write a project charter',category:'guide',tags:['charter']},
+    {id:5,title:'Risk Assessment Matrix',summary:'5x5 matrix for risk assessment',category:'reference',tags:['risk']},
+    {id:6,title:'Sprint Retrospective Guide',summary:'Run effective sprint retrospectives',category:'guide',tags:['agile']}
+  ];
+  S.meetings=[
+    {id:1,date:fmt(addD(t,-2)),title:'Cloud Migration Weekly Sync',summary:'Discussed migration progress and budget',attendees:8,projectId:1,decisions:3,actionItems:5},
+    {id:2,date:fmt(addD(t,-1)),title:'Portal v2 Design Review',summary:'Reviewed new portal UX designs',attendees:6,projectId:2,decisions:2,actionItems:4},
+    {id:3,date:fmt(addD(t,-5)),title:'Data Lake Architecture Workshop',summary:'Aligned on data lake architecture',attendees:5,projectId:3,decisions:4,actionItems:3},
+    {id:4,date:fmt(addD(t,-7)),title:'Security Steering Committee',summary:'Reviewed security posture',attendees:10,projectId:4,decisions:5,actionItems:6}
+  ];
+  S.templates=[
+    {id:1,name:'PRD Brief',icon:'??',desc:'Product Requirements Document',content:'# PRD Brief\n\n## Overview\n## Problem\n## Goals\n## Requirements'},
+    {id:2,name:'Discovery Plan',icon:'??',desc:'Plan your discovery phase',content:'# Discovery\n## Objectives\n## Activities\n## Timeline'},
+    {id:3,name:'Launch Checklist',icon:'??',desc:'Pre-launch checklist',content:'# Launch\n## Pre-Launch\n## Launch Day'},
+    {id:4,name:'Decision Log',icon:'??',desc:'Track project decisions',content:'# Decision\n## Context\n## Options\n## Rationale'}
+  ];
+  S.activities=[
+    {i:'??',t:'New RAID item "Staging env outage" was created',w:'2 hours ago'},
+    {i:'?',t:'Action item "Document new portal architecture" completed',w:'5 hours ago'},
+    {i:'??',t:'Project "Cloud Migration Program" updated to 45% complete',w:'1 day ago'},
+    {i:'??',t:'Meeting "Portal v2 Design Review" added with 2 decisions',w:'1 day ago'},
+    {i:'??',t:'New project "Security Hardening" created',w:'2 days ago'},
+    {i:'??',t:'Handbook article "RAID Log Best Practices" updated',w:'3 days ago'}
+  ];
+}
+
+function save(){try{localStorage.setItem('pmc_v2',JSON.stringify(S))}catch(e){}}
+function load(){try{const d=localStorage.getItem('pmc_v2');if(d){const p=JSON.parse(d);Object.assign(S,p);return true}}catch(e){}return false}
+
+function toast(t,m,k){k=k||'i';const ic={s:'?',w:'??',d:'?',i:'??'};const el=document.createElement('div');el.className='toast '+k;el.innerHTML='<div class="tti">'+ic[k]+'</div><div class="ttc"><div class="ttt">'+esc(t)+'</div>'+(m?'<div class="ttm">'+esc(m)+'</div>':'')+'</div>';$('tc').appendChild(el);setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),300)},3500)}
+
+function nav(v){S.view=v;document.querySelectorAll('.nav-i').forEach(n=>n.classList.toggle('active',n.dataset.v===v));render()}
+function addAct(i,t){S.activities.unshift({i,t,w:'just now'});if(S.activities.length>30)S.activities.length=30;save()}
+
+function renderDashboard(){
+  const oR=S.raidItems.filter(r=>r.type==='RISK'&&r.status!=='Closed').length;
+  const oI=S.raidItems.filter(r=>r.type==='ISSUE'&&r.status!=='Closed').length;
+  const hP=S.raidItems.filter(r=>r.priority==='High'&&r.status!=='Closed').length;
+  const oA=S.actionItems.filter(a=>a.status!=='Completed'&&od(a.dueDate)).length;
+  const cA=S.actionItems.filter(a=>a.status==='Completed').length;
+  const tA=S.actionItems.length;
+  const cP=tA?Math.round(cA/tA*100):0;
+  let html='<div class="vh"><div><h1>Dashboard</h1><p class="muted">Program overview and key metrics</p></div><div class="va"><select class="sel" id="pf" style="width:auto;min-width:180px"><option value="">All Projects</option>'+S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('')+'</select><button class="btn bs" onclick="render()">?? Refresh</button></div></div>';
+  html+='<div class="kpi-g">';
+  html+='<div class="kpi p"><div class="ki">??</div><div><div class="kv">'+S.projects.filter(p=>p.status==='In Progress').length+'</div><div class="kl">Active Projects</div><div class="kt">'+S.projects.length+' total</div></div></div>';
+  html+='<div class="kpi d"><div class="ki">??</div><div><div class="kv">'+oR+'</div><div class="kl">Open Risks</div><div class="kt">'+hP+' high priority</div></div></div>';
+  html+='<div class="kpi w"><div class="ki">??</div><div><div class="kv">'+oI+'</div><div class="kl">Open Issues</div><div class="kt">'+S.raidItems.filter(r=>r.type==='ISSUE'&&r.priority==='High'&&r.status!=='Closed').length+' critical</div></div></div>';
+  html+='<div class="kpi i"><div class="ki">?</div><div><div class="kv">'+tA+'</div><div class="kl">Action Items</div><div class="kt">'+cP+'% complete � '+oA+' overdue</div></div></div>';
+  html+='</div>';
+  html+='<div class="g2">';
+  html+='<div class="card"><div class="card-h"><h3>RAID Distribution</h3></div><div class="card-b"><div class="raid-c">';
+  const mx=Math.max(1,...['RISK','ASSUMPTION','ISSUE','DEPENDENCY'].map(t=>S.raidItems.filter(r=>r.type===t&&r.status!=='Closed').length));
+  ['RISK','ASSUMPTION','ISSUE','DEPENDENCY'].forEach(t=>{
+    const c=S.raidItems.filter(r=>r.type===t&&r.status!=='Closed').length;
+    const w=Math.max(8,Math.round(c/mx*100));
+    html+='<div class="raid-b" data-type="'+t+'"><div class="raid-l">'+t.charAt(0)+t.slice(1).toLowerCase()+'s</div><div class="raid-f" style="width:'+w+'%"><span class="raid-v">'+c+'</span></div></div>';
+  });
+  html+='</div></div></div>';
+  html+='<div class="card"><div class="card-h"><h3>Recent Activity</h3></div><div class="card-b"><div class="act-l">';
+  S.activities.slice(0,6).forEach(a=>{html+='<div class="act-i"><div class="act-ic">'+a.i+'</div><div><div class="act-tx">'+esc(a.t)+'</div><div class="act-tm">'+esc(a.w)+'</div></div></div>'});
+  html+='</div></div></div></div>';
+  html+='<div class="card"><div class="card-h"><h3>Upcoming Action Items & Deadlines</h3><a href="#" onclick="nav(\'actions\');return false">View All</a></div><div class="card-b"><div class="tc-w"><table><thead><tr><th>Title</th><th>Project</th><th>Assignee</th><th>Due</th><th>Status</th><th>Priority</th></tr></thead><tbody>';
+  const up=S.actionItems.filter(a=>a.status!=='Completed').sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)).slice(0,5);
+  if(!up.length) html+='<tr><td colspan="6" class="empty">No upcoming items</td></tr>';
+  up.forEach(a=>{html+='<tr><td>'+esc(a.title)+'</td><td>'+esc(pName(a.projectId))+'</td><td>'+esc(a.assignee)+'</td><td>'+esc(a.dueDate)+(od(a.dueDate)?' ??':'')+'</td><td><span class="bp2 '+sb(a.status)+'">'+esc(a.status)+'</span></td><td><span class="bp2 '+pb(a.priority)+'">'+esc(a.priority)+'</span></td></tr>'});
+  html+='</tbody></table></div></div></div>';
+  return html;
+}
+
+function renderProjects(){
+  let html='<div class="vh"><div><h1>Projects</h1><p class="muted">Manage your delivery programs</p></div><div class="va"><button class="btn bp" onclick="newProj()">+ New Project</button></div></div>';
+  if(!S.projects.length){html+='<div class="empty"><h2>No projects yet</h2><p>Create your first project to get started</p><button class="btn bp" onclick="newProj()">+ New Project</button></div>';return html}
+  html+='<div class="pg">';
+  S.projects.forEach(p=>{
+    const rc=S.raidItems.filter(r=>r.projectId===p.id&&r.status!=='Closed').length;
+    const ac=S.actionItems.filter(a=>a.projectId===p.id&&a.status!=='Completed').length;
+    html+='<div class="p-card" onclick="editProj('+p.id+')"><div class="p-h"><div><div class="p-name">'+esc(p.name)+'</div><span class="bp2 '+sb(p.status)+'">'+esc(p.status)+'</span></div><div class="p-stats"><span>?? '+p.teamSize+'</span></div></div><div class="p-desc">'+esc(p.desc||'')+'</div><div class="p-meta"><span>Start: '+esc(p.startDate)+'</span><span>End: '+esc(p.endDate)+'</span></div><div class="pb"><div class="pbf" style="width:'+p.progress+'%"></div></div><div class="p-stats"><span>'+p.progress+'% complete</span><span>?? '+rc+' RAID</span><span>? '+ac+' actions</span></div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderRaid(){
+  const tf=$('rtf')?$('rtf').value:'';
+  const sf=$('rsf')?$('rsf').value:'';
+  const pf=$('rpf')?$('rpf').value:'';
+  const sc=$('rsc')?$('rsc').value.toLowerCase():'';
+  let html='<div class="vh"><div><h1>RAID Tracker</h1><p class="muted">Risks, Assumptions, Issues, Dependencies</p></div><div class="va"><button class="btn bp" onclick="newRaid()">+ New RAID Item</button></div></div>';
+  html+='<div class="fb"><select class="sel" id="rtf"><option value="">All Types</option><option value="RISK">Risks</option><option value="ASSUMPTION">Assumptions</option><option value="ISSUE">Issues</option><option value="DEPENDENCY">Dependencies</option></select><select class="sel" id="rsf"><option value="">All Status</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select><select class="sel" id="rpf"><option value="">All Priority</option><option>High</option><option>Medium</option><option>Low</option></select><input class="inp" id="rsc" placeholder="Search..." /></div>';
+  html+='<div class="rt">';
+  ['All','Risk','Assumption','Issue','Dependency'].forEach((t,i)=>{
+    const k=i===0?'':t.toUpperCase();
+    const c=i===0?S.raidItems.length:S.raidItems.filter(r=>r.type===k).length;
+    html+='<button class="rt-b'+(S.rt===k?' active':S.rt===''&&i===0?' active':'')+(S.rt===''&&i!==0?'':'')+'" onclick="setRt(\''+k+'\')">'+t+' <span class="rt-c">'+c+'</span></button>';
+  });
+  html+='</div>';
+  const items=S.raidItems.filter(r=>{
+    if(S.rt&&r.type!==S.rt)return false;
+    if(tf&&r.type!==tf)return false;
+    if(sf&&r.status!==sf)return false;
+    if(pf&&r.priority!==pf)return false;
+    if(sc&&!r.title.toLowerCase().includes(sc)&&!(r.desc||'').toLowerCase().includes(sc))return false;
+    return true;
+  });
+  html+='<div class="card"><div class="tc-w"><table><thead><tr><th>Type</th><th>Title</th><th>Project</th><th>Status</th><th>Priority</th><th>Owner</th><th>Actions</th></tr></thead><tbody>';
+  if(!items.length)html+='<tr><td colspan="7" class="empty">No RAID items match your filters</td></tr>';
+  else{
+    const ic={RISK:'??',ASSUMPTION:'??',ISSUE:'??',DEPENDENCY:'??'};
+    items.forEach(r=>{
+      html+='<tr><td>'+(ic[r.type]||'?')+' '+r.type.charAt(0)+r.type.slice(1).toLowerCase()+'</td><td>'+esc(r.title)+'</td><td>'+esc(pName(r.projectId))+'</td><td><span class="bp2 '+sb(r.status)+'">'+esc(r.status)+'</span></td><td><span class="bp2 '+pb(r.priority)+'">'+esc(r.priority)+'</span></td><td>'+esc(r.owner||'�')+'</td><td class="t-act"><button class="bi" onclick="editRaid('+r.id+')">??</button><button class="bi danger" onclick="delRaid('+r.id+')">???</button></td></tr>';
+    });
+  }
+  html+='</tbody></table></div></div>';
+  return html;
+}
+
+function setRt(t){S.rt=t;render()}
+
+function renderActions(){
+  const sf=$('asf')?$('asf').value:'';
+  const pf=$('apf')?$('apf').value:'';
+  const sc=$('asc')?$('asc').value.toLowerCase():'';
+  const tA=S.actionItems.length;
+  const oA=S.actionItems.filter(a=>a.status==='Pending').length;
+  const iA=S.actionItems.filter(a=>a.status==='In Progress').length;
+  const cA=S.actionItems.filter(a=>a.status==='Completed').length;
+  const odA=S.actionItems.filter(a=>a.status!=='Completed'&&od(a.dueDate)).length;
+  let html='<div class="vh"><div><h1>Action Items</h1><p class="muted">Track and manage delivery tasks</p></div><div class="va"><button class="btn bp" onclick="newAct()">+ New Action Item</button></div></div>';
+  html+='<div class="kpi-g kpi-g-s"><div class="m-kpi"><div class="l">Total</div><div class="v">'+tA+'</div></div><div class="m-kpi"><div class="l">Open</div><div class="v">'+oA+'</div></div><div class="m-kpi"><div class="l">In Progress</div><div class="v">'+iA+'</div></div><div class="m-kpi"><div class="l">Completed</div><div class="v">'+cA+'</div></div><div class="m-kpi"><div class="l">Overdue</div><div class="v" style="color:var(--d)">'+odA+'</div></div></div>';
+  html+='<div class="fb"><select class="sel" id="asf"><option value="">All Status</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select><select class="sel" id="apf"><option value="">All Projects</option>'+S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('')+'</select><input class="inp" id="asc" placeholder="Search..." /></div>';
+  const items=S.actionItems.filter(a=>{if(sf&&a.status!==sf)return false;if(pf&&a.projectId!=pf)return false;if(sc&&!a.title.toLowerCase().includes(sc))return false;return true});
+  html+='<div class="card"><div class="tc-w"><table><thead><tr><th>Status</th><th>Title</th><th>Project</th><th>Assignee</th><th>Due</th><th>Priority</th><th>Actions</th></tr></thead><tbody>';
+  if(!items.length)html+='<tr><td colspan="7" class="empty">No action items</td></tr>';
+  else items.forEach(a=>{html+='<tr><td><span class="bp2 '+sb(a.status)+'">'+esc(a.status)+'</span></td><td>'+esc(a.title)+'</td><td>'+esc(pName(a.projectId))+'</td><td>'+esc(a.assignee)+'</td><td>'+esc(a.dueDate)+(od(a.dueDate)?' ??':'')+'</td><td><span class="bp2 '+pb(a.priority)+'">'+esc(a.priority)+'</span></td><td class="t-act"><button class="bi" onclick="editAct('+a.id+')">??</button><button class="bi danger" onclick="delAct('+a.id+')">???</button></td></tr>'});
+  html+='</tbody></table></div></div>';
+  return html;
+}
+
+function renderHandbook(){
+  const cat=S.hbCat||'';
+  const sc=$('hsc')?$('hsc').value.toLowerCase():'';
+  let html='<div class="vh"><div><h1>Handbook</h1><p class="muted">Knowledge base and best practices</p></div><div class="va"><button class="btn bp" onclick="newHb()">+ New Article</button></div></div>';
+  html+='<div class="hb-l"><aside class="hb-sb"><h3>Categories</h3><ul class="hb-cats">';
+  [{k:'',l:'All Articles'},{k:'process',l:'Processes'},{k:'template',l:'Templates'},{k:'guide',l:'Guides'},{k:'policy',l:'Policies'},{k:'reference',l:'Reference'}].forEach(c=>{html+='<li'+(cat===c.k?' class="active"':'')+' onclick="setHbCat(\''+c.k+'\')">'+c.l+'</li>'});
+  html+='</ul></aside><div><div class="fg"><input class="inp" id="hsc" placeholder="Search handbook..." /></div><div class="hb-list">';
+  const items=S.handbookArticles.filter(a=>{if(cat&&a.category!==cat)return false;if(sc&&!a.title.toLowerCase().includes(sc)&&!a.summary.toLowerCase().includes(sc))return false;return true});
+  if(!items.length)html+='<div class="empty" style="grid-column:1/-1">No articles</div>';
+  else items.forEach(a=>{html+='<div class="hb-item" onclick="viewHb('+a.id+')"><div class="hb-ti">'+esc(a.title)+'</div><div class="hb-su">'+esc(a.summary)+'</div><div style="display:flex;gap:.3rem;flex-wrap:wrap">'+(a.tags||[]).map(t=>'<span class="bp2 m">'+esc(t)+'</span>').join('')+'</div></div>'});
+  html+='</div></div></div>';
+  return html;
+}
+function setHbCat(c){S.hbCat=c;render()}
+
+function renderMeetings(){
+  let html='<div class="vh"><div><h1>Meetings</h1><p class="muted">Meeting notes, decisions, and action items</p></div><div class="va"><button class="btn bp" onclick="newMtg()">+ New Meeting</button></div></div>';
+  html+='<div class="mtg-g">';
+  if(!S.meetings.length)html+='<div class="empty" style="grid-column:1/-1">No meetings</div>';
+  else S.meetings.forEach(m=>{html+='<div class="mtg-c"><div class="mtg-d">'+esc(m.date)+'</div><div class="mtg-t">'+esc(m.title)+'</div><div class="mtg-s">'+esc(m.summary)+'</div><div class="mtg-m"><span>?? '+m.attendees+' attendees</span><span>?? '+m.projectId+'</span></div><div style="display:flex;gap:.5rem;font-size:.75rem;color:var(--t2)"><span>? '+m.decisions+' decisions</span><span>?? '+m.actionItems+' actions</span></div></div>'});
+  html+='</div>';
+  return html;
+}
+
+function renderTemplates(){
+  let html='<div class="vh"><div><h1>Templates</h1><p class="muted">Reusable templates for PM workflows</p></div></div>';
+  html+='<div class="tg-g">';
+  S.templates.forEach(t=>{html+='<div class="t-card" onclick="useTpl('+t.id+')"><div class="t-icon">'+t.icon+'</div><div class="t-name">'+esc(t.name)+'</div><div class="t-desc">'+esc(t.desc)+'</div><pre class="t-pre">'+esc(t.content)+'</pre></div>'});
+  html+='</div>';
+  return html;
+}
+
+function renderAi(){
+  const ag=S.aiAgent||'discovery-coach';
+  const ags={discovery:{n:'Discovery Coach',d:'Refine your discovery process',i:'??'},prd:{n:'PRD Reviewer',d:'Review PRDs for quality',i:'??'},brief:{n:'Stakeholder Briefing',d:'Create stakeholder updates',i:'??'},status:{n:'Status Summary',d:'Generate status reports',i:'??'}};
+  let html='<div class="vh"><div><h1>AI Copilot</h1><p class="muted">AI-powered assistance for PM workflows</p></div></div>';
+  html+='<div class="ai-l"><aside class="ai-sb"><h3>AI Assistants</h3><ul class="ai-ags">';
+  Object.entries(ags).forEach(([k,v])=>{html+='<li'+(ag===k?' class="act"':'')+' onclick="setAi(\''+k+'\')"><div class="ai-i">'+v.i+'</div><div><div class="ai-n">'+v.n+'</div><div class="ai-d">'+v.d+'</div></div></li>'});
+  html+='</ul></aside><div class="ai-cc"><div class="ai-ch"><h3 id="ain">'+ags[ag.split('-')[0]].n+'</h3><span class="muted" style="color:var(--s);font-size:.8rem">? Online</span></div><div class="ai-cm" id="aimsgs"><div class="ai-msg b"><div class="ai-mav">??</div><div class="ai-mc"><p>Hi! I\'m your PM Copilot. I can help with discovery, PRD reviews, stakeholder briefings, and status summaries. What would you like to work on?</p></div></div></div><div class="ai-ci"><textarea id="aiInp" placeholder="Ask me anything..."></textarea><button class="btn bp" onclick="sendAi()">Send</button></div></div></div>';
+  return html;
+}
+function setAi(a){S.aiAgent=a;render()}
+
+function renderSettings(){
+  return '<div class="vh"><div><h1>Settings</h1><p class="muted">Manage your account and preferences</p></div></div><div class="set-l"><div class="card"><div class="card-h"><h3>Profile</h3></div><div class="card-b"><div class="fg"><label class="fl">Display Name</label><input class="inp" id="sd" value="'+esc(S.profile&&S.profile.name||'PM User')+'" /></div><div class="fg"><label class="fl">Email</label><input class="inp" type="email" id="se" value="'+esc(S.profile&&S.profile.email||'pm@example.com')+'" /></div><button class="btn bp" onclick="saveProfile()">Save</button></div></div><div class="card"><div class="card-h"><h3>Preferences</h3></div><div class="card-b"><div class="fg"><label class="fl">Theme</label><select class="sel" id="sth"><option value="dark"'+(S.light?'':' selected')+'>Dark</option><option value="light"'+(S.light?' selected':'')+'>Light</option></select></div></div></div><div class="card"><div class="card-h"><h3>Data</h3></div><div class="card-b"><p class="muted">Export or reset your data</p><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem"><button class="btn bs" onclick="exportData()">?? Export</button><button class="btn bs" onclick="importData()">?? Import</button><input type="file" id="ifile" accept=".json" style="display:none" /><button class="btn bd2" onclick="resetData()">??? Reset</button></div></div></div></div>';
+}
+
+function render(){
+  const v=$('vc');
+  if(!v)return;
+  const fns={dashboard:renderDashboard,projects:renderProjects,raid:renderRaid,actions:renderActions,handbook:renderHandbook,meetings:renderMeetings,templates:renderTemplates,ai:renderAi,settings:renderSettings};
+  v.innerHTML=(fns[S.view]||fns.dashboard)();
+  bindFilters();
+}
+
+function bindFilters(){
+  ['rtf','rsf','rpf','rsc','asf','apf','asc','hsc'].forEach(id=>{
+    const e=$(id);
+    if(e)e.addEventListener('input',render);
+    if(e)e.addEventListener('change',render);
+  });
+  const pf=$('pf');
+  if(pf)pf.addEventListener('change',render);
+}
+
+function modal(t,b,sv){
+  $('mt').textContent=t;
+  $('mb').innerHTML=b;
+  $('mo').classList.add('active');
+  $('msv').onclick=()=>{if(sv()!==false)$('mo').classList.remove('active')};
+}
+function closeM(){$('mo').classList.remove('active')}
+
+function newProj(){
+  modal('New Project','<div class="fg"><label class="fl">Name</label><input class="inp" id="np_n" /></div><div class="fg"><label class="fl">Description</label><textarea id="np_d"></textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="np_s"><option>Planning</option><option>In Progress</option><option>On Hold</option><option>Completed</option></select></div><div class="fg"><label class="fl">Team Size</label><input class="inp" type="number" id="np_t" value="3" min="1" /></div>',()=>{
+    const n=$('np_n').value.trim();if(!n){toast('Name required','','w');return false}
+    S.projects.push({id:nid(S.projects),name:n,desc:$('np_d').value,status:$('np_s').value,startDate:fmt(new Date()),endDate:fmt(addD(new Date(),90)),progress:0,teamSize:parseInt($('np_t').value)||3});
+    addAct('??','New project "'+n+'" created');save();render();toast('Project created',n,'s');
+  });
+}
+function editProj(id){
+  const p=S.projects.find(x=>x.id===id);if(!p)return;
+  modal('Edit Project','<div class="fg"><label class="fl">Name</label><input class="inp" id="ep_n" value="'+esc(p.name)+'" /></div><div class="fg"><label class="fl">Description</label><textarea id="ep_d">'+esc(p.desc||'')+'</textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="ep_s"><option'+(p.status==='Planning'?' selected':'')+'>Planning</option><option'+(p.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(p.status==='On Hold'?' selected':'')+'>On Hold</option><option'+(p.status==='Completed'?' selected':'')+'>Completed</option></select></div><div class="fg"><label class="fl">Progress %</label><input class="inp" type="number" id="ep_p" value="'+p.progress+'" min="0" max="100" /></div>',()=>{
+    p.name=$('ep_n').value.trim();p.desc=$('ep_d').value;p.status=$('ep_s').value;p.progress=parseInt($('ep_p').value)||0;
+    save();render();toast('Project updated',p.name,'s');
+  });
+}
+
+function newRaid(){
+  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
+  modal('New RAID Item','<div class="fg"><label class="fl">Type</label><select class="sel" id="nr_t"><option value="RISK">Risk</option><option value="ASSUMPTION">Assumption</option><option value="ISSUE">Issue</option><option value="DEPENDENCY">Dependency</option></select></div><div class="fg"><label class="fl">Title</label><input class="inp" id="nr_n" /></div><div class="fg"><label class="fl">Description</label><textarea id="nr_d"></textarea></div><div class="fg"><label class="fl">Project</label><select class="sel" id="nr_p">'+opts+'</select></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="nr_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div><div class="fg"><label class="fl">Owner</label><input class="inp" id="nr_o" value="PM User" /></div>',()=>{
+    const n=$('nr_n').value.trim();if(!n){toast('Title required','','w');return false}
+    S.raidItems.push({id:nid(S.raidItems),type:$('nr_t').value,title:n,desc:$('nr_d').value,projectId:parseInt($('nr_p').value),status:'Open',priority:$('nr_pr').value,owner:$('nr_o').value,dueDate:fmt(addD(new Date(),7))});
+    addAct('??','New RAID item "'+n+'"');save();render();toast('RAID created',n,'s');
+  });
+}
+function editRaid(id){
+  const r=S.raidItems.find(x=>x.id===id);if(!r)return;
+  modal('Edit RAID','<div class="fg"><label class="fl">Title</label><input class="inp" id="er_n" value="'+esc(r.title)+'" /></div><div class="fg"><label class="fl">Description</label><textarea id="er_d">'+esc(r.desc||'')+'</textarea></div><div class="fg"><label class="fl">Status</label><select class="sel" id="er_s"><option'+(r.status==='Open'?' selected':'')+'>Open</option><option'+(r.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(r.status==='Resolved'?' selected':'')+'>Resolved</option><option'+(r.status==='Closed'?' selected':'')+'>Closed</option></select></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="er_pr"><option'+(r.priority==='High'?' selected':'')+'>High</option><option'+(r.priority==='Medium'?' selected':'')+'>Medium</option><option'+(r.priority==='Low'?' selected':'')+'>Low</option></select></div><div class="fg"><label class="fl">Owner</label><input class="inp" id="er_o" value="'+esc(r.owner||'')+'" /></div>',()=>{
+    r.title=$('er_n').value.trim();r.desc=$('er_d').value;r.status=$('er_s').value;r.priority=$('er_pr').value;r.owner=$('er_o').value;
+    save();render();toast('RAID updated',r.title,'s');
+  });
+}
+function delRaid(id){const r=S.raidItems.find(x=>x.id===id);if(!r||!confirm('Delete "'+r.title+'"?'))return;S.raidItems=S.raidItems.filter(x=>x.id!==id);addAct('???','RAID item "'+r.title+'" deleted');save();render();toast('Deleted',r.title,'s')}
+
+function newAct(){
+  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
+  modal('New Action Item','<div class="fg"><label class="fl">Title</label><input class="inp" id="na_n" /></div><div class="fg"><label class="fl">Project</label><select class="sel" id="na_p">'+opts+'</select></div><div class="fg"><label class="fl">Assignee</label><input class="inp" id="na_a" value="PM User" /></div><div class="fg"><label class="fl">Due Date</label><input class="inp" type="date" id="na_d" value="'+fmt(addD(new Date(),7))+'" /></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="na_pr"><option>High</option><option selected>Medium</option><option>Low</option></select></div><div class="fg"><label class="fl">Status</label><select class="sel" id="na_s"><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></div>',()=>{
+    const n=$('na_n').value.trim();if(!n){toast('Title required','','w');return false}
+    S.actionItems.push({id:nid(S.actionItems),title:n,status:$('na_s').value,priority:$('na_pr').value,projectId:parseInt($('na_p').value),assignee:$('na_a').value,dueDate:$('na_d').value});
+    addAct('?','New action item "'+n+'"');save();render();toast('Action created',n,'s');
+  });
+}
+function editAct(id){
+  const a=S.actionItems.find(x=>x.id===id);if(!a)return;
+  modal('Edit Action Item','<div class="fg"><label class="fl">Title</label><input class="inp" id="ea_n" value="'+esc(a.title)+'" /></div><div class="fg"><label class="fl">Status</label><select class="sel" id="ea_s"><option'+(a.status==='Pending'?' selected':'')+'>Pending</option><option'+(a.status==='In Progress'?' selected':'')+'>In Progress</option><option'+(a.status==='Completed'?' selected':'')+'>Completed</option><option'+(a.status==='Blocked'?' selected':'')+'>Blocked</option></select></div><div class="fg"><label class="fl">Assignee</label><input class="inp" id="ea_a" value="'+esc(a.assignee)+'" /></div><div class="fg"><label class="fl">Due Date</label><input class="inp" type="date" id="ea_d" value="'+esc(a.dueDate)+'" /></div><div class="fg"><label class="fl">Priority</label><select class="sel" id="ea_pr"><option'+(a.priority==='High'?' selected':'')+'>High</option><option'+(a.priority==='Medium'?' selected':'')+'>Medium</option><option'+(a.priority==='Low'?' selected':'')+'>Low</option></select></div>',()=>{
+    a.title=$('ea_n').value.trim();a.status=$('ea_s').value;a.assignee=$('ea_a').value;a.dueDate=$('ea_d').value;a.priority=$('ea_pr').value;
+    save();render();toast('Action updated',a.title,'s');
+  });
+}
+function delAct(id){const a=S.actionItems.find(x=>x.id===id);if(!a||!confirm('Delete "'+a.title+'"?'))return;S.actionItems=S.actionItems.filter(x=>x.id!==id);addAct('???','Action item deleted');save();render();toast('Deleted',a.title,'s')}
+
+function newHb(){
+  modal('New Article','<div class="fg"><label class="fl">Title</label><input class="inp" id="nh_t" /></div><div class="fg"><label class="fl">Summary</label><input class="inp" id="nh_s" /></div><div class="fg"><label class="fl">Category</label><select class="sel" id="nh_c"><option>process</option><option>template</option><option>guide</option><option>policy</option><option>reference</option></select></div><div class="fg"><label class="fl">Tags (comma separated)</label><input class="inp" id="nh_g" /></div>',()=>{
+    const t=$('nh_t').value.trim();if(!t){toast('Title required','','w');return false}
+    S.handbookArticles.push({id:nid(S.handbookArticles),title:t,summary:$('nh_s').value,category:$('nh_c').value,tags:$('nh_g').value.split(',').map(x=>x.trim()).filter(Boolean)});
+    addAct('??','New handbook article "'+t+'"');save();render();toast('Article created',t,'s');
+  });
+}
+function viewHb(id){
+  const a=S.handbookArticles.find(x=>x.id===id);if(!a)return;
+  modal(a.title,'<p class="muted">'+esc(a.summary)+'</p><div style="margin-top:1rem"><strong>Category:</strong> '+esc(a.category)+'</div>'+(a.tags&&a.tags.length?'<div style="margin-top:.5rem"><strong>Tags:</strong> '+(a.tags||[]).map(t=>'<span class="bp2 m" style="margin-right:.3rem">'+esc(t)+'</span>').join('')+'</div>':''),null);
+}
+function newMtg(){
+  const opts=S.projects.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
+  modal('New Meeting','<div class="fg"><label class="fl">Title</label><input class="inp" id="nm_t" /></div><div class="fg"><label class="fl">Date</label><input class="inp" type="date" id="nm_d" value="'+fmt(new Date())+'" /></div><div class="fg"><label class="fl">Project</label><select class="sel" id="nm_p">'+opts+'</select></div><div class="fg"><label class="fl">Summary</label><textarea id="nm_s"></textarea></div><div class="fg"><label class="fl">Attendees</label><input class="inp" type="number" id="nm_a" value="5" /></div>',()=>{
+    const t=$('nm_t').value.trim();if(!t){toast('Title required','','w');return false}
+    S.meetings.unshift({id:nid(S.meetings),date:$('nm_d').value,title:t,summary:$('nm_s').value,attendees:parseInt($('nm_a').value)||1,projectId:parseInt($('nm_p').value),decisions:0,actionItems:0});
+    addAct('??','New meeting "'+t+'"');save();render();toast('Meeting created',t,'s');
+  });
+}
+function useTpl(id){const t=S.templates.find(x=>x.id===id);if(!t)return;modal(t.name,'<p class="muted">'+esc(t.desc)+'</p><pre class="t-pre" style="max-height:400px;margin-top:1rem">'+esc(t.content)+'</pre><div style="margin-top:1rem;display:flex;gap:.5rem"><button class="btn bp" onclick="cpTpl('+id+')">?? Copy to Clipboard</button></div>',null)}
+function cpTpl(id){const t=S.templates.find(x=>x.id===id);if(!t)return;navigator.clipboard.writeText(t.content).then(()=>toast('Copied',t.name,'s')).catch(()=>toast('Copy failed','','d'))}
+
+function sendAi(){
+  const inp=$('aiInp');if(!inp||!inp.value.trim())return;
+  const msg=inp.value.trim();inp.value='';
+  const m=$('aimsgs');
+  m.innerHTML+='<div class="ai-msg u"><div class="ai-mav">U</div><div class="ai-mc">'+esc(msg)+'</div></div>';
+  setTimeout(()=>{
+    const r=aiResp(msg);
+    m.innerHTML+='<div class="ai-msg b"><div class="ai-mav">??</div><div class="ai-mc">'+r+'</div></div>';
+    m.scrollTop=m.scrollHeight;
+  },600);
+  m.scrollTop=m.scrollHeight;
+}
+function aiResp(q){
+  const l=q.toLowerCase();
+  if(l.includes('risk'))return '<p>Here are key risk analysis steps:</p><ul><li><strong>Identify</strong> potential risks across scope, schedule, cost, quality</li><li><strong>Assess</strong> using probability � impact (1-5 scale)</li><li><strong>Plan</strong> mitigation: avoid, transfer, mitigate, or accept</li><li><strong>Monitor</strong> weekly and update the RAID log</li></ul><p>Want me to suggest mitigations for any specific risk?</p>';
+  if(l.includes('status')||l.includes('report'))return '<p>Here\'s a status report template:</p><p><strong>Overall:</strong> ?? On Track / ?? At Risk / ?? Off Track</p><p><strong>Highlights:</strong> Key accomplishments this period</p><p><strong>Risks:</strong> Top 2-3 active risks and mitigations</p><p><strong>Actions:</strong> Completed and upcoming</p><p><strong>Decisions Needed:</strong> Items requiring stakeholder input</p>';
+  if(l.includes('prd')||l.includes('requirement'))return '<p>For a strong PRD, ensure you cover:</p><ul><li><strong>Problem:</strong> Clear problem statement with data</li><li><strong>Goals:</strong> Measurable success metrics</li><li><strong>Users:</strong> Primary personas and use cases</li><li><strong>Scope:</strong> What\'s in and out of scope</li><li><strong>Requirements:</strong> Functional and non-functional</li><li><strong>Dependencies:</strong> Technical and business</li></ul>';
+  if(l.includes('stakeholder')||l.includes('briefing'))return '<p>Effective stakeholder briefings include:</p><ul><li><strong>Audience:</strong> Who needs to know what</li><li><strong>Key Message:</strong> One sentence summary</li><li><strong>Status:</strong> RAG status with rationale</li><li><strong>Asks:</strong> What you need from them</li><li><strong>Next Steps:</strong> Clear actions and dates</li></ul>';
+  return '<p>Great question! Here are some things to consider:</p><ul><li>Review your project context and constraints</li><li>Check the RAID log for related items</li><li>Look at the action item list for dependencies</li><li>Consult the handbook for relevant guides</li></ul><p>Can you provide more details about what you\'re working on?</p>';
+}
+
+function saveProfile(){
+  S.profile={name:$('sd').value,email:$('se').value};
+  $('uname').textContent=S.profile.name;
+  $('uav').textContent=(S.profile.name||'P').charAt(0).toUpperCase();
+  save();toast('Profile saved','','s');
+}
+function exportData(){
+  const data=JSON.stringify(S,null,2);
+  const b=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download='pmc-data-'+fmt(new Date())+'.json';
+  a.click();
+  toast('Data exported','','s');
+}
+function importData(){
+  $('ifile').click();
+  $('ifile').onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=ev=>{
+      try{const d=JSON.parse(ev.target.result);Object.assign(S,d);save();render();toast('Data imported','','s')}
+      catch(err){toast('Import failed','','d')}
+    };
+    r.readAsText(f);
+  };
+}
+function resetData(){
+  if(!confirm('Reset ALL data? This cannot be undone.'))return;
+  localStorage.removeItem('pmc_v2');
+  seed();save();render();toast('Data reset','','s');
+}
+
+function init(){
+  if(!load()){seed();save()}
+  document.querySelectorAll('.nav-i').forEach(n=>n.onclick=()=>nav(n.dataset.v));
+  $('mc').onclick=closeM;
+  $('mcan').onclick=closeM;
+  $('mo').onclick=e=>{if(e.target===$('mo'))closeM()};
+  $('bTh').onclick=()=>{S.light=!S.light;document.body.classList.toggle('light',S.light);$('bTh').textContent=S.light?'??':'??';save()};
+  $('bNot').onclick=()=>toast('Notifications','3 new updates','i');
+  $('bQa').onclick=()=>{const m={dashboard:newProj,projects:newProj,raid:newRaid,actions:newAct,handbook:newHb,meetings:newMtg,templates:()=>useTpl(1),ai:()=>$('aiInp')&&$('aiInp').focus(),settings:()=>{}}(S.view)||newProj;if(S.view==='raid')newRaid();else if(S.view==='actions')newAct();else if(S.view==='handbook')newHb();else if(S.view==='meetings')newMtg();else newProj()};
+  $('gs').oninput=e=>{
+    const q=e.target.value.toLowerCase();
+    if(!q)return;
+    const matched=S.raidItems.filter(r=>r.title.toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q)).length+
+    S.actionItems.filter(a=>a.title.toLowerCase().includes(q)).length+
+    S.projects.filter(p=>p.name.toLowerCase().includes(q)).length;
+    if(matched>0)toast('Search',matched+' items match','i');
+  };
+  render();
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
 </body>
 </html>
