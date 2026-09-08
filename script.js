@@ -129,6 +129,7 @@ Why does this decision matter now?
   }
 };
 
+let currentTemplateKey = 'prd';
 // template UI
 const tabs = document.querySelectorAll(".template-tab");
 const typeLabel = document.querySelector("#template-type");
@@ -140,6 +141,7 @@ function renderTemplate(key) {
   if (!template) return;
   typeLabel.textContent = template.type;
   content.textContent = template.content;
+currentTemplateKey = key;
   tabs.forEach((tab) => {
     const selected = tab.dataset.template === key;
     tab.classList.toggle("active", selected);
@@ -153,6 +155,25 @@ copyButton.addEventListener("click", async () => {
   await navigator.clipboard.writeText(content.textContent);
   copyButton.textContent = "Copied";
   setTimeout(() => (copyButton.textContent = "Copy"), 1200);
+});
+const downloadButton = document.querySelector('#download-template');
+const templateFileNames = {
+  prd: 'prd-brief.md',
+  discovery: 'discovery-plan.md',
+  launch: 'launch-checklist.md',
+  decision: 'decision-log.md'
+};
+downloadButton.addEventListener('click', async () => {
+  if (!currentTemplateKey) return;
+  const template = templates[currentTemplateKey];
+  const filename = templateFileNames[currentTemplateKey];
+  const blob = new Blob([template.content], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 });
 
 renderTemplate("prd");
